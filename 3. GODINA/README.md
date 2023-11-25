@@ -1,0 +1,1 @@
+Linkovi predavanja: https://www.youtube.com/playlist?list=PL18voQ8cXe0twFw3qbkkMZWC2bQrymv9R

@@ -1,0 +1,53 @@
+org 0x00
+jmp main
+
+i data 30h
+j data 31h
+k data 32h
+
+start data 33h
+
+delay:
+	mov i, #008h
+for1:
+	mov j, #0ffh
+for2:
+	mov k, #0ffh
+for3:
+	djnz k, for3
+	djnz j, for2
+	djnz i, for1
+	ret
+
+main:
+	mov A, #000h
+	mov P2, #000h
+
+while:
+	jnb P0.0, setStart
+	jnb P0.1, setStop
+
+work:
+	mov R0, start
+	cjne R0, #1, while
+
+	jz firstCase
+	rl A
+	mov P2, A
+	lcall delay
+	jmp while
+
+firstCase:
+	mov A, #001h
+	mov P2, #001h
+	jmp while
+	
+setStart:
+	mov start, #001h
+	jmp work
+
+setStop:
+	mov start, #000h
+	jmp work
+
+end

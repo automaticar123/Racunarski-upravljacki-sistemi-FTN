@@ -1,0 +1,301 @@
+org 0x00
+jmp main
+
+org 0x1B
+jmp int_timer_1
+
+status                 data 0x20
+work_status            data 0x21
+previous_state_P0      data 0x30
+state_P2               data 0x31
+state_chg_det          data 0x32
+previous_state_chg_det data 0x33
+what_chg               data 0x34
+start                  data 0x35
+counter_third          data 0x36
+counter_save_third     data 0x37
+counter_fourth         data 0x38
+counter_save_fourth    data 0x39
+timer                  data 0x40
+timer_counter          data 0x41
+set_timer_counter      data 0x42
+help_timer             data 0x43
+help_timer_counter     data 0x44
+
+
+third_program_values:
+	db 0x81
+	db 0x42
+	db 0x24
+	db 0x18
+	db 0x24
+	db 0x42
+	db 0x81
+
+fourth_program_values:
+	db 0xE9
+	db 0x90
+	db 0x59
+	db 0x37
+	db 0x22
+	db 0x15
+	db 0x0D
+	db 0x08
+	db 0x05
+	db 0x03
+	db 0x02
+	db 0x01
+
+int_timer_1:
+	djnz timer, timer_end
+	djnz timer_counter, timer_reset_timer
+	setb work_status.0
+
+timer_reset_timer_counter:
+	mov A, set_timer_counter
+	mov timer_counter, A 
+
+timer_reset_timer:
+	mov timer, #0xFA
+	
+timer_end:
+	reti 				
+
+main:
+	clr EA
+	mov P0,                  #0xFF
+	mov P2,                  #0x00
+	mov previous_state_P0,   #0xFF
+	mov state_P2,            #0x00
+	mov state_chg_det,       #0x00
+	mov start,               #0x00
+	mov status,              #0x00
+	mov counter_third,       #0x06
+	mov counter_save_third,  #0x06
+	mov counter_fourth,      #0x0B
+	mov counter_save_fourth, #0x0B
+	mov timer,               #0xFA
+	mov timer_counter,       #0x10
+	mov set_timer_counter,   #0x10
+
+	mov TMOD,                #0x20
+	mov TL1,                 #0x17
+	mov TH1,                 #0x17
+	setb TR1
+	setb ET1
+	setb EA
+
+while:
+	jnb work_status.0, end_while
+	mov A, previous_state_P0
+	xrl A, P0
+	mov state_chg_det, A
+	;; XOR kolo detektuje na kojem bitu je promjena
+
+	mov previous_state_P0, P0
+	;; Cuva se prethodno stanje P0 porta
+
+	mov A, state_chg_det
+	anl A, P0
+	mov what_chg, A
+	mov status, #0x00
+	;; AND kolo - kada je promjena = 0 (1->0), kada je promjena != 0 (0->1)
+
+was_there_any_state_change:
+	mov A, state_chg_det
+	cjne A, #0x00, set_status_1
+
+what_change:
+	mov A, what_chg
+	cjne A, #0x00, set_status_0
+	jmp status_check
+
+set_status_0:
+	setb status.0
+	jmp status_check
+
+set_status_1:
+	setb status.1
+	jmp what_change
+
+status_check:
+	mov A, status
+	clr C
+	subb A, #0x00
+	jz permission_for_work
+	mov A, status
+	clr C
+	subb A, #0x03
+	jz permission_for_work
+
+state_change_stop:
+	mov A, state_chg_det
+	cjne A, #0x02, state_change_start
+	mov start, #0x00
+	mov state_P2, #0x00
+	mov timer_counter, #0x10
+	mov set_timer_counter, #0x10
+	jmp permission_for_work
+
+exec:
+	mov P2, state_P2
+	clr work_status.0
+
+end_while:
+	jmp while
+
+state_change_start:
+	cjne A, #0x01, permission_for_work
+	mov start, #0x01
+	
+permission_for_work:
+	mov A, start
+	cjne A, #0x01, exec
+
+another_status_check:
+	mov A, status
+	clr C
+	subb A, #0x00
+	jz previous_state_change_first_program_from_start
+	mov A, status
+	clr C
+	subb A, #0x03
+	jz previous_state_change_first_program_from_start
+	
+state_change_first_program_from_start:
+	mov A, state_chg_det
+	cjne A, #0x01, state_change_first_program
+	lcall prepare_program
+	lcall first_program
+	jmp exec
+
+state_change_first_program:
+	cjne A, #0x04, state_change_second_program
+	mov A, timer
+	mov help_timer, A
+	mov A, timer_counter
+	mov help_timer_counter, A
+	mov timer, #0xFA
+	mov timer_counter, #0x10
+	jmp exec
+
+state_change_second_program:
+	cjne A, #0x08, state_change_third_program
+	lcall prepare_program
+	lcall second_program_start
+	jmp exec
+
+state_change_third_program:
+	cjne A, #0x10, state_change_fourth_program
+	lcall prepare_program
+	lcall prepare_third_program
+	jmp exec
+
+state_change_fourth_program:
+	cjne A, #0x20, state_change_speed_1
+	lcall prepare_program
+	lcall prepare_fourth_program
+	jmp exec
+
+state_change_speed_1:
+	cjne A, #0x40, state_change_speed_2
+	mov set_timer_counter, #0x10
+	jmp previous_state_change_first_program_from_start 
+	
+state_change_speed_2:
+	cjne A, #0x80, exec
+	mov set_timer_counter, #0x08
+		
+previous_state_change_first_program_from_start:
+	mov A, previous_state_chg_det
+	cjne A, #0x01, previous_state_change_first_program
+	lcall first_program
+	jmp exec
+
+previous_state_change_first_program:
+	cjne A, #0x04, previous_state_change_second_program
+	mov A, help_timer
+	mov timer, A
+	mov A, help_timer_counter
+	mov timer_counter, A
+	jmp exec
+
+previous_state_change_second_program:
+	cjne A, #0x08, previous_state_change_third_program
+	lcall second_program_start
+	jmp exec
+	
+previous_state_change_third_program:
+	cjne A, #0x10, previous_state_change_fourth_program
+	lcall third_program
+	jmp exec
+
+previous_state_change_fourth_program:
+	cjne A, #0x20, previous_state_change_fourth_program
+	lcall fourth_program
+	jmp exec	
+	
+prepare_program:
+	mov state_P2, #0x00
+	mov A, state_chg_det
+	mov previous_state_chg_det, A
+	ret
+
+first_program:
+	mov A, state_P2
+	cpl A
+	mov state_P2, A
+	ret
+
+second_program:
+	rl A
+	mov state_P2, A
+	ret
+	
+second_program_start:
+	mov A, state_P2
+	cjne A, #0x00, second_program
+	mov state_P2, #0x01
+	ret
+
+prepare_third_program:
+	mov counter_third, #0x06 
+	mov A, counter_third
+	mov DPTR, #third_program_values
+	jmp third_program
+
+third_program_reset_counter:
+	mov A, counter_save_third
+	mov counter_third, A
+	ret
+
+third_program:
+	mov A, counter_third
+	movc A, @A+DPTR
+	mov state_P2, A
+	dec counter_third
+	mov A, counter_third
+	jz third_program_reset_counter
+	ret
+
+prepare_fourth_program:
+	mov counter_fourth, #0x0B
+	mov A, counter_fourth
+	mov DPTR, #fourth_program_values
+	jmp fourth_program
+	
+fourth_program_reset_counter: 
+	mov A, counter_save_fourth
+	mov counter_fourth, A
+	ret	
+	
+fourth_program:
+	mov A, counter_fourth
+	movc A, @A+DPTR
+	mov state_P2, A
+	dec counter_fourth
+	mov A, counter_fourth
+	jz fourth_program_reset_counter
+	ret
+	
+end

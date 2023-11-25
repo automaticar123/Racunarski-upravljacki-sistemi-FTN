@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[siunitx]{circuitikz}
+\usepackage{amsmath}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{float}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\pgfplotsset{compat=1.18}
+
+\title{Hardverski interfejsi - domaći zadatak}
+\author{Nenad Radović, RA18/2020}
+\date{22. maj, 2023. godina}
+
+\begin{document}
+    \maketitle
+    \renewcommand{\figurename}{Slika}
+
+    \section{Problem i prijedlog rješenja}
+        \begin{figure}[ht]
+            \centering
+            \begin{circuitikz}[american]
+                \draw
+                (0, 3) node[label=west:$V_{in}$] {}
+                (0, 3) to[short, o-] (0, 0)
+                (3, 0) node[npn, label=east:$Q$] (t) {}
+                (0, 0) to[R, i=$i_B$, label=$R_B$] (t.base)
+                (3, 3) to[R, i=$i_C$, label=$R_C$] (t.collector)
+                (3, 4) to[short, o-] (3, 3)
+                (3, 4) node[label=west:$V_{cc}$] {}
+                (t.emitter) to[R, i=$i_E$, label=$R_E$] (3, -3)
+                (3, -3) node[ground] {};
+            \end{circuitikz}
+        \end{figure}
+
+        Potrebno je da zapišemo Kirhofove zakone za dvije konture:
+
+        \begin{align}
+                V_{in} - R_Bi_B - V_{BE} - R_Ei_E = 0 \\
+                V_{cc} - R_Ci_C - V_{CE} - R_Ei_E = 0
+        \end{align}
+
+        Pošto nam je cilj da tranzistor ne bude u zasićenju, važiće jednačina
+
+        \begin{equation}
+            i_C = h_{fe}i_B
+        \end{equation}
+
+        a kako važi da je $i_E = i_B + i_C$, slijedi da je 
+
+        \begin{equation}
+            i_E = \left(1+h_{fe}\right)i_B
+        \end{equation}
+
+        Kako je pojačanje veliko, moguće je izostaviti jedinicu iz izraza $1+h_{fe}$, ali radi malo preciznijih
+        rezultata, ostavićemo je.
+
+        Ako izrazimo struju $i_B$ iz jednačine (1), dobićemo da je ona jednaka
+
+        \begin{equation}
+            i_B = \frac{V_{in}-V_{BE}}{R_B + (1 + h_{fe})R_E}
+        \end{equation}
+
+        Najgori slučaj u našem sistemu će se desiti za $V_{in} = 10V$ jer će tada
+        doći do maksimalne bazne struje, te je moguće da će tranzistor otići u zasićenje. Dakle,
+        struja bi trebalo da bude manja od vrijednosti sa desne strane jednačine (5).
+
+        Granični slučaj za baznu struju jeste kada je kolektorsko-emiterski napon pred granicom
+        saturacije, odnosno $V_{CE} = 0.2V$.
+        Vrijednost graničnog slučaja možemo dobiti iz jednačine (2), te će biti
+
+        \begin{equation}
+            i_B = \frac{V_{cc}-V_{CE_{sat}}}{h_{fe}R_C + (1 + h_{fe})R_E}
+        \end{equation}
+
+        Kombinujući prethodne dvije jednačine, dobijamo da je
+
+        \begin{equation}
+            \frac{V_{in_{max}}-V_{BE}}{R_B + (1 + h_{fe})R_E} < \frac{V_{cc}-V_{CE_{sat}}}{h_{fe}R_C + (1 + h_{fe})R_E}
+        \end{equation}
+
+        Ostalo nam je da izrazimo traženu otpornost $R_B$,
+
+        \begin{equation}
+            (V_{in_{max}}-V_{BE})(h_{fe}R_C + (1 + h_{fe})R_E) < (R_B + (1 + h_{fe})R_E)(V_{cc}-V_{CE_{sat}})
+        \end{equation}
+
+        \begin{equation}
+            (V_{in_{max}}-V_{BE})(h_{fe}R_C + (1 + h_{fe})R_E) - (V_{cc}-V_{CE_{sat}})(1 + h_{fe})R_E < (V_{cc}-V_{CE_{sat}})R_B
+        \end{equation}
+
+        te dobijamo da je 
+
+        \begin{equation}
+            R_B > \frac{(V_{in_{max}}-V_{BE})(h_{fe}R_C + (1 + h_{fe})R_E) - (V_{cc}-V_{CE_{sat}})(1 + h_{fe})R_E}{V_{cc}-V_{CE_{sat}}}
+        \end{equation}
+
+        Sada je potrebno odrediti vrijednost pojačanja koje će odrediti minimalnu vrijednost otpornika.
+        Naime, ako uzmemo minimalnu vrijednost pojačanja ($h_{fe} = 250$), dobićemo da je ono
+
+        \begin{equation}
+            R_B > 105.5 k\Omega
+        \end{equation}
+
+        dok ako prihvatimo da je $h_{fe} = 300$, dobijamo da je
+        \begin{equation}
+            R_B > 126.7 k\Omega
+        \end{equation}
+
+        Kako je potrebno da otpornost bude veća i od $105.5 k\Omega$, kao i od $126.7 k\Omega$, 
+        presjekom dobijamo da minimalna vrijednost otpornosti $R_B$ jeste
+
+        \begin{equation}
+            R_{B_{min}} = 126.7 k\Omega
+        \end{equation}
+
+        Kako smo još mogli znati koje $h_{fe}$ uzeti? Naime, ako imamo veće pojačanje,
+        dobićemo i veću kolektorsku, kao i emitersku struju, što će značiti veće padove
+        napona otpornicima $R_C$ i $R_E$. Time dobijamo situaciju gdje će sve manje i manje
+        napona padati na tranzistoru (odnosno, biće manji napon kolektor-emiter $V_{CE}$), 
+        te će za veće pojačanje to biti brži "proces" (u odnosu na manje) 
+        i tako brže odvesti tranzistor u saturaciju.
+
+\end{document}

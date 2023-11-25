@@ -1,0 +1,9 @@
+----- UART ----- 
+Implementirati custom protokol 
+Cetiri tipa poruke:
+1. Start
+2. Stop
+3. Program 
+4. Brzina
+
+

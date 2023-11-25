@@ -1,0 +1,351 @@
+A51 MACRO ASSEMBLER  DOMACI                                                               11/22/2022 18:35:21 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.01
+OBJECT MODULE PLACED IN domaci.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE domaci.a SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 0x00
+0000 801F              2     jmp main
+                       3     
+  0030                 4     i data 30h
+  0031                 5     j data 31h
+  0032                 6     k data 32h
+  0033                 7     state_P2 data 33h
+  0034                 8     previous_state_P0 data 34h
+  0035                 9     state_chg_det data 35h
+  0036                10     previous_state_chg_det data 36h
+  0037                11     what_chg data 37h
+  0038                12     counter data 38h
+  0039                13     counter_SAVE data 39h
+  0040                14     fib_n1 data 40h
+  0041                15     pom_fib data 41h
+  0042                16     start data 42h
+  0043                17     speed data 43h
+                      18     
+0002                  19     lookUpProg3:
+0002 81               20             db 81h
+0003 42               21             db 42h
+0004 24               22             db 24h 
+0005 18               23             db 18h
+0006 24               24             db 24h
+0007 42               25             db 42h
+0008 81               26             db 81h 
+                      27     
+                      28     ;; DELAY FUNCKIJA ;; 
+                      29     ;; ----------------- ;;
+0009                  30     speed1:
+0009 753003           31             mov i, #003h
+000C 8003             32             jmp for1
+000E                  33     speed2:
+000E 753006           34             mov i, #006h
+0011                  35     for1:
+0011 7531FF           36             mov j, #0FFh
+0014                  37     for2:
+0014 7532FF           38             mov k, #0FFh
+0017                  39     for3:
+0017 D532FD           40             djnz k, for3
+001A D531F7           41             djnz j, for2
+001D D530F1           42             djnz i, for1
+0020 22               43             ret
+                      44     ;; ----------------- ;;
+                      45     
+0021                  46     main:
+0021 7580FF           47             mov P0, #0FFh
+0024 7534FF           48             mov previous_state_P0, #0FFh
+0027 7536FF           49             mov previous_state_chg_det, #0FFh
+002A 75A000           50             mov P2, #000h
+002D 753300           51             mov state_P2, #000h
+0030 753806           52             mov counter, #006h
+0033 753906           53             mov counter_SAVE, #006h
+0036 754001           54             mov fib_n1, #001h
+0039 754300           55             mov speed, #000h
+003C 900002           56             mov DPTR, #lookUpProg3
+                      57     
+003F                  58     while:
+A51 MACRO ASSEMBLER  DOMACI                                                               11/22/2022 18:35:21 PAGE     2
+
+003F E580             59             mov A, P0
+0041 6534             60             xrl A, previous_state_P0
+                      61             ;; XOR kolo detektuje na kojem bitu je promjena ;;
+0043 F535             62             mov state_chg_det, A
+0045 858034           63             mov previous_state_P0, P0
+                      64             ;; Cuva se prethodno stanje P0 porta ;;
+0048 5580             65             anl A, P0
+004A F537             66             mov what_chg, A
+                      67             ;; AND kolo - kada je promjena = 0 (1->0), kada je promjena != 0 (0->1) ;;
+                      68     
+                      69     ;; Da li je promjena (1->0) ili (0->1) ;;
+                      70     
+004C                  71     checkStateChangeDet:
+004C E535             72             mov A, state_chg_det
+004E C3               73             clr C
+004F 9400             74             subb A, #000h
+0051 6016             75             jz permissionForWork
+                      76     
+0053                  77     what_change:
+0053 E537             78             mov A, what_chg
+0055 C3               79             clr C
+0056 9400             80             subb A, #000h
+0058 705C             81             jnz exec
+                      82             ;; Ako se ne desava promjena ili je promjena (0->1), iterira se kroz staro stanje ;
+                             ;
+                      83             ;; Ako se desila promjena (1->0), provjerava se koji je tip promjene ;;
+                      84     
+005A                  85     checkIfChangeStart:
+005A E535             86             mov A, state_chg_det
+005C B40102           87             cjne A, #001h, checkIfChangeStop
+005F 8061             88             jmp setStart
+                      89             ;; Ako je promjena na 0. bitu, to znaci da je pokrenut start ;;
+                      90     
+0061                  91     checkIfChangeStop:
+0061 B40305           92             cjne A, #003h, permissionForWork
+0064 753300           93             mov state_P2, #000h
+0067 805E             94             jmp setStop
+                      95             ;; Ako je promjena na 1. bitu, to znaci da je pokrenut stop ;; 
+                      96     
+0069                  97     permissionForWork:
+0069 A842             98             mov R0, start
+006B B80148           99             cjne R0, #1, exec 
+                     100             ;; Permisija za rad ;;
+                     101             
+006E                 102     checkIfChangeFirst:
+006E B40402          103             cjne A, #004h, checkIfChangeSecond
+0071 8022            104             jmp prepProg
+                     105             ;; Da li je ukljucen prvi program? ;; 
+                     106             
+0073                 107     checkIfChangeSecond:
+0073 B40802          108             cjne A, #008h, checkIfChangeThird
+0076 801D            109             jmp prepProg
+                     110             ;; Da li je ukljucen drugi program? ;; 
+                     111     
+0078                 112     checkIfChangeThird:
+0078 B41002          113             cjne A, #010h, checkIfChangeFourth
+007B 8018            114             jmp prepProg
+                     115             ;; Da li je ukljucen treci program? ;;
+                     116     
+007D                 117     checkIfChangeFourth:
+007D B42002          118             cjne A, #020h, checkIfChangeSpeed1
+0080 8013            119             jmp prepProg
+                     120             ;; Da li je ukljucen cetvrti program? ;;
+                     121     
+0082                 122     checkIfChangeSpeed1:
+0082 B44005          123             cjne A, #040h, checkIfChangeSpeed2
+A51 MACRO ASSEMBLER  DOMACI                                                               11/22/2022 18:35:21 PAGE     3
+
+                     124             ;; Da li je ukljucena prva brzina? ;;
+                     125     
+0085                 126     speed1call:
+0085 754300          127             mov speed, #000h
+0088 8006            128             jmp checkIfFirstStart
+                     129     
+008A                 130     checkIfChangeSpeed2:
+008A B48003          131             cjne A, #080h, checkIfFirstStart
+                     132             ;; Da li je ukljucena druga brzina? ;;
+                     133     
+008D                 134     speed2call:
+008D 754301          135             mov speed, #001h
+                     136     
+0090                 137     checkIfFirstStart:
+0090 E536            138             mov A, previous_state_chg_det
+0092 B4FF7F          139             cjne A, #0FFh, prevFirstState
+                     140     
+0095                 141     prepProg:
+0095 753300          142             mov state_P2, #000h
+0098 E535            143             mov A, state_chg_det
+009A F536            144             mov previous_state_chg_det, A
+                     145     
+009C                 146     prepFirstProg:
+009C C3              147             clr C
+009D 9404            148             subb A, #004h
+009F 602B            149             jz firstProg
+00A1 E535            150             mov A, state_chg_det
+                     151     
+00A3                 152     prepSecondProg:
+00A3 C3              153             clr C
+00A4 9408            154             subb A, #008h
+00A6 6032            155             jz secondProg
+00A8 E535            156             mov A, state_chg_det
+                     157     
+00AA                 158     prepThirdProg:
+00AA C3              159             clr C
+00AB 9410            160             subb A, #010h
+00AD 603B            161             jz thirdProg
+00AF E535            162             mov A, state_chg_det
+                     163     
+00B1                 164     prepFourthProg:
+00B1 C3              165             clr C
+00B2 9420            166             subb A, #020h
+00B4 6049            167             jz fourthProg
+                     168             
+00B6                 169     exec:
+00B6 8533A0          170             mov P2, state_P2
+00B9 E543            171             mov A, speed
+00BB 6076            172             jz speed1Needed
+00BD 12000E          173             lcall speed2
+00C0 013F            174             jmp while
+                     175             
+00C2                 176     setStart:
+00C2 754201          177             mov start, #001h
+00C5 80A2            178             jmp permissionForWork
+                     179     
+00C7                 180     setStop:
+00C7 754200          181             mov start, #000h
+00CA 809D            182             jmp     permissionForWork
+                     183     
+00CC                 184     firstProg:
+00CC E533            185             mov A, state_P2
+00CE F4              186             cpl A
+00CF F533            187             mov state_P2, A
+00D1 80E3            188             jmp exec
+                     189     
+A51 MACRO ASSEMBLER  DOMACI                                                               11/22/2022 18:35:21 PAGE     4
+
+00D3                 190     secondProgExec:
+00D3 E533            191             mov A, state_P2
+00D5 23              192             rl A
+00D6 F533            193             mov state_P2, A 
+00D8 80DC            194             jmp exec
+                     195     
+00DA                 196     secondProg:                                               
+00DA A833            197             mov R0, state_P2
+00DC B800F4          198             cjne R0, #000h, secondProgExec
+00DF 753301          199             mov state_P2, #001h 
+00E2 80D2            200             jmp exec
+                     201     
+00E4                 202     thirdProgCounterReset:
+00E4 E539            203             mov A, counter_SAVE
+00E6 F538            204             mov counter, A
+00E8 80CC            205             jmp exec        
+                     206     
+00EA                 207     thirdProg:
+00EA E538            208             mov A, counter
+00EC 93              209             movc A, @A+DPTR
+00ED F533            210             mov state_P2, A
+00EF 1538            211             dec counter
+00F1 E538            212             mov A, counter
+00F3 60EF            213             jz thirdProgCounterReset
+00F5 80BF            214             jmp exec
+                     215     
+00F7                 216     fourthProgReset:
+00F7 754001          217             mov fib_n1, #001h
+00FA 753301          218             mov state_P2, #001h
+00FD 80B7            219             jmp exec        
+                     220     
+00FF                 221     fourthProg:
+00FF E533            222             mov A, state_P2
+0101 F541            223             mov pom_fib, A
+0103 C3              224             clr C
+0104 94E9            225             subb A, #0E9h
+0106 60EF            226             jz fourthProgReset
+0108 E540            227             mov A, fib_n1
+010A 2533            228             add A, state_P2
+010C F533            229             mov state_P2, A
+010E E541            230             mov A, pom_fib
+0110 F540            231             mov fib_n1, A
+0112 80A2            232             jmp exec
+                     233     
+0114                 234     prevFirstState:
+0114 E536            235             mov A, previous_state_chg_det
+0116 C3              236             clr C
+0117 9404            237             subb A, #004h
+0119 60B1            238             jz firstProg
+011B E536            239             mov A, previous_state_chg_det
+011D C3              240             clr C
+011E 9401            241             subb A, #001h
+0120 60AA            242             jz firstProg
+                     243             
+0122                 244     prevSecondState:
+0122 E536            245             mov A, previous_state_chg_det
+0124 B40802          246             cjne A, #008h, prevThirdState
+0127 80B1            247             jmp secondProg 
+                     248     
+0129                 249     prevThirdState:
+0129 B41002          250             cjne A, #010h, prevFourthState
+012C 80BC            251             jmp thirdProg
+                     252     
+012E                 253     prevFourthState:
+012E B42085          254             cjne A, #020h, exec
+0131 80CC            255             jmp fourthProg
+A51 MACRO ASSEMBLER  DOMACI                                                               11/22/2022 18:35:21 PAGE     5
+
+                     256             
+0133                 257     speed1Needed:
+0133 120009          258             lcall speed1
+0136 013F            259             jmp while       
+                     260                                     
+                     261     end
+A51 MACRO ASSEMBLER  DOMACI                                                               11/22/2022 18:35:21 PAGE     6
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                 T Y P E  V A L U E   ATTRIBUTES
+
+CHECKIFCHANGEFIRST . .  C ADDR   006EH   A   
+CHECKIFCHANGEFOURTH. .  C ADDR   007DH   A   
+CHECKIFCHANGESECOND. .  C ADDR   0073H   A   
+CHECKIFCHANGESPEED1. .  C ADDR   0082H   A   
+CHECKIFCHANGESPEED2. .  C ADDR   008AH   A   
+CHECKIFCHANGESTART . .  C ADDR   005AH   A   
+CHECKIFCHANGESTOP. . .  C ADDR   0061H   A   
+CHECKIFCHANGETHIRD . .  C ADDR   0078H   A   
+CHECKIFFIRSTSTART. . .  C ADDR   0090H   A   
+CHECKSTATECHANGEDET. .  C ADDR   004CH   A   
+COUNTER. . . . . . . .  D ADDR   0038H   A   
+COUNTER_SAVE . . . . .  D ADDR   0039H   A   
+EXEC . . . . . . . . .  C ADDR   00B6H   A   
+FIB_N1 . . . . . . . .  D ADDR   0040H   A   
+FIRSTPROG. . . . . . .  C ADDR   00CCH   A   
+FOR1 . . . . . . . . .  C ADDR   0011H   A   
+FOR2 . . . . . . . . .  C ADDR   0014H   A   
+FOR3 . . . . . . . . .  C ADDR   0017H   A   
+FOURTHPROG . . . . . .  C ADDR   00FFH   A   
+FOURTHPROGRESET. . . .  C ADDR   00F7H   A   
+I. . . . . . . . . . .  D ADDR   0030H   A   
+J. . . . . . . . . . .  D ADDR   0031H   A   
+K. . . . . . . . . . .  D ADDR   0032H   A   
+LOOKUPPROG3. . . . . .  C ADDR   0002H   A   
+MAIN . . . . . . . . .  C ADDR   0021H   A   
+P0 . . . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . . . .  D ADDR   00A0H   A   
+PERMISSIONFORWORK. . .  C ADDR   0069H   A   
+POM_FIB. . . . . . . .  D ADDR   0041H   A   
+PREPFIRSTPROG. . . . .  C ADDR   009CH   A   
+PREPFOURTHPROG . . . .  C ADDR   00B1H   A   
+PREPPROG . . . . . . .  C ADDR   0095H   A   
+PREPSECONDPROG . . . .  C ADDR   00A3H   A   
+PREPTHIRDPROG. . . . .  C ADDR   00AAH   A   
+PREVFIRSTSTATE . . . .  C ADDR   0114H   A   
+PREVFOURTHSTATE. . . .  C ADDR   012EH   A   
+PREVIOUS_STATE_CHG_DET  D ADDR   0036H   A   
+PREVIOUS_STATE_P0. . .  D ADDR   0034H   A   
+PREVSECONDSTATE. . . .  C ADDR   0122H   A   
+PREVTHIRDSTATE . . . .  C ADDR   0129H   A   
+SECONDPROG . . . . . .  C ADDR   00DAH   A   
+SECONDPROGEXEC . . . .  C ADDR   00D3H   A   
+SETSTART . . . . . . .  C ADDR   00C2H   A   
+SETSTOP. . . . . . . .  C ADDR   00C7H   A   
+SPEED. . . . . . . . .  D ADDR   0043H   A   
+SPEED1 . . . . . . . .  C ADDR   0009H   A   
+SPEED1CALL . . . . . .  C ADDR   0085H   A   
+SPEED1NEEDED . . . . .  C ADDR   0133H   A   
+SPEED2 . . . . . . . .  C ADDR   000EH   A   
+SPEED2CALL . . . . . .  C ADDR   008DH   A   
+START. . . . . . . . .  D ADDR   0042H   A   
+STATE_CHG_DET. . . . .  D ADDR   0035H   A   
+STATE_P2 . . . . . . .  D ADDR   0033H   A   
+THIRDPROG. . . . . . .  C ADDR   00EAH   A   
+THIRDPROGCOUNTERRESET.  C ADDR   00E4H   A   
+WHAT_CHANGE. . . . . .  C ADDR   0053H   A   
+WHAT_CHG . . . . . . .  D ADDR   0037H   A   
+WHILE. . . . . . . . .  C ADDR   003FH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

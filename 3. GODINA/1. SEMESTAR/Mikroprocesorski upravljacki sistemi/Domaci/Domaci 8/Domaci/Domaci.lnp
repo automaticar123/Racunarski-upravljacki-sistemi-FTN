@@ -1,0 +1,4 @@
+"main.obj",
+"display.obj" 
+TO "Domaci" 
+RAMSIZE(256) 

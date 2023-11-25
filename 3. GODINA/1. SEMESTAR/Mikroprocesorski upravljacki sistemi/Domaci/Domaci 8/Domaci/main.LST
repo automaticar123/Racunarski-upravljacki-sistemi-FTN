@@ -1,0 +1,144 @@
+C51 COMPILER V8.16   MAIN                                                                  12/27/2022 18:19:38 PAGE 1   
+
+
+C51 COMPILER V8.16, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "parseCommand.h"
+   2          
+   3          unsigned char buffer[10];
+   4          unsigned char buffer_pointer = 0x00;
+   5          unsigned char receive_buffer;
+   6          
+   7          unsigned char status = 0x00;
+   8          unsigned char start = 0x00;
+   9          unsigned char state = 0x00;
+  10          unsigned char previous_state = 0x00;
+  11          unsigned char speed = 0x01;
+  12          unsigned char state_P2 = 0x00;
+  13          
+  14          unsigned char counter = 0x00;
+  15          unsigned char counter_set = 0xC8;
+  16          
+  17          unsigned char counter_for_program_3 = 0x06;
+  18          unsigned char counter_for_program_4 = 0x0C;
+  19          
+  20          void initController(void) {
+  21   1      
+  22   1              P2 = 0x00;
+  23   1      
+  24   1              EA = 0;
+  25   1      
+  26   1              // ----- Inicijalizacija 8-bit UART komunikacije ----- //
+  27   1      
+  28   1              SCON = 0x50;   // SM0 = 1, SM1 = 0, REN = 1
+  29   1              PCON = 0x80;   // SMOD1 = 1, SMOD0 = 0
+  30   1              BDRCON = 0x1C; // BRR = 1, TBCK = 1, RBCK = 1
+  31   1              BRL = 0xFD;     
+  32   1              ES = 1;        // Enable serial interrupt
+  33   1              
+  34   1              // ----- Inicijalizacija tajmera 1 u 16-bit modu rada ----- //
+  35   1              
+  36   1              TMOD = 0x10; // T1M1 = 0, T1M0 = 1
+  37   1              ET1 = 1;     // Enable timer interrupt  
+  38   1              TL1 = 0x00;
+  39   1              TH1 = 0xEE;
+  40   1              TR1 = 1;     // Timer run
+  41   1      
+  42   1              EA = 1;
+  43   1      
+  44   1              initDisplay();
+  45   1              clearDisplay();
+  46   1      }
+  47          
+  48          void timer_1_interrupt(void) interrupt 3 {
+  49   1      
+  50   1              TL1 = 0x00;
+  51   1              TH1 = 0xEE;
+  52   1      
+  53   1              if(++counter == counter_set) {
+  54   2                      
+  55   2                      status = 0x01;
+C51 COMPILER V8.16   MAIN                                                                  12/27/2022 18:19:38 PAGE 2   
+
+  56   2                      counter = 0x00;
+  57   2              }
+  58   1      
+  59   1              if(state != previous_state) {
+  60   2                      
+  61   2                      previous_state = state;
+  62   2                      state_P2 = 0x00;
+  63   2                      counter_for_program_3 = 0x06;
+  64   2                      counter_for_program_4 = 0x0C;
+  65   2              }
+  66   1      }
+  67          
+  68          void uart_interrupt(void) interrupt 4 {
+  69   1      
+  70   1              EA = 0;
+  71   1      
+  72   1              if(RI) {
+  73   2                      
+  74   2                      RI = 0;
+  75   2                      receive_buffer = SBUF;
+  76   2      
+  77   2                      if(receive_buffer == '(') {
+  78   3                              buffer_pointer = 0x00;
+  79   3                      }
+  80   2      
+  81   2                      buffer[buffer_pointer++] = receive_buffer;
+  82   2                      buffer_pointer = buffer_pointer % 10;
+  83   2      
+  84   2                      if(receive_buffer == ')') {
+  85   3                              
+  86   3                              parseCommand(); 
+  87   3                      }
+  88   2              }
+  89   1      
+  90   1              if(TI) {
+  91   2                      
+  92   2                      TI = 0;
+  93   2              }
+  94   1              
+  95   1              EA = 1;
+  96   1      }
+  97          
+  98          void main(void) {
+  99   1      
+ 100   1              initController();
+ 101   1              
+ 102   1              while(1) {
+ 103   2              
+ 104   2                      if(status) {
+ 105   3                              status = 0x00;
+ 106   3                              if(start) {
+ 107   4                                      diode_activate();
+ 108   4                              }
+ 109   3                      }
+ 110   2      
+ 111   2                      if(state == 0x06) {
+ 112   3                              state_P2 = 0xFF;
+ 113   3                      }
+ 114   2                      
+ 115   2                      P2 = state_P2;
+ 116   2              }       
+ 117   1      }
+C51 COMPILER V8.16   MAIN                                                                  12/27/2022 18:19:38 PAGE 3   
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    695    ----
+   CONSTANT SIZE    =     34    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     41    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

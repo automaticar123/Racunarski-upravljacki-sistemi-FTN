@@ -1,0 +1,92 @@
+A51 MACRO ASSEMBLER  TRECI                                                                11/19/2022 11:19:23 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.01
+OBJECT MODULE PLACED IN treci.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE treci.a SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 0x00
+0000 8013              2     jmp main
+                       3     
+  0030                 4     i data 30h
+  0031                 5     j data 31h
+  0032                 6     k data 32h
+                       7     
+  0033                 8     start data 33h
+                       9     
+0002                  10     delay:
+0002 753008           11             mov i, #008h
+0005                  12     for1:
+0005 7531FF           13             mov j, #0ffh
+0008                  14     for2:
+0008 7532FF           15             mov k, #0ffh
+000B                  16     for3:
+000B D532FD           17             djnz k, for3
+000E D531F7           18             djnz j, for2
+0011 D530F1           19             djnz i, for1
+0014 22               20             ret
+                      21     
+0015                  22     main:
+0015 7400             23             mov A, #000h
+0017 75A000           24             mov P2, #000h
+                      25     
+001A                  26     while:
+001A 308019           27             jnb P0.0, setStart
+001D 30811B           28             jnb P0.1, setStop
+                      29     
+0020                  30     work:
+0020 A833             31             mov R0, start
+0022 B801F5           32             cjne R0, #1, while
+                      33     
+0025 6008             34             jz firstCase
+0027 23               35             rl A
+0028 F5A0             36             mov P2, A
+002A 120002           37             lcall delay
+002D 80EB             38             jmp while
+                      39     
+002F                  40     firstCase:
+002F 7401             41             mov A, #001h
+0031 75A001           42             mov P2, #001h
+0034 80E4             43             jmp while
+                      44             
+0036                  45     setStart:
+0036 753301           46             mov start, #001h
+0039 80E5             47             jmp work
+                      48     
+003B                  49     setStop:
+003B 753300           50             mov start, #000h
+003E 80E0             51             jmp work
+                      52     
+                      53     end
+A51 MACRO ASSEMBLER  TRECI                                                                11/19/2022 11:19:23 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY. . . . . . .  C ADDR   0002H   A   
+FIRSTCASE. . . . .  C ADDR   002FH   A   
+FOR1 . . . . . . .  C ADDR   0005H   A   
+FOR2 . . . . . . .  C ADDR   0008H   A   
+FOR3 . . . . . . .  C ADDR   000BH   A   
+I. . . . . . . . .  D ADDR   0030H   A   
+J. . . . . . . . .  D ADDR   0031H   A   
+K. . . . . . . . .  D ADDR   0032H   A   
+MAIN . . . . . . .  C ADDR   0015H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SETSTART . . . . .  C ADDR   0036H   A   
+SETSTOP. . . . . .  C ADDR   003BH   A   
+START. . . . . . .  D ADDR   0033H   A   
+WHILE. . . . . . .  C ADDR   001AH   A   
+WORK . . . . . . .  C ADDR   0020H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

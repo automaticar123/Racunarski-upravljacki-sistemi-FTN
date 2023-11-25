@@ -1,0 +1,88 @@
+Koje vrste zaštite od strujnog udara postoje:
+-direktna i indirektna
+
+Koji su sistemi zaštite od direktnog i indirektnog:
+-SELV, PELV, FELV
+
+Zaštita od direktnog dodira:
+-izolacija, prepreka, van domašaja
+
+Indirektna zaštita od dodira:
+-Automatsko iskljuèenje napajanja
+
+Ako sistem za zaštitu od automatsko iskljuèenja reaguje na dodir:
+-TN, TT i IT
+
+Opasan napon dodira:
+-50AC i 120 DC
+
+Da li je dozvoljeno postavljanje prekidaèa u N vod kod TNC sistema zaštite:
+-NE, jer razvezuje nulu(N)
+
+Obeležavanje zaštitnog provodnika u nisko naponskoj instalaciji:
+-žuto zelena, obeležavanje PE
+
+Prekidaèi(osiguraèi) pružaju zaštitu od:
+-kratkog spoja ili preoptereæenja
+
+Topljivi osiguraè se primenjuje za:
+-zaštitu od kratkog spoja ili optereæenja
+
+Ako je nominalna struja osiguraèa 16A:
+-vreme je kraæe što je veæa struja?
+
+Ako se iz nisko naponskog voda napaja 15 kW motor:
+-Nije moguæe izvesti preko SELV, PELV i FELV
+
+Koji uslov mora postojati za TT sistem:
+-impedansa mora biti manja od koliènika struje kratkog spoja i napona na mreži?
+
+Za koje vreme reaguje osiguraè u TT zaštiti 10A nominalna struja, a struja kratkog spoja 1kA:
+-0.4 sekunde (za 230 V je dozvoljeno max vreme 0.4)
+
+Kako se izvodi zaštita od napona na lokalnom nivou preko jednakih potencijala:
+-sve se vezuje na šinu za uzemljenje
+
+Opšti elementi motora:
+-pretvaraè
+-motor
+-prenosnik
+-regulator
+-optereæenje
+
+U odnosu na šta se definišu sistemi relativnih jedinica:
+-u odnosu na posmatranu baznu velièinu
+
+Koji tipovi karakteristika optereæenja postoje:
+-konstantno, linearno i kvadratno
+
+Grafik: koje taèke su stabilne na grafiku frekvencije i momenta(skontaj solo)
+
+Koliko ima kvadranata i koji su za šta 
+-4, dva generatorska, dva motorna ?
+
+Kod DC motora glavno magnetno polje je:
+-linearno, homogeno, statièko, nepromenljivo
+
+Uloga komutatora je:
+-da daje jednosmeran napon na izlazu
+
+Ako se na vratilo nominalnom brzinom, optereti:
+-usporiæe, struja armature æe naglo porasti
+
+Kod DC motora sa rednom pobudom kada se izgubi optereæenje naglo:
+-momenat naglo poraste i raspadne se motor
+
+Kod AC motora magnetno polje je:
+-obratno polje
+
+Klizanje kod AC motora je:
+-razlika u brzini obrtanja polja i rotora motora
+
+Brzina kod AC motora je:
+-obrnuto srazmerna broju polova
+
+Komponente frekventnih regulatora su:
+-ispravljaè, meðukolo, invertor ?
+
+Odnos napona i frekvencije mora ostati isti da bi održali momentnu karakteristiku

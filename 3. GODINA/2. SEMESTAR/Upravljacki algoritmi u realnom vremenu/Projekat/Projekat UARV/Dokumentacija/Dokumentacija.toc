@@ -1,0 +1,10 @@
+\contentsline {section}{\numberline {1}\textbf {Opis sistema}}{2}{}%
+\contentsline {subsection}{\numberline {1.1}Elementi sistema}{2}{}%
+\contentsline {subsection}{\numberline {1.2}Opis rada sistema}{2}{}%
+\contentsline {subsubsection}{\numberline {1.2.1}Automatski režim rada}{2}{}%
+\contentsline {subsubsection}{\numberline {1.2.2}Ručni režim rada}{3}{}%
+\contentsline {section}{\numberline {2}\textbf {\textit {LabView} kod za regulaciju sistema}}{3}{}%
+\contentsline {subsection}{\numberline {2.1}\textbf {Dio aplikacije na računaru}}{3}{}%
+\contentsline {subsection}{\numberline {2.2}\textbf {Dio aplikacije na \textit {cRIO} kontroleru}}{6}{}%
+\contentsline {subsubsection}{\numberline {2.2.1}\textit {cRIO.vi}}{6}{}%
+\contentsline {subsubsection}{\numberline {2.2.2}\textit {HAND\_AUTO.vi}}{7}{}%

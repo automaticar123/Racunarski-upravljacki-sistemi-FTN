@@ -1,0 +1,79 @@
+A51 MACRO ASSEMBLER  CETVRTI                                                              11/27/2022 16:09:40 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.01
+OBJECT MODULE PLACED IN cetvrti.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE cetvrti.a SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 0x00
+0000 8014              2     jmp main
+                       3     
+000B                   4     org 0x0B
+000B 8000              5     jmp interrupt_T0
+                       6     
+  0020                 7     status data 20h
+  0030                 8     brojac data 30h
+                       9     
+000D                  10     interrupt_T0:
+                      11             ; Logika prekida
+000D D53005           12             djnz brojac, dalje
+0010 D200             13             setb status.0 
+0012 753015           14             mov brojac, #0x15
+                      15             
+0015                  16     dalje: 
+0015 32               17             reti
+                      18     
+0016                  19     main:
+                      20             ; Inicijalizacija
+0016 75A001           21             mov P2, #0x01
+0019 758901           22             mov TMOD, #0x01
+001C D28C             23             setb TR0
+001E D2AF             24             setb EA
+0020 D2A9             25             setb ET0
+0022 758A01           26             mov TL0, #0x01
+0025 758C4C           27             mov TH0, #0x4C
+                      28     
+0028 753015           29             mov brojac, #0x15
+002B 752000           30             mov status, #0x00
+                      31                     
+002E                  32     while:
+002E 300007           33             jnb status.0, kraj
+0031 E5A0             34             mov A, P2
+0033 23               35             rl A
+0034 F5A0             36             mov P2, A
+0036 C200             37             clr status.0
+                      38             
+0038                  39     kraj:   
+0038 80F4             40             jmp while
+                      41     
+                      42     end
+A51 MACRO ASSEMBLER  CETVRTI                                                              11/27/2022 16:09:40 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+BROJAC . . . . . .  D ADDR   0030H   A   
+DALJE. . . . . . .  C ADDR   0015H   A   
+EA . . . . . . . .  B ADDR   00A8H.7 A   
+ET0. . . . . . . .  B ADDR   00A8H.1 A   
+INTERRUPT_T0 . . .  C ADDR   000DH   A   
+KRAJ . . . . . . .  C ADDR   0038H   A   
+MAIN . . . . . . .  C ADDR   0016H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+STATUS . . . . . .  D ADDR   0020H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+WHILE. . . . . . .  C ADDR   002EH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,27 @@
+# Blackjack
+
+- **Diler**, **nekoliko igrača**.
+- Predefinisan špil karata.
+- Diler u isto vrijeme dijeli sebi i igračima kartu.
+- Igrači redno igraju, dok diler poslednji igra.
+- Igrači igraju (biraju akciju) iz skupa akcija $\mathcal{A} = \{\text{hit}, \text{hold}\}$.
+- Maksimizuje se zbir ali on mora biti manji od $21$, u suprotnom igrač je "prepunjen" (*busted*). Ukoliko se desi *busted* situacija, taj igrač je sigurno izgubio.
+- Akcija $\text{hold}$ označava prestanak igre za igrača, u smislu da završava sekvencu i ne može odigrati više $\text{hit}$.
+- Prva akcija je uvijek $\text{hit}$, ima smisla jer je nemoguće dobijenom kartom doći do $21$.
+- **Diler je agent sa fiksnom politikom** - ako je zbir dilera manji od $17$, onda diler igra $\text{hit}$, u suprotnom diler igra $\text{hold}$.
+- *Olakšanje* - samo jedan igrač protiv dilera - nema više igrača.
+- Ishod igre
+	- **Poraz** - ako smo *busted* ili ako diler ima veći zbir od nas - **nagrada** je $1$.
+	- **Nerješeno** - kad su jednaki zbirovi - **nagrada** je $0$.
+	- **Pobjeda** - ili ako diler *bustuje* ili kada imamo više od dilera **nagrada** je $-1$.
+		- **Nagrade se dobijaju na kraju partije** - kraj partije je ili akcija $\text{hold}$ ili kada je agent *busted*. Za ostale akcije koje ne dovode u terminalno stanje, nagrada je $0$.
+- **Tipovi karata**
+	- *Male* karte - $2$, $3$,...$10$ - imaju baš te vrijednosti.
+	- *Face* karte (karte sa licima) - slike, $J$, $Q$, $K$ - njihove vrijednosti su $10$.
+	- *Ace* karta (kec karta) - $1$ ili $11$ - vrijednost zavisi od toga šta ćemo dobiti kasnije, pa možemo alternirati vrijednost - dva keca mogu biti 12 ili 2, zavisi šta nam odgovara
+		- Pojednostavljenje - prvi kec uvijek bude $11$, svi ostali $1$.
+- Stanja $\mathcal{S} = \{\text{zbir}, \text{kec?}, \text{dilerova karta}\}$ 
+- **Zadatak** - **implementirati agenta da igra protiv dilera**
+- Špil - cjelobrojni umnožak $52$ ili beskonačan špil (šta god uzmemo)
+- Igraćemo veliki broj partija i odatle ćemo zaključivati $q$ vrijednosti
+- Okolina je nešto što kao parametre prima tekuće stanje i akciju, a vraća sledeće stanje i nagradu - kao stohastički model $p(s^{+}, r | s, a)$.

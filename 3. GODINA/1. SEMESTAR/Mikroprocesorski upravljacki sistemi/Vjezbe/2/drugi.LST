@@ -1,0 +1,71 @@
+C51 COMPILER V8.16   DRUGI                                                                 11/05/2022 10:47:57 PAGE 1   
+
+
+C51 COMPILER V8.16, COMPILATION OF MODULE DRUGI
+OBJECT MODULE PLACED IN drugi.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE drugi.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <at89c51rc2.h>
+   2          
+   3          void delay(void) {
+   4   1              int i, j, k;
+   5   1              for(k = 0; k < 3; k++) {
+   6   2                      for(i = 0; i < 200; i++) {
+   7   3                              for(j = 0; j < 200; j++) {
+   8   4      
+   9   4                              }
+  10   3                      }
+  11   2              }
+  12   1      }
+  13          
+  14          void main(void) {
+  15   1              
+  16   1              unsigned char stanje_P2 = 0x01;
+  17   1              unsigned char lijevi = 0x01;
+  18   1              unsigned char desni = 0x80;
+  19   1      
+  20   1              P0 = 0x00;
+  21   1              P2 = 0x00;
+  22   1      
+  23   1              while(1) {
+  24   2                      
+  25   2                      if(lijevi << 1 == desni) {
+  26   3                              lijevi <<= 2;
+  27   3                              desni >>= 2;
+  28   3                      }
+  29   2                      else {
+  30   3                              lijevi <<= 1;
+  31   3                              desni >>= 1;
+  32   3                      }
+  33   2      
+  34   2                      if(lijevi == 0) {
+  35   3                              lijevi = 0x01;
+  36   3                      }
+  37   2      
+  38   2                      if(desni == 0) {
+  39   3                              desni = 0x80;
+  40   3                      }
+  41   2      
+  42   2                      P2 = lijevi + desni;
+  43   2      
+  44   2                      delay();
+  45   2              }
+  46   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    122    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V8.16   DRUGI                                                                 11/05/2022 10:47:57 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

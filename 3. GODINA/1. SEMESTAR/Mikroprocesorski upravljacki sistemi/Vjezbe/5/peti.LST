@@ -1,0 +1,59 @@
+C51 COMPILER V8.16   PETI                                                                  12/03/2022 09:11:15 PAGE 1   
+
+
+C51 COMPILER V8.16, COMPILATION OF MODULE PETI
+OBJECT MODULE PLACED IN peti.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE peti.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <at89c51rc2.h>
+   2          
+   3          volatile char status = 0x00;
+   4          char counter = 0x00;
+   5          
+   6          void timer_interrupt_0(void) interrupt 1{
+   7   1              TL0 = 0x10;
+   8   1              TH0 = 0x4C;
+   9   1              
+  10   1              if(++counter == 20) {
+  11   2                      status = 0x01;
+  12   2                      counter = 0x00;
+  13   2                      return; 
+  14   2              }                                               
+  15   1      }
+  16          
+  17          void main(void){
+  18   1              // Inicijalizacija
+  19   1              EA = 0;
+  20   1              TL0 = 0x10;
+  21   1              TH0 = 0x4C;
+  22   1              TMOD = 0x01;
+  23   1              TR0 = 1; 
+  24   1              ET0 = 1; 
+  25   1              EA = 1;
+  26   1      
+  27   1              P2 = 0x00;
+  28   1      
+  29   1              while(1) {
+  30   2                      
+  31   2                      if(status){
+  32   3                              P2 = ~P2;
+  33   3                              status = 0x00;  
+  34   3                      }       
+  35   2              }               
+  36   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     60    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

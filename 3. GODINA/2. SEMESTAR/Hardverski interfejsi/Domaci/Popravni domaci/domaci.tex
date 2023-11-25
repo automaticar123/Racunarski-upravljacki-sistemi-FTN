@@ -1,0 +1,177 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[siunitx]{circuitikz}
+\usepackage{geometry}
+\usepackage{amsmath}
+
+\geometry{legalpaper, portrait, margin=1.5in}
+
+\title{Popravni domaći zadatak - Hardverski interfejsi}
+\author{Nenad Radović, RA18/2020}
+\date{12.06.2023.}
+
+\begin{document}
+    \maketitle
+    \renewcommand{\figurename}{Figura}
+    
+    \begin{figure}[ht]
+        \centering
+        \begin{circuitikz}[american]
+            \draw
+            (0, 4) node[label=west:$V_{cc}$] {}
+            (0, 4) to[short, o-] (0, 3)
+            (0, 0) node[npn, label=$\quad \quad Q$] (t) {}
+            (0, 3) to[R, label=$R_C$] (t.collector)
+            (t.emitter) to[short] (0, -2)
+            (0, -2) node[ground] {};
+
+            \draw 
+            (0, 3) to[short, *-] (-2, 3)
+            (-2, 3) to[R, label=$R_1$] (-2, 1)
+            (-2, 1) to[short, -*] (-2, 0)
+            (-2, 0) to[short] (t.base);
+
+            \draw 
+            (-2, 0) to[R, label=$R_2$] (-2, -2)
+            (-2, -2) to[short, -*] (0, -2);
+        \end{circuitikz}
+        \caption{\centering Kolo zadatka}
+    \end{figure}
+
+    Kolo se može nacrtati i kao:
+
+    \begin{figure}[ht]
+        \centering
+        \begin{circuitikz}
+            \draw
+            (0, 4) node[label=west:$V_{cc}$] {}
+            (0, 4) to[short, o-] (0, 3)
+            (0, 0) node[npn, label=$\quad \quad Q$] (t) {}
+            (0, 3) to[R, label=$R_C$] (t.collector)
+            (t.emitter) to[short] (0, -2)
+            (0, -2) node[ground] {};
+
+            \draw
+            (-2, 4) node[label=west:$V_{cc}$] {}
+            (-2, 4) to[R, o-*, label=$R_1$] (-2, 0)
+            (-2, 0) node[label=west:$A$] {}
+            (-2, 0) to[short] (t.base);
+
+            \draw 
+            (-2, 0) to[R, label=$R_2$] (-2, -2)
+            (-2, -2) node[ground] {};
+        \end{circuitikz}
+        \caption{\centering  Jedan kraj otpronika $R_1$ je na naponu napajanja, te se kolo može i ovako predstaviti}
+    \end{figure}
+
+    Čitavu lijevu stranu kola (odnosno tačku $A$ u odnosu na masu) možemo zamijeniti Tevenenovim generatorom i Tevenenovom otpornošću.
+    To će nam pojednostaviti kolo, te olakšati rad.
+
+    Dakle, ako "odstranimo" desni dio kola, napon u tački $A$ je razdjeljen napon $V_{cc}$
+    nad otpornikom $R_2$, 
+    
+    \begin{equation}
+        V_T = \frac{R_2}{R_1 + R_2} V_{cc}
+    \end{equation}
+
+    dok je Tevenenova otpornost paralelna veza otpornika $R_1$ i $R_2$, odnosno
+
+    \begin{equation}
+        R_T = R_1 \parallel R_2 = \frac{R_1R_2}{R_1 + R_2}
+    \end{equation}
+
+    Nakon primjene Tevenenove teoreme, kolo izgleda kao
+
+    \begin{figure}[ht]
+        \centering
+        \begin{circuitikz}
+            \draw
+            (0, 4) node[label=west:$V_{cc}$] {}
+            (0, 4) to[short, o-] (0, 3)
+            (0, 0) node[npn, label=$\quad \quad Q$] (t) {}
+            (0, 3) to[R, label=$R_C$, i=$i_C$] (t.collector)
+            (t.emitter) to[short] (0, -2)
+            (0, -2) node[ground] {};
+            
+            \draw
+            (t.base) to[R, label=$R_T$, i^<=$i_B$] ++(-2, 0) coordinate (c1)
+            (c1) to[short, -o] ++(-1, 0) coordinate (c2)
+            (c2) node[label=$V_T$] {};
+        \end{circuitikz}
+        \caption{\centering Kolo nakon primjene Tevenenove teoreme}
+    \end{figure}
+
+    Za kolo iznad će važiti da je 
+
+    \begin{equation}
+        V_{cc} - R_Ci_C - V_{CE} = 0
+    \end{equation}
+    
+    odnosno
+
+    \begin{equation}
+        i_C = \frac{V_{cc} - V_{CE}}{R_C}
+    \end{equation}
+
+    Po uslovu zadatka važi da je $V_{CE} = \frac{V_{cc}}{2}$, pa slijedi da je kolektorska struja
+
+    \begin{equation}
+        i_C = \frac{V_{cc}}{2R_C}
+    \end{equation}
+
+    Kako je tranzistor u aktivnom režimu rada, slijedi da je bazna struja manja od bazne $h_{fe}$ puta, odnosno
+    
+    \begin{equation}
+        i_B = \frac{i_C}{h_{fe}} = \frac{V_{cc}}{2h_{fe}R_C}
+    \end{equation}
+
+    Takodje, važiće da je 
+
+    \begin{equation}
+        V_T - R_Ti_B - V_{BE} = 0
+    \end{equation}
+
+    odnosno
+
+    \begin{equation}
+        i_B = \frac{V_T - V_{BE}}{R_T}
+    \end{equation}
+
+    Ako uvrstimo goredobijene izraze za Tevenenov napon i otpornost u prethodnu jednačinu, 
+    dobijamo da je bazna struja
+
+    \begin{equation}
+        i_B = \frac{\frac{R_2}{R_1 + R_2}V_{cc} - V_{BE}}{\frac{R_1R_2}{R_1 + R_2}} = \frac{R_2V_{cc} - (R_1 + R_2)V_{BE}}{R_1R_2}
+    \end{equation}
+
+    Ako izjednačimo dobijene izraze za bazne struje, dobijamo 
+
+    \begin{gather}
+        \frac{R_2V_{cc} - (R_1 + R_2)V_{BE}}{R_1R_2} = \frac{V_{cc}}{2h_{fe}R_C} \\
+        R_2V_{cc} - (R_1 + R_2)V_{BE} = \frac{V_{cc}}{2h_{fe}R_C}R_1R_2 
+    \end{gather}
+
+    Ako podijelimo obje strane sa vrijedošću otpornika $R_2$ (pod pretpostavkom da njegova vrijednost
+    nije nula), dobijamo
+
+    \begin{gather}
+        V_{cc} - \left(\frac{R_1}{R_2} + 1\right)V_{BE} = \frac{V_{cc}}{2h_{fe}R_C}R_1 \\
+        V_{cc} - V_{BE} = \frac{R_1}{R_2}V_{BE} + \frac{V_{cc}}{2h_{fe}R_C}R_1 \\
+        V_{cc} - V_{BE} = R_1\left(\frac{V_{BE}}{R_2} + \frac{V_{cc}}{2h_{fe}R_C}\right)
+    \end{gather}
+
+    te je \textbf{vrijednost otpornika $R_1$ u funkciji od $R_2$}
+
+    \begin{gather}
+        R_1 = \frac{V_{cc} - V_{BE}}{\frac{V_{BE}}{R_2} + \frac{V_{cc}}{2h_{fe}R_C}} \\
+        R_1 = \frac{(V_{cc} - V_{BE})R_2}{V_{BE} + \frac{V_{cc}}{2h_{fe}R_C}R_2}
+    \end{gather}
+
+    Ako se uvrste vrijednosti napona napajanja, otpornika $R_C$ i tranzistorskog pojačanja, dobijamo
+    da je 
+
+    \begin{equation}
+        R_1 = \frac{9.4R_2}{0.6 + 0.0005R_2}
+    \end{equation}
+
+\end{document}

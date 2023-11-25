@@ -1,0 +1,633 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Spektralna analiza signala</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-03-28"><meta name="DC.source" content="zvuk.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Spektralna analiza signala</h1><!--introduction--><p>Mirna N. Kapetina mart 2020.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Inicijalizacija</a></li><li><a href="#2">Snimak bez smetnji</a></li><li><a href="#4">Odabir razlicitih perioda odabiranja</a></li><li><a href="#8">Snimak sa sumum</a></li><li><a href="#10">Odbirkovanje zasumljenog signala</a></li><li><a href="#12">Filtriranje signala</a></li><li><a href="#16">Odbirkovanje filtriranog signala</a></li></ul></div><h2 id="1">Inicijalizacija</h2><p>Priprema radnog prostora. Brisanje svih promenljivih. Brisanje radnog prostora. Definisanje kompleksne promenljive  <img src="zvuk_eq17157792396909321071.png" alt="$s$" style="width:6px;height:7px;">. Napomena: Pri pokretanjau matlab koda preporucujemo pokretanje sekcije po sekciju tako sto se pozicionirate u sekciju i pritisnete komande Ctrl+Enter</p><pre class="codeinput">clc
+close <span class="string">all</span>
+clear <span class="string">all</span>
+s = tf(<span class="string">'s'</span>);
+</pre><h2 id="2">Snimak bez smetnji</h2><p>Ucitavanje prethodno snimljenog snimka zvuka, koji nema znacajno izrazene smetnje. Posle ucitavanja signala izvrsena je njegova Furijeova transforamcija da bi se prikazao njegov spektar.</p><pre class="codeinput">[x1, Fs1] = audioread(<span class="string">'dus.m4a'</span>); <span class="comment">%ucitavanje originalnog snimka</span>
+
+x1 = x1(:);
+Ts1 = 1/Fs1;
+t1 = (0:length(x1)-1)'*Ts1;
+X1 = fft(x1); <span class="comment">% Furijeova transformacija signala koja ?e nam koristiti da bi nacrtali spektar</span>
+F1 = linspace(-1, 1, length(X1))'*Fs1/2;
+
+<span class="comment">%Crtanje spektra u?itanog signala</span>
+figure
+subplot(211)
+plot(t1, x1)
+xlim([t1(1), t1(end)]);
+xlabel <span class="string">'vreme [s]'</span>
+ylabel <span class="string">'f(t)'</span>
+title (<span class="string">'Signal zvuka f(t)'</span>)
+subplot(212)
+plot(F1, abs(fftshift(X1)))
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+title (<span class="string">'Spektar signala (bez suma)'</span>)
+sound(x1, Fs1);
+</pre><img vspace="5" hspace="5" src="zvuk_01.png" alt=""> <p>Gornja slika pokazuje signal zvuka. A na donjoj slici prikazan je spektar tog signala. Sa slike spektra moze uociti da se u spektru pojavljuju frekvencije i do 5000HZ, mada se najveci deo informacije signala nalazi u opsegu do oko 1000-1500Hz.</p><h2 id="4">Odabir razlicitih perioda odabiranja</h2><p>U nastavku ce prethodno ucitani signal biti odbirkovan i bice prikazan njegov spektar nakon sto tako odbirkovan signal prodje kroz D/A konvertor. Napominjemo da je prema Nikvist-Senonovoj teoremi preporucena frekvencija odabiranja</p><p><img src="zvuk_eq03551236050909122948.png" alt="$$f_s\geq 2 f_{max}$$" style="width:67px;height:13px;"></p><p>U nastavku cemo ucitani signal odbirkovati sa frekvenicijom odbirkovanja koja zadovoljava preporuke, kao i sa lose odabranom frekvencijom da bi uo?ili razlike.</p><div><ul><li><b><i>Dobro odabrana</i></b> frekvencija. Za frekvenciju odbirkovanja uzecemo</li></ul></div><p><img src="zvuk_eq07996127076457064713.png" alt="$f_s=10000Hz$" style="width:89px;height:13px;"></p><pre class="codeinput">Fs_b=10000; <span class="comment">%Dobra perioda odabiranja</span>
+Ts_b = 1/Fs_b;
+step=Ts_b/Ts1;
+
+x_b = x1(1:step:end);
+t_b = (0:step:length(x1)-1)'*Ts_b;
+X_b = fft(x_b);
+F_b = linspace(-1, 1, length(X_b))'*Fs_b/2;
+
+figure
+subplot(311)
+plot(t_b, x_b)
+xlabel <span class="string">'vreme [s]'</span>
+ylabel <span class="string">'f(t)'</span>
+xlim([t_b(1), t_b(end)]);
+subplot(312)
+title (<span class="string">'Signal zvuka f(t)'</span>)
+plot(F_b, abs(fftshift(X_b)))
+axis([-2.5*10^4 2.5*10^4 0 inf])
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+title (<span class="string">'Spektar posle odabiranja i D/A konverzije'</span>)
+subplot(313)
+plot(F1, abs(fftshift(X1)))
+title (<span class="string">'Spektar pre odabiranja'</span>)
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+sound(x_b, Fs_b);
+</pre><pre class="codeoutput">Warning: Integer operands are required for colon operator when used as index 
+</pre><img vspace="5" hspace="5" src="zvuk_02.png" alt=""> <p>Prva slika predstavlja signal zvuka i vremenskom domenu posle odabiranja. Druga slika je spektar signala koji je nastao posle odabiranja i prosao kroz A/D konvertor. Napominjemo da je ovaj spektar rezultat umnozavanja originalnog spektra oko frekvencije odbirkovanja a potom odsecanje viska spektra posle Nikvistove ucestalosti koja sad iznosi <img src="zvuk_eq14198129032950308593.png" alt="$f_n=\frac{f_s}{2}=5000Hz$" style="width:115px;height:19px;"></p><p>Treca slika je spektar originalnog signala.</p><p>Lako se moze uociti na osnovu spektra da je spektar pre i posle odabiranja isti. A i ako se slusa zvuk signala posle odabiranja isto tako se moze uociti da su sacuvane sve informacije u signalu posle odbirkovanja.</p><div><ul><li><b><i>Losa odabrana</i></b> frekvencija. Za frekvenciju odbirkovanja uzecemo</li></ul></div><p><img src="zvuk_eq10335996440640843612.png" alt="$f_s=2000Hz$" style="width:81px;height:13px;"></p><pre class="codeinput">Fs_b=2000; <span class="comment">%Losa perioda odabiranja</span>
+Ts_b = 1/Fs_b;
+step=Ts_b/Ts1;
+
+x_b = x1(1:step:end);
+t_b = (0:step:length(x1)-1)'*Ts_b;
+X_b = fft(x_b);
+F_b = linspace(-1, 1, length(X_b))'*Fs_b/2;
+
+figure
+subplot(311)
+plot(t_b, x_b)
+xlabel <span class="string">'vreme [s]'</span>
+ylabel <span class="string">'f(t)'</span>
+xlim([t_b(1), t_b(end)]);
+subplot(312)
+
+plot(F_b, abs(fftshift(X_b)))
+axis([-2.5*10^4 2.5*10^4 0 inf])
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+title (<span class="string">'Spektar posle odabiranja i D/A konverzije'</span>)
+subplot(313)
+plot(F1, abs(fftshift(X1)))
+title (<span class="string">'Spektar pre odabiranja'</span>)
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+sound(x_b, Fs_b);
+</pre><img vspace="5" hspace="5" src="zvuk_03.png" alt=""> <p>Sada kada poredimo spektar signala posle odabiranja i spektar originalnog signala mozemo da vidimo su razliciti i da je deo spektra 'izgubljen' usled odsecanja sa Nikvistovom frekvencijom <img src="zvuk_eq12059516008772823083.png" alt="$f_n=2000/2=1000Hz$" style="width:147px;height:15px;">. Kada se slusa zvuk odbirkovanog signala sa 'losom' frekvencijom, cuje se da je manji dio, ali zanemarljiv, informacije zvuka izgubljen, ali i dalje se jasno cuju izgovorene reci.</p><h2 id="8">Snimak sa sumum</h2><p>Ucitavanje prethodno snimljenog snimka zvuka gdje postoji i smetnja, sum, koji je nastao u ovom slucaju kao posledica suskanje kesom pri izgovaranju reci. Posle ucitavanja signala izvrsena je njegova Furijeova transforamcija da bi se prikazao njegov spektar.</p><pre class="codeinput">[x2, Fs2] = audioread(<span class="string">'dus_noise.m4a'</span>);
+x2 = x2(10000:end-20000);
+x2 = x2(:);
+
+Ts2 = 1/Fs2;
+t2 = (0:length(x2)-1)'*Ts2;
+X2 = fft(x2);
+F2 = linspace(-1, 1, length(X2))'*Fs2/2;
+
+figure
+subplot(211)
+plot(t2, x2)
+xlabel <span class="string">'vreme [s]'</span>
+ylabel <span class="string">'f(t)'</span>
+xlim([t2(1), t2(end)]);
+subplot(212)
+plot(F2, abs(fftshift(X2)))
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+
+sound(x2, Fs2);
+</pre><img vspace="5" hspace="5" src="zvuk_04.png" alt=""> <p>Na slici spektra signala sa sumom lako se mogu uociti frekvencije koje nisu postojale u spektru ovog signala kada nije bilo suma. Ovdje je lako uociti da se spektar ovog signala sada prosirio i do frkvencije oko <img src="zvuk_eq12722388468700637190.png" alt="$15000Hz$" style="width:56px;height:11px;"></p><h2 id="10">Odbirkovanje zasumljenog signala</h2><p>U nastavku ce prethodno ucitani signal biti odbirkovan i bice prikazan njegov spektar nakon sto tako odbirkovan signal prodje kroz D/A konvertor. Odmah ce vrsiti odbirkovanje ovako ucitanog signala sa 'losom frekvencijom' od <img src="zvuk_eq10335996440640843612.png" alt="$f_s=2000Hz$" style="width:81px;height:13px;"> koja je koristena u prethodnom primjeru.</p><pre class="codeinput">Fs_b=2000; <span class="comment">%Losa perioda odabiranja</span>
+Ts_b = 1/Fs_b;
+step=Ts_b/Ts1;
+
+x_b = x2(1:step:end);
+t_b = (0:step:length(x2)-1)'*Ts_b;
+X_b = fft(x_b);
+F_b = linspace(-1, 1, length(X_b))'*Fs_b/2;
+
+figure
+subplot(311)
+plot(t_b, x_b)
+xlabel <span class="string">'vreme [s]'</span>
+ylabel <span class="string">'f(t)'</span>
+xlim([t_b(1), t_b(end)]);
+subplot(312)
+
+plot(F_b, abs(fftshift(X_b)))
+axis([-2.5*10^4 2.5*10^4 0 inf])
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+title (<span class="string">'Spektar posle odabiranja i D/A konverzije'</span>)
+subplot(313)
+plot(F2, abs(fftshift(X2)))
+title (<span class="string">'Spektar pre odabiranja'</span>)
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+sound(x_b, Fs_b);
+</pre><img vspace="5" hspace="5" src="zvuk_05.png" alt=""> <p>Sa slika spektra odbirkovanog signala i originalnog signala sa sumom jasno se vide razlike, pre svega jer se u osnovnom delu spektra pojavile frekvencije koje nisu postojale ranije a koje su posledica preslikavanja visih frekvenicija posle odabiranja, pojava ALIJASA. Medjutim, posledica lose frekvencije odabiranja se bolje moze uociti kada se cuje sam zvuk posle odbiranja, gdje je jasno da je sum nadjacao osnove reci i informaciju i da se pojavio u osnovnom spektru. U ovom primeru koliko god budemo povecavali periodu odbairanja mozemo da imamo slicne probleme sa alijasima, zbog toga se preporucuje da se signal pre odabiranja filtrira, a potom odbirkuje i da se time odstrane vise frekvencije.</p><h2 id="12">Filtriranje signala</h2><p>Kako smo uocili jos u prvom primeru kada smo analizirali signal bez suma, najveci deo informacija smesten je u opsegu oko 1000Hz, zbog toga ce se u nastavku zasumljeni signal filtrirati filtrom 10og reda sa presecnom ucestalosti na <img src="zvuk_eq05369562623737493678.png" alt="$800Hz$" style="width:42px;height:11px;">, odnosno <img src="zvuk_eq01573271617453663788.png" alt="$2\pi*800 [rad/s]$" style="width:95px;height:15px;">, i sa pojcanjem 30. U nastavku ce biti nacrtan njegov Bodeov dijagram.</p><p><img src="zvuk_eq03301392380517278370.png" alt="$$G=\frac{30}{(\frac{s}{1600\pi}+1)^{10}}$$" style="width:111px;height:35px;"></p><pre class="codeinput">wg = 2*pi*800;
+order = 10;
+gain = 30;
+
+G = gain*(1/(s/wg + 1))^order;
+
+figure
+bode(G)
+</pre><img vspace="5" hspace="5" src="zvuk_06.png" alt=""> <p>Dizajnirani filter je primenjen na signal sa sumom.</p><pre class="codeinput">[xf, tf] = lsim(G, x2, t2);
+
+XF = fft(xf);
+FF = linspace(-1, 1, length(XF))'*Fs2/2;
+
+figure
+subplot(311)
+plot(F2, abs(fftshift(X2)))
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+title (<span class="string">'Spketar zasumljenog signala'</span>)
+subplot(312)
+plot(FF, abs(fftshift(XF)))
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+title (<span class="string">'Spketar filtriranog signala'</span>)
+
+subplot(313)
+plot(F1, abs(fftshift(X1)))
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+title (<span class="string">'Spketar signala iz prvog primera'</span>)
+audiowrite(<span class="string">'dus_filtered_novo.wav'</span>, xf, Fs2)
+<span class="comment">%sound(xf, Fs2)</span>
+</pre><pre class="codeoutput">Warning: Data clipped when writing file. 
+</pre><img vspace="5" hspace="5" src="zvuk_07.png" alt=""> <p>Sa slike spektra posle filtriranja lako se moze uociti da su odstranjene vise frekvencije iz signala koje su predstavljale zvuk. I posle reprodukcije signala moze se primjetiti da se sum koji bio rezultat suskanja kesom vise ne cuje. Ukoliko poredimo spektra filtriranog signala i signala iz prvog primera, vidi se da su informacije na nizim frekvencijama sacuvane, a tu su frekvencije koje odgovaraju izgovorenim recima. Sada je moguce ovakav signal odbirkovati</p><h2 id="16">Odbirkovanje filtriranog signala</h2><p>Prethodno filtrirani signala sada cemo odbirkovati. Kako je signal filtriran njegove najvise frekvencije ne prelaze 1000Hz, zbog cega cemo odabrati frekvenciju odabiranja <img src="zvuk_eq07604047507381823797.png" alt="$f_s=3000Hz$" style="width:81px;height:13px;">.</p><pre class="codeinput">Fs2_b=3000; <span class="comment">%losa frekvencija odabiranja</span>
+Ts2_b = 1/Fs2_b;
+step=Ts2_b/Ts2;
+
+x_b = xf(1:step:end);
+t_b = (0:step:length(xf)-1)'*Ts2_b;
+X_b = fft(x_b);
+F_b = linspace(-1, 1, length(X_b))'*Fs2_b/2;
+
+figure
+subplot(311)
+plot(F2, abs(fftshift(X2)))
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+title (<span class="string">'Spektar signala sa sumom'</span>)
+subplot(312)
+plot(FF, abs(fftshift(XF)))
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+title (<span class="string">'Spektar signala posle filtriranja'</span>)
+subplot(313)
+plot(F_b, abs(fftshift(X_b)))
+xlim([-2.5*10^4 2.5*10^4 ])
+xlabel <span class="string">'frekvencija [Hz]'</span>
+ylabel <span class="string">'|F(j\omega)|'</span>
+title (<span class="string">'Spektar posle odabiranja i D/A konverzije'</span>)
+
+sound(x_b, Fs2_b);
+</pre><img vspace="5" hspace="5" src="zvuk_08.png" alt=""> <pre>I posle odabiranja i A/D konverzije spektar je ispit.</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Spektralna analiza signala
+% Mirna N. Kapetina
+% mart 2020.
+%% Inicijalizacija
+% Priprema radnog prostora. Brisanje svih promenljivih. Brisanje radnog
+% prostora. Definisanje kompleksne promenljive  $s$.
+% Napomena: Pri pokretanjau matlab koda preporucujemo pokretanje sekcije po
+% sekciju tako sto se pozicionirate u sekciju i pritisnete komande
+% Ctrl+Enter
+
+clc
+close all
+clear all
+s = tf('s');
+
+%% Snimak bez smetnji
+% 
+% Ucitavanje prethodno snimljenog snimka zvuka, koji nema znacajno izrazene
+% smetnje. Posle ucitavanja signala izvrsena je njegova Furijeova
+% transforamcija da bi se prikazao njegov spektar.
+% 
+
+
+[x1, Fs1] = audioread('dus.m4a'); %ucitavanje originalnog snimka
+
+x1 = x1(:);
+Ts1 = 1/Fs1;
+t1 = (0:length(x1)-1)'*Ts1;
+X1 = fft(x1); % Furijeova transformacija signala koja ?e nam koristiti da bi nacrtali spektar
+F1 = linspace(-1, 1, length(X1))'*Fs1/2;
+
+%Crtanje spektra u?itanog signala
+figure
+subplot(211)
+plot(t1, x1)
+xlim([t1(1), t1(end)]);
+xlabel 'vreme [s]'
+ylabel 'f(t)'
+title ('Signal zvuka f(t)')
+subplot(212)
+plot(F1, abs(fftshift(X1)))
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+title ('Spektar signala (bez suma)')
+sound(x1, Fs1);
+
+%%
+% 
+% Gornja slika pokazuje signal zvuka. A na donjoj slici prikazan je spektar tog signala. 
+% Sa slike spektra moze uociti da se u spektru pojavljuju frekvencije i
+% do 5000HZ, mada se najveci deo informacije signala nalazi u opsegu do
+% oko 1000-1500Hz.
+
+
+
+%% Odabir razlicitih perioda odabiranja
+% 
+% U nastavku ce prethodno ucitani signal biti odbirkovan i bice prikazan
+% njegov spektar nakon sto tako odbirkovan signal prodje kroz D/A
+% konvertor. 
+% Napominjemo da je prema Nikvist-Senonovoj teoremi preporucena
+% frekvencija odabiranja
+% 
+% $$f_s\geq 2 f_{max}$$
+%
+% U nastavku cemo ucitani signal odbirkovati sa frekvenicijom odbirkovanja
+% koja zadovoljava preporuke, kao i sa lose odabranom frekvencijom da bi
+% uo?ili razlike.
+%
+%
+% 
+% *  *_Dobro odabrana_* frekvencija. Za frekvenciju odbirkovanja uzecemo 
+% 
+% $f_s=10000Hz$
+
+
+Fs_b=10000; %Dobra perioda odabiranja
+Ts_b = 1/Fs_b;
+step=Ts_b/Ts1;
+
+x_b = x1(1:step:end);
+t_b = (0:step:length(x1)-1)'*Ts_b;
+X_b = fft(x_b);
+F_b = linspace(-1, 1, length(X_b))'*Fs_b/2;
+
+figure
+subplot(311)
+plot(t_b, x_b)
+xlabel 'vreme [s]'
+ylabel 'f(t)'
+xlim([t_b(1), t_b(end)]);
+subplot(312)
+title ('Signal zvuka f(t)')
+plot(F_b, abs(fftshift(X_b)))
+axis([-2.5*10^4 2.5*10^4 0 inf])
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+title ('Spektar posle odabiranja i D/A konverzije')
+subplot(313)
+plot(F1, abs(fftshift(X1)))
+title ('Spektar pre odabiranja')
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+sound(x_b, Fs_b);
+%%
+% 
+% 
+% Prva slika predstavlja signal zvuka i vremenskom domenu posle odabiranja.
+% Druga slika je spektar signala koji je nastao posle odabiranja i prosao
+% kroz A/D konvertor. 
+% Napominjemo da je ovaj spektar rezultat umnozavanja originalnog spektra
+% oko frekvencije odbirkovanja a potom odsecanje viska spektra posle
+% Nikvistove ucestalosti koja sad iznosi $f_n=\frac{f_s}{2}=5000Hz$
+%
+% Treca slika je spektar originalnog signala. 
+% 
+% Lako se moze uociti na osnovu
+% spektra da je spektar pre i posle odabiranja isti. A i ako se slusa zvuk
+% signala posle odabiranja isto tako se moze uociti da su sacuvane sve
+% informacije u signalu posle odbirkovanja.
+
+%%
+% 
+% *  *_Losa odabrana_* frekvencija. Za frekvenciju odbirkovanja uzecemo 
+% 
+% 
+% $f_s=2000Hz$
+% 
+
+
+
+Fs_b=2000; %Losa perioda odabiranja
+Ts_b = 1/Fs_b;
+step=Ts_b/Ts1;
+
+x_b = x1(1:step:end);
+t_b = (0:step:length(x1)-1)'*Ts_b;
+X_b = fft(x_b);
+F_b = linspace(-1, 1, length(X_b))'*Fs_b/2;
+
+figure
+subplot(311)
+plot(t_b, x_b)
+xlabel 'vreme [s]'
+ylabel 'f(t)'
+xlim([t_b(1), t_b(end)]);
+subplot(312)
+
+plot(F_b, abs(fftshift(X_b)))
+axis([-2.5*10^4 2.5*10^4 0 inf])
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+title ('Spektar posle odabiranja i D/A konverzije')
+subplot(313)
+plot(F1, abs(fftshift(X1)))
+title ('Spektar pre odabiranja')
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+sound(x_b, Fs_b);
+
+%%
+% 
+% Sada kada poredimo spektar signala posle odabiranja i spektar originalnog
+% signala mozemo da vidimo su razliciti i da je deo spektra 'izgubljen'
+% usled odsecanja sa Nikvistovom frekvencijom $f_n=2000/2=1000Hz$.
+% Kada se slusa zvuk odbirkovanog signala sa 'losom' frekvencijom, cuje se
+% da je manji dio, ali zanemarljiv, informacije zvuka izgubljen, ali i
+% dalje se jasno cuju izgovorene reci.
+
+
+
+%% Snimak sa sumum 
+% 
+% Ucitavanje prethodno snimljenog snimka zvuka gdje postoji i smetnja, sum,
+% koji je nastao u ovom slucaju kao posledica suskanje kesom pri
+% izgovaranju reci.
+% Posle ucitavanja signala izvrsena je njegova Furijeova
+% transforamcija da bi se prikazao njegov spektar.
+
+[x2, Fs2] = audioread('dus_noise.m4a');
+x2 = x2(10000:end-20000);
+x2 = x2(:);
+
+Ts2 = 1/Fs2;
+t2 = (0:length(x2)-1)'*Ts2;
+X2 = fft(x2);
+F2 = linspace(-1, 1, length(X2))'*Fs2/2;
+
+figure
+subplot(211)
+plot(t2, x2)
+xlabel 'vreme [s]'
+ylabel 'f(t)'
+xlim([t2(1), t2(end)]);
+subplot(212)
+plot(F2, abs(fftshift(X2)))
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+
+sound(x2, Fs2);
+
+%%
+% 
+% Na slici spektra signala sa sumom lako se mogu uociti frekvencije koje 
+% nisu postojale u spektru ovog signala kada nije bilo suma. Ovdje je lako
+% uociti da se spektar ovog signala sada prosirio i do frkvencije oko
+% $15000Hz$
+
+%% Odbirkovanje zasumljenog signala
+% 
+% U nastavku ce prethodno ucitani signal biti odbirkovan i bice prikazan
+% njegov spektar nakon sto tako odbirkovan signal prodje kroz D/A
+% konvertor. 
+% Odmah ce vrsiti odbirkovanje ovako ucitanog signala sa 'losom
+% frekvencijom' od $f_s=2000Hz$ koja je koristena u prethodnom primjeru.
+
+
+
+Fs_b=2000; %Losa perioda odabiranja
+Ts_b = 1/Fs_b;
+step=Ts_b/Ts1;
+
+x_b = x2(1:step:end);
+t_b = (0:step:length(x2)-1)'*Ts_b;
+X_b = fft(x_b);
+F_b = linspace(-1, 1, length(X_b))'*Fs_b/2;
+
+figure
+subplot(311)
+plot(t_b, x_b)
+xlabel 'vreme [s]'
+ylabel 'f(t)'
+xlim([t_b(1), t_b(end)]);
+subplot(312)
+
+plot(F_b, abs(fftshift(X_b)))
+axis([-2.5*10^4 2.5*10^4 0 inf])
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+title ('Spektar posle odabiranja i D/A konverzije')
+subplot(313)
+plot(F2, abs(fftshift(X2)))
+title ('Spektar pre odabiranja')
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+sound(x_b, Fs_b);
+
+%%
+% 
+% Sa slika spektra odbirkovanog signala i originalnog signala sa sumom 
+% jasno se vide razlike, pre svega jer se u osnovnom delu spektra pojavile
+% frekvencije koje nisu postojale ranije a koje su posledica preslikavanja
+% visih frekvenicija posle odabiranja, pojava ALIJASA. Medjutim, posledica lose frekvencije
+% odabiranja se bolje moze uociti kada se cuje sam zvuk posle odbiranja,
+% gdje je jasno da je sum nadjacao osnove reci i informaciju i da se
+% pojavio u osnovnom spektru. U ovom primeru koliko god budemo povecavali
+% periodu odbairanja mozemo da imamo slicne probleme sa alijasima, zbog
+% toga se preporucuje da se signal pre odabiranja filtrira, a potom
+% odbirkuje i da se time odstrane vise frekvencije. 
+% 
+% 
+
+
+
+
+%% Filtriranje signala
+% Kako smo uocili jos u prvom primeru kada smo analizirali signal bez suma,
+% najveci deo informacija smesten je u opsegu oko 1000Hz, zbog toga ce se u
+% nastavku zasumljeni signal filtrirati filtrom 10og reda sa presecnom
+% ucestalosti na $800Hz$, odnosno $2\pi*800 [rad/s]$, i sa pojcanjem 30. U
+% nastavku ce biti nacrtan njegov Bodeov dijagram.
+%%
+% 
+% $$G=\frac{30}{(\frac{s}{1600\pi}+1)^{10}}$$
+% 
+
+
+wg = 2*pi*800;
+order = 10;
+gain = 30;
+
+G = gain*(1/(s/wg + 1))^order;
+
+figure
+bode(G)
+
+%% 
+% 
+% Dizajnirani filter je primenjen na signal sa sumom. 
+%  
+% 
+[xf, tf] = lsim(G, x2, t2);
+
+XF = fft(xf);
+FF = linspace(-1, 1, length(XF))'*Fs2/2;
+
+figure
+subplot(311)
+plot(F2, abs(fftshift(X2)))
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+title ('Spketar zasumljenog signala')
+subplot(312)
+plot(FF, abs(fftshift(XF)))
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+title ('Spketar filtriranog signala')
+
+subplot(313)
+plot(F1, abs(fftshift(X1)))
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+title ('Spketar signala iz prvog primera')
+audiowrite('dus_filtered_novo.wav', xf, Fs2)
+%sound(xf, Fs2)
+
+
+%%
+% 
+% Sa slike spektra posle filtriranja lako se moze uociti da su odstranjene
+% vise frekvencije iz signala koje su predstavljale zvuk. I posle
+% reprodukcije signala moze se primjetiti da se sum koji bio rezultat
+% suskanja kesom vise ne cuje. 
+% Ukoliko poredimo spektra filtriranog signala i signala iz prvog primera,
+% vidi se da su informacije na nizim frekvencijama sacuvane, a tu su
+% frekvencije koje odgovaraju izgovorenim recima.
+% Sada je moguce ovakav signal odbirkovati
+
+
+%% Odbirkovanje filtriranog signala
+% Prethodno filtrirani signala sada cemo odbirkovati. Kako je signal
+% filtriran njegove najvise frekvencije ne prelaze 1000Hz, zbog cega cemo
+% odabrati frekvenciju odabiranja $f_s=3000Hz$.
+
+
+Fs2_b=3000; %losa frekvencija odabiranja
+Ts2_b = 1/Fs2_b;
+step=Ts2_b/Ts2;
+
+x_b = xf(1:step:end);
+t_b = (0:step:length(xf)-1)'*Ts2_b;
+X_b = fft(x_b);
+F_b = linspace(-1, 1, length(X_b))'*Fs2_b/2;
+
+figure
+subplot(311)
+plot(F2, abs(fftshift(X2)))
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+title ('Spektar signala sa sumom')
+subplot(312)
+plot(FF, abs(fftshift(XF)))
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+title ('Spektar signala posle filtriranja')
+subplot(313)
+plot(F_b, abs(fftshift(X_b)))
+xlim([-2.5*10^4 2.5*10^4 ])
+xlabel 'frekvencija [Hz]'
+ylabel '|F(j\omega)|'
+title ('Spektar posle odabiranja i D/A konverzije')
+
+sound(x_b, Fs2_b);
+%%
+% 
+%  I posle odabiranja i A/D konverzije spektar je ispit.
+
+
+##### SOURCE END #####
+--></body></html>

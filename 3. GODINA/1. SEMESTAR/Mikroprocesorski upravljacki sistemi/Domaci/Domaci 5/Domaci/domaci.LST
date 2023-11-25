@@ -1,0 +1,191 @@
+C51 COMPILER V8.16   DOMACI                                                                12/06/2022 20:04:02 PAGE 1   
+
+
+C51 COMPILER V8.16, COMPILATION OF MODULE DOMACI
+OBJECT MODULE PLACED IN domaci.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE domaci.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <at89c51rc2.h>
+   2          
+   3          volatile char status = 0x00;
+   4          volatile int counter = 0x0000;
+   5          int counter_set = 0x0FA0;
+   6          unsigned char previous_state_P2 = 0x00;
+   7          
+   8          //volatile char counter_250 = 0xFA;
+   9          //volatile char counter = 0x10;
+  10          //char counter_set = 0x10;
+  11          
+  12          int program_3[7] = {0x81, 0x42, 0x24, 0x18, 0x24, 0x42};
+  13          int program_4[12] = {0x01, 0x02, 0x03, 0x05, 0x08, 0x0D, 0x15, 0x22, 0x37, 0x59, 0x90, 0xE9};
+  14          char counter_for_program;
+  15          
+  16          
+  17          void timer_1_interrupt(void) interrupt 3 {
+  18   1              if(++counter == counter_set)    {
+  19   2                      counter = 0x0000;
+  20   2                      status = 0x01;
+  21   2              }
+  22   1              
+  23   1              /*
+  24   1              if(--counter_250 == 0x00) {
+  25   1                              if(--counter == 0x00) {
+  26   1                                      status = 0x01;
+  27   1                                      counter = counter_set;          
+  28   1                      }
+  29   1                      counter_250 = 0xFA;
+  30   1              } 
+  31   1              */
+  32   1      }
+  33          
+  34          void diode_activate(unsigned char state, unsigned char* state_P2) {
+  35   1              previous_state_P2 = *state_P2;
+  36   1              switch(state) {
+  37   2                      
+  38   2                      case 0x01: case 0x04:
+  39   2                              *state_P2 = ~(*state_P2);
+  40   2                              break;
+  41   2                      
+  42   2                      case 0x08:
+  43   2                              if(*state_P2 == 0x00 || *state_P2 == 0x80) {
+  44   3                                      *state_P2 = 0x01;
+  45   3                                      break;
+  46   3                              }
+  47   2                              *state_P2 <<= 1;
+  48   2                              break;
+  49   2      
+  50   2                      case 0x10:
+  51   2                              if(counter_for_program == 0x06) {
+  52   3                                      counter_for_program = 0x00;
+  53   3                              }
+  54   2                              *state_P2 = program_3[counter_for_program++];
+  55   2                              break;
+C51 COMPILER V8.16   DOMACI                                                                12/06/2022 20:04:02 PAGE 2   
+
+  56   2      
+  57   2                 case 0x20:
+  58   2                              if(counter_for_program == 0x0C) {
+  59   3                                      counter_for_program = 0x00;     
+  60   3                              }
+  61   2                              *state_P2 = program_4[counter_for_program++];
+  62   2                              break;
+  63   2      
+  64   2                      default:
+  65   2                              *state_P2 = 0x0000;
+  66   2                              break;          
+  67   2              }                       
+  68   1      }
+  69          
+  70          void main(void) {
+  71   1      
+  72   1              // Inicijalizacija
+  73   1              char previous_state_P0 = 0xFF;
+  74   1              unsigned char state_chg_det = 0x00;
+  75   1              unsigned char previous_state_chg_det = 0x00;
+  76   1              char what_chg = 0x00;
+  77   1              unsigned char state_P2 = 0x00;
+  78   1              char start = 0x00;
+  79   1              char flag_seventh = 0x00;
+  80   1      
+  81   1              EA = 0;
+  82   1              TMOD = 0x20;
+  83   1              TR1 = 1;
+  84   1              ET1 = 1;
+  85   1              TL1 = 0x1A;
+  86   1              TH1 = 0x1A;
+  87   1              EA = 1;
+  88   1      
+  89   1              P0 = 0xFF;
+  90   1              P2 = 0x00;
+  91   1      
+  92   1      
+  93   1              while(1) {
+  94   2                      if(status) {
+  95   3                              status = 0x00;
+  96   3                              // Zabrana izvrsavanja prije prekida
+  97   3      
+  98   3                              state_chg_det = P0 ^ previous_state_P0;
+  99   3                              // XOR kolo detektuje koja se promjena desila
+ 100   3                              
+ 101   3                              previous_state_P0 = P0;
+ 102   3                              // Cuva se trenutno stanje P0 porta
+ 103   3                              
+ 104   3                              what_chg = state_chg_det & P0;
+ 105   3                              // AND kolo detektuje kakva se promjena desila (0->1, 1->0, const.)
+ 106   3      
+ 107   3                              if(!P0_7) {     
+ 108   4                                      flag_seventh = 0x01;
+ 109   4                                      state_P2 = 0xFF;
+ 110   4                              }
+ 111   3              
+ 112   3                              else if((state_chg_det == 0x01 && !what_chg) || start) {
+ 113   4                                      start = 0x01;
+ 114   4      
+ 115   4                                      if(flag_seventh) {
+ 116   5                                              state_P2 = previous_state_P2;
+ 117   5                                              flag_seventh = 0x00;
+C51 COMPILER V8.16   DOMACI                                                                12/06/2022 20:04:02 PAGE 3   
+
+ 118   5                                      }
+ 119   4      
+ 120   4                                      if(!what_chg) {
+ 121   5                                              if(state_chg_det == 0x00) {
+ 122   6                                                      diode_activate(previous_state_chg_det, &state_P2);
+ 123   6                                              }
+ 124   5      
+ 125   5                                              else if(state_chg_det == 0x002) {
+ 126   6                                                      state_P2 = 0x00;
+ 127   6                                                      counter = 0x0000;
+ 128   6                                                      counter_set = 0x0FA0;
+ 129   6                                                      start = 0x00;
+ 130   6                                              //      counter = 0x10;
+ 131   6                                              //      counter_set = 0x10;
+ 132   6                                              //      counter_250 = 0xFA;
+ 133   6                                              }
+ 134   5      
+ 135   5                                              else if(state_chg_det == 0x01 ||
+ 136   5                                                              state_chg_det == 0x04 ||
+ 137   5                                                              state_chg_det == 0x08 ||
+ 138   5                                                              state_chg_det == 0x10 ||
+ 139   5                                                              state_chg_det == 0x20) {
+ 140   6                                                      
+ 141   6                                                      state_P2 = 0x00;
+ 142   6                                                      counter_for_program = 0x00;
+ 143   6                                                      previous_state_chg_det = state_chg_det;
+ 144   6                                                      diode_activate(state_chg_det, &state_P2);
+ 145   6                                              }
+ 146   5      
+ 147   5                                              else if(state_chg_det == 0x40) {
+ 148   6                                                      counter = 0x0000;
+ 149   6                                                      counter_set = 0x0FA0;
+ 150   6                                                      diode_activate(previous_state_chg_det, &state_P2);
+ 151   6                                              //      counter = 0x10;
+ 152   6                                              //      counter_set = 0x10;
+ 153   6                                              //      counter_250 = 0xFA; 
+ 154   6                                              //  diode_activate(previous_state_chg_det, &state_P2);
+ 155   6                                              }       
+ 156   5                                      }
+ 157   4                                      else if(what_chg){
+ 158   5                                              diode_activate(previous_state_chg_det, &state_P2);      
+ 159   5                                      }
+ 160   4                              }               
+ 161   3                      }
+ 162   2                      P2 = state_P2;                  
+ 163   2              }
+ 164   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    372    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     45       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

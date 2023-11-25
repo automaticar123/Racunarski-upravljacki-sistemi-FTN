@@ -1,0 +1,49 @@
+[System]
+Name='car'
+Type='mamdani'
+Version=2.0
+NumInputs=2
+NumOutputs=1
+NumRules=9
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='TrenutnaBrzina'
+Range=[0 180]
+NumMFs=3
+MF1='sporo':'trimf',[0 0 30]
+MF2='srednje':'trimf',[20 50 80]
+MF3='brzo':'trapmf',[70 100 180 180]
+
+[Input2]
+Name='Udaljenost'
+Range=[0 500]
+NumMFs=3
+MF1='blizu':'trapmf',[0 0 10 150]
+MF2='srednje':'trimf',[100 250 350]
+MF3='daleko':'trimf',[291.7 500 708.3]
+
+[Output1]
+Name='Ubrzanje'
+Range=[-10 10]
+NumMFs=5
+MF1='jako_uspori':'trapmf',[-10 -10 -8 -4]
+MF2='sporo_ubrzaj':'trimf',[0 2 6]
+MF3='jako_ubrzaj':'trapmf',[4 6 10 10]
+MF4='sporo_uspori':'trimf',[-6 -2 0]
+MF5='odrzavaj':'trimf',[-2 0 2]
+
+[Rules]
+1 1, 2 (1) : 1
+1 2, 3 (1) : 1
+1 3, 3 (1) : 1
+2 1, 5 (1) : 1
+2 2, 3 (1) : 1
+2 3, 3 (1) : 1
+3 1, 1 (1) : 1
+3 2, 4 (1) : 1
+3 3, 5 (1) : 1

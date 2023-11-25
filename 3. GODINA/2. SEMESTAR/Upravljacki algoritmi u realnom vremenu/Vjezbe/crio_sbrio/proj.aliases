@@ -1,0 +1,9 @@
+[My Computer]
+My Computer = "192.168.2.132"
+
+[RT CompactRIO Target]
+RT CompactRIO Target = "10.1.203.201"
+
+[RT Single-Board RIO Target]
+RT Single-Board RIO Target = "10.1.203.110"
+

@@ -1,0 +1,400 @@
+A51 MACRO ASSEMBLER  DOMACI                                                               12/03/2022 08:30:54 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.01
+OBJECT MODULE PLACED IN domaci.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C51\BIN\A51.EXE domaci.a SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     org 0x00
+0000 803E              2     jmp main
+                       3     
+001B                   4     org 0x1B
+001B 8013              5     jmp int_timer_1
+                       6     
+  0020                 7     status                 data 0x20
+  0021                 8     work_status            data 0x21
+  0030                 9     previous_state_P0      data 0x30
+  0031                10     state_P2               data 0x31
+  0032                11     state_chg_det          data 0x32
+  0033                12     previous_state_chg_det data 0x33
+  0034                13     what_chg               data 0x34
+  0035                14     start                  data 0x35
+  0036                15     counter_third          data 0x36
+  0037                16     counter_save_third     data 0x37
+  0038                17     counter_fourth         data 0x38
+  0039                18     counter_save_fourth    data 0x39
+  0040                19     timer                  data 0x40
+  0041                20     timer_counter          data 0x41
+  0042                21     set_timer_counter      data 0x42
+  0043                22     help_timer             data 0x43
+  0044                23     help_timer_counter     data 0x44
+                      24     
+                      25     
+001D                  26     third_program_values:
+001D 81               27             db 0x81
+001E 42               28             db 0x42
+001F 24               29             db 0x24
+0020 18               30             db 0x18
+0021 24               31             db 0x24
+0022 42               32             db 0x42
+0023 81               33             db 0x81
+                      34     
+0024                  35     fourth_program_values:
+0024 E9               36             db 0xE9
+0025 90               37             db 0x90
+0026 59               38             db 0x59
+0027 37               39             db 0x37
+0028 22               40             db 0x22
+0029 15               41             db 0x15
+002A 0D               42             db 0x0D
+002B 08               43             db 0x08
+002C 05               44             db 0x05
+002D 03               45             db 0x03
+002E 02               46             db 0x02
+002F 01               47             db 0x01
+                      48     
+0030                  49     int_timer_1:
+0030 D5400C           50             djnz timer, timer_end
+0033 D54106           51             djnz timer_counter, timer_reset_timer
+0036 D208             52             setb work_status.0
+                      53     
+0038                  54     timer_reset_timer_counter:
+0038 E542             55             mov A, set_timer_counter
+003A F541             56             mov timer_counter, A 
+                      57     
+003C                  58     timer_reset_timer:
+A51 MACRO ASSEMBLER  DOMACI                                                               12/03/2022 08:30:54 PAGE     2
+
+003C 7540FA           59             mov timer, #0xFA
+                      60             
+003F                  61     timer_end:
+003F 32               62             reti                            
+                      63     
+0040                  64     main:
+0040 C2AF             65             clr EA
+0042 7580FF           66             mov P0,                  #0xFF
+0045 75A000           67             mov P2,                  #0x00
+0048 7530FF           68             mov previous_state_P0,   #0xFF
+004B 753100           69             mov state_P2,            #0x00
+004E 753200           70             mov state_chg_det,       #0x00
+0051 753500           71             mov start,               #0x00
+0054 752000           72             mov status,              #0x00
+0057 753606           73             mov counter_third,       #0x06
+005A 753706           74             mov counter_save_third,  #0x06
+005D 75380B           75             mov counter_fourth,      #0x0B
+0060 75390B           76             mov counter_save_fourth, #0x0B
+0063 7540FA           77             mov timer,               #0xFA
+0066 754110           78             mov timer_counter,       #0x10
+0069 754210           79             mov set_timer_counter,   #0x10
+                      80     
+006C 758920           81             mov TMOD,                #0x20
+006F 758B17           82             mov TL1,                 #0x17
+0072 758D17           83             mov TH1,                 #0x17
+0075 D28E             84             setb TR1
+0077 D2AB             85             setb ET1
+0079 D2AF             86             setb EA
+                      87     
+007B                  88     while:
+007B 30084C           89             jnb work_status.0, end_while
+007E E530             90             mov A, previous_state_P0
+0080 6580             91             xrl A, P0
+0082 F532             92             mov state_chg_det, A
+                      93             ;; XOR kolo detektuje na kojem bitu je promjena
+                      94     
+0084 858030           95             mov previous_state_P0, P0
+                      96             ;; Cuva se prethodno stanje P0 porta
+                      97     
+0087 E532             98             mov A, state_chg_det
+0089 5580             99             anl A, P0
+008B F534            100             mov what_chg, A
+008D 752000          101             mov status, #0x00
+                     102             ;; AND kolo - kada je promjena = 0 (1->0), kada je promjena != 0 (0->1)
+                     103     
+0090                 104     was_there_any_state_change:
+0090 E532            105             mov A, state_chg_det
+0092 B4000B          106             cjne A, #0x00, set_status_1
+                     107     
+0095                 108     what_change:
+0095 E534            109             mov A, what_chg
+0097 B40002          110             cjne A, #0x00, set_status_0
+009A 8008            111             jmp status_check
+                     112     
+009C                 113     set_status_0:
+009C D200            114             setb status.0
+009E 8004            115             jmp status_check
+                     116     
+00A0                 117     set_status_1:
+00A0 D201            118             setb status.1
+00A2 80F1            119             jmp what_change
+                     120     
+00A4                 121     status_check:
+00A4 E520            122             mov A, status
+00A6 C3              123             clr C
+00A7 9400            124             subb A, #0x00
+A51 MACRO ASSEMBLER  DOMACI                                                               12/03/2022 08:30:54 PAGE     3
+
+00A9 6027            125             jz permission_for_work
+00AB E520            126             mov A, status
+00AD C3              127             clr C
+00AE 9403            128             subb A, #0x03
+00B0 6020            129             jz permission_for_work
+                     130     
+00B2                 131     state_change_stop:
+00B2 E532            132             mov A, state_chg_det
+00B4 B40215          133             cjne A, #0x02, state_change_start
+00B7 753500          134             mov start, #0x00
+00BA 753100          135             mov state_P2, #0x00
+00BD 754110          136             mov timer_counter, #0x10
+00C0 754210          137             mov set_timer_counter, #0x10
+00C3 800D            138             jmp permission_for_work
+                     139     
+00C5                 140     exec:
+00C5 8531A0          141             mov P2, state_P2
+00C8 C208            142             clr work_status.0
+                     143     
+00CA                 144     end_while:
+00CA 80AF            145             jmp while
+                     146     
+00CC                 147     state_change_start:
+00CC B40103          148             cjne A, #0x01, permission_for_work
+00CF 753501          149             mov start, #0x01
+                     150             
+00D2                 151     permission_for_work:
+00D2 E535            152             mov A, start
+00D4 B401EE          153             cjne A, #0x01, exec
+                     154     
+00D7                 155     another_status_check:
+00D7 E520            156             mov A, status
+00D9 C3              157             clr C
+00DA 9400            158             subb A, #0x00
+00DC 6056            159             jz previous_state_change_first_program_from_start
+00DE E520            160             mov A, status
+00E0 C3              161             clr C
+00E1 9403            162             subb A, #0x03
+00E3 604F            163             jz previous_state_change_first_program_from_start
+                     164             
+00E5                 165     state_change_first_program_from_start:
+00E5 E532            166             mov A, state_chg_det
+00E7 B40108          167             cjne A, #0x01, state_change_first_program
+00EA 120163          168             lcall prepare_program
+00ED 12016B          169             lcall first_program
+00F0 80D3            170             jmp exec
+                     171     
+00F2                 172     state_change_first_program:
+00F2 B40410          173             cjne A, #0x04, state_change_second_program
+00F5 E540            174             mov A, timer
+00F7 F543            175             mov help_timer, A
+00F9 E541            176             mov A, timer_counter
+00FB F544            177             mov help_timer_counter, A
+00FD 7540FA          178             mov timer, #0xFA
+0100 754110          179             mov timer_counter, #0x10
+0103 80C0            180             jmp exec
+                     181     
+0105                 182     state_change_second_program:
+0105 B40808          183             cjne A, #0x08, state_change_third_program
+0108 120163          184             lcall prepare_program
+010B 120175          185             lcall second_program_start
+010E 80B5            186             jmp exec
+                     187     
+0110                 188     state_change_third_program:
+0110 B41008          189             cjne A, #0x10, state_change_fourth_program
+0113 120163          190             lcall prepare_program
+A51 MACRO ASSEMBLER  DOMACI                                                               12/03/2022 08:30:54 PAGE     4
+
+0116 12017E          191             lcall prepare_third_program
+0119 80AA            192             jmp exec
+                     193     
+011B                 194     state_change_fourth_program:
+011B B42008          195             cjne A, #0x20, state_change_speed_1
+011E 120163          196             lcall prepare_program
+0121 120199          197             lcall prepare_fourth_program
+0124 809F            198             jmp exec
+                     199     
+0126                 200     state_change_speed_1:
+0126 B44005          201             cjne A, #0x40, state_change_speed_2
+0129 754210          202             mov set_timer_counter, #0x10
+012C 8006            203             jmp previous_state_change_first_program_from_start 
+                     204             
+012E                 205     state_change_speed_2:
+012E B48094          206             cjne A, #0x80, exec
+0131 754208          207             mov set_timer_counter, #0x08
+                     208                     
+0134                 209     previous_state_change_first_program_from_start:
+0134 E533            210             mov A, previous_state_chg_det
+0136 B40105          211             cjne A, #0x01, previous_state_change_first_program
+0139 12016B          212             lcall first_program
+013C 8087            213             jmp exec
+                     214     
+013E                 215     previous_state_change_first_program:
+013E B4040A          216             cjne A, #0x04, previous_state_change_second_program
+0141 E543            217             mov A, help_timer
+0143 F540            218             mov timer, A
+0145 E544            219             mov A, help_timer_counter
+0147 F541            220             mov timer_counter, A
+0149 01C5            221             jmp exec
+                     222     
+014B                 223     previous_state_change_second_program:
+014B B40805          224             cjne A, #0x08, previous_state_change_third_program
+014E 120175          225             lcall second_program_start
+0151 01C5            226             jmp exec
+                     227             
+0153                 228     previous_state_change_third_program:
+0153 B41005          229             cjne A, #0x10, previous_state_change_fourth_program
+0156 12018D          230             lcall third_program
+0159 01C5            231             jmp exec
+                     232     
+015B                 233     previous_state_change_fourth_program:
+015B B420FD          234             cjne A, #0x20, previous_state_change_fourth_program
+015E 1201A8          235             lcall fourth_program
+0161 01C5            236             jmp exec        
+                     237             
+0163                 238     prepare_program:
+0163 753100          239             mov state_P2, #0x00
+0166 E532            240             mov A, state_chg_det
+0168 F533            241             mov previous_state_chg_det, A
+016A 22              242             ret
+                     243     
+016B                 244     first_program:
+016B E531            245             mov A, state_P2
+016D F4              246             cpl A
+016E F531            247             mov state_P2, A
+0170 22              248             ret
+                     249     
+0171                 250     second_program:
+0171 23              251             rl A
+0172 F531            252             mov state_P2, A
+0174 22              253             ret
+                     254             
+0175                 255     second_program_start:
+0175 E531            256             mov A, state_P2
+A51 MACRO ASSEMBLER  DOMACI                                                               12/03/2022 08:30:54 PAGE     5
+
+0177 B400F7          257             cjne A, #0x00, second_program
+017A 753101          258             mov state_P2, #0x01
+017D 22              259             ret
+                     260     
+017E                 261     prepare_third_program:
+017E 753606          262             mov counter_third, #0x06 
+0181 E536            263             mov A, counter_third
+0183 90001D          264             mov DPTR, #third_program_values
+0186 8005            265             jmp third_program
+                     266     
+0188                 267     third_program_reset_counter:
+0188 E537            268             mov A, counter_save_third
+018A F536            269             mov counter_third, A
+018C 22              270             ret
+                     271     
+018D                 272     third_program:
+018D E536            273             mov A, counter_third
+018F 93              274             movc A, @A+DPTR
+0190 F531            275             mov state_P2, A
+0192 1536            276             dec counter_third
+0194 E536            277             mov A, counter_third
+0196 60F0            278             jz third_program_reset_counter
+0198 22              279             ret
+                     280     
+0199                 281     prepare_fourth_program:
+0199 75380B          282             mov counter_fourth, #0x0B
+019C E538            283             mov A, counter_fourth
+019E 900024          284             mov DPTR, #fourth_program_values
+01A1 8005            285             jmp fourth_program
+                     286             
+01A3                 287     fourth_program_reset_counter: 
+01A3 E539            288             mov A, counter_save_fourth
+01A5 F538            289             mov counter_fourth, A
+01A7 22              290             ret     
+                     291             
+01A8                 292     fourth_program:
+01A8 E538            293             mov A, counter_fourth
+01AA 93              294             movc A, @A+DPTR
+01AB F531            295             mov state_P2, A
+01AD 1538            296             dec counter_fourth
+01AF E538            297             mov A, counter_fourth
+01B1 60F0            298             jz fourth_program_reset_counter
+01B3 22              299             ret
+                     300             
+                     301     end
+A51 MACRO ASSEMBLER  DOMACI                                                               12/03/2022 08:30:54 PAGE     6
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                                    T Y P E  V A L U E   ATTRIBUTES
+
+ANOTHER_STATUS_CHECK. . . . . . . . . .    C ADDR   00D7H   A   
+COUNTER_FOURTH. . . . . . . . . . . . .    D ADDR   0038H   A   
+COUNTER_SAVE_FOURTH . . . . . . . . . .    D ADDR   0039H   A   
+COUNTER_SAVE_THIRD. . . . . . . . . . .    D ADDR   0037H   A   
+COUNTER_THIRD . . . . . . . . . . . . .    D ADDR   0036H   A   
+EA. . . . . . . . . . . . . . . . . . .    B ADDR   00A8H.7 A   
+END_WHILE . . . . . . . . . . . . . . .    C ADDR   00CAH   A   
+ET1 . . . . . . . . . . . . . . . . . .    B ADDR   00A8H.3 A   
+EXEC. . . . . . . . . . . . . . . . . .    C ADDR   00C5H   A   
+FIRST_PROGRAM . . . . . . . . . . . . .    C ADDR   016BH   A   
+FOURTH_PROGRAM. . . . . . . . . . . . .    C ADDR   01A8H   A   
+FOURTH_PROGRAM_RESET_COUNTER. . . . . .    C ADDR   01A3H   A   
+FOURTH_PROGRAM_VALUES . . . . . . . . .    C ADDR   0024H   A   
+HELP_TIMER. . . . . . . . . . . . . . .    D ADDR   0043H   A   
+HELP_TIMER_COUNTER. . . . . . . . . . .    D ADDR   0044H   A   
+INT_TIMER_1 . . . . . . . . . . . . . .    C ADDR   0030H   A   
+MAIN. . . . . . . . . . . . . . . . . .    C ADDR   0040H   A   
+P0. . . . . . . . . . . . . . . . . . .    D ADDR   0080H   A   
+P2. . . . . . . . . . . . . . . . . . .    D ADDR   00A0H   A   
+PERMISSION_FOR_WORK . . . . . . . . . .    C ADDR   00D2H   A   
+PREPARE_FOURTH_PROGRAM. . . . . . . . .    C ADDR   0199H   A   
+PREPARE_PROGRAM . . . . . . . . . . . .    C ADDR   0163H   A   
+PREPARE_THIRD_PROGRAM . . . . . . . . .    C ADDR   017EH   A   
+PREVIOUS_STATE_CHANGE_FIRST_PROGRAM . .    C ADDR   013EH   A   
+PREVIOUS_STATE_CHANGE_FIRST_PROGRAM_FROM_STC ADDR   0134H   A   
+PREVIOUS_STATE_CHANGE_FOURTH_PROGRAM. .    C ADDR   015BH   A   
+PREVIOUS_STATE_CHANGE_SECOND_PROGRAM. .    C ADDR   014BH   A   
+PREVIOUS_STATE_CHANGE_THIRD_PROGRAM . .    C ADDR   0153H   A   
+PREVIOUS_STATE_CHG_DET. . . . . . . . .    D ADDR   0033H   A   
+PREVIOUS_STATE_P0 . . . . . . . . . . .    D ADDR   0030H   A   
+SECOND_PROGRAM. . . . . . . . . . . . .    C ADDR   0171H   A   
+SECOND_PROGRAM_START. . . . . . . . . .    C ADDR   0175H   A   
+SET_STATUS_0. . . . . . . . . . . . . .    C ADDR   009CH   A   
+SET_STATUS_1. . . . . . . . . . . . . .    C ADDR   00A0H   A   
+SET_TIMER_COUNTER . . . . . . . . . . .    D ADDR   0042H   A   
+START . . . . . . . . . . . . . . . . .    D ADDR   0035H   A   
+STATE_CHANGE_FIRST_PROGRAM. . . . . . .    C ADDR   00F2H   A   
+STATE_CHANGE_FIRST_PROGRAM_FROM_START .    C ADDR   00E5H   A   
+STATE_CHANGE_FOURTH_PROGRAM . . . . . .    C ADDR   011BH   A   
+STATE_CHANGE_SECOND_PROGRAM . . . . . .    C ADDR   0105H   A   
+STATE_CHANGE_SPEED_1. . . . . . . . . .    C ADDR   0126H   A   
+STATE_CHANGE_SPEED_2. . . . . . . . . .    C ADDR   012EH   A   
+STATE_CHANGE_START. . . . . . . . . . .    C ADDR   00CCH   A   
+STATE_CHANGE_STOP . . . . . . . . . . .    C ADDR   00B2H   A   
+STATE_CHANGE_THIRD_PROGRAM. . . . . . .    C ADDR   0110H   A   
+STATE_CHG_DET . . . . . . . . . . . . .    D ADDR   0032H   A   
+STATE_P2. . . . . . . . . . . . . . . .    D ADDR   0031H   A   
+STATUS. . . . . . . . . . . . . . . . .    D ADDR   0020H   A   
+STATUS_CHECK. . . . . . . . . . . . . .    C ADDR   00A4H   A   
+TH1 . . . . . . . . . . . . . . . . . .    D ADDR   008DH   A   
+THIRD_PROGRAM . . . . . . . . . . . . .    C ADDR   018DH   A   
+THIRD_PROGRAM_RESET_COUNTER . . . . . .    C ADDR   0188H   A   
+THIRD_PROGRAM_VALUES. . . . . . . . . .    C ADDR   001DH   A   
+TIMER . . . . . . . . . . . . . . . . .    D ADDR   0040H   A   
+TIMER_COUNTER . . . . . . . . . . . . .    D ADDR   0041H   A   
+TIMER_END . . . . . . . . . . . . . . .    C ADDR   003FH   A   
+TIMER_RESET_TIMER . . . . . . . . . . .    C ADDR   003CH   A   
+TIMER_RESET_TIMER_COUNTER . . . . . . .    C ADDR   0038H   A   
+TL1 . . . . . . . . . . . . . . . . . .    D ADDR   008BH   A   
+TMOD. . . . . . . . . . . . . . . . . .    D ADDR   0089H   A   
+A51 MACRO ASSEMBLER  DOMACI                                                               12/03/2022 08:30:54 PAGE     7
+
+TR1 . . . . . . . . . . . . . . . . . .    B ADDR   0088H.6 A   
+WAS_THERE_ANY_STATE_CHANGE. . . . . . .    C ADDR   0090H   A   
+WHAT_CHANGE . . . . . . . . . . . . . .    C ADDR   0095H   A   
+WHAT_CHG. . . . . . . . . . . . . . . .    D ADDR   0034H   A   
+WHILE . . . . . . . . . . . . . . . . .    C ADDR   007BH   A   
+WORK_STATUS . . . . . . . . . . . . . .    D ADDR   0021H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,42 @@
+org 0x00
+jmp main
+
+org 0x0B
+jmp interrupt_T0
+
+status data 20h
+brojac data 30h
+
+interrupt_T0:
+	; Logika prekida
+	djnz brojac, dalje
+	setb status.0 
+	mov brojac, #0x15
+	
+dalje: 
+	reti
+
+main:
+	; Inicijalizacija
+	mov P2, #0x01
+	mov TMOD, #0x01
+	setb TR0
+	setb EA
+	setb ET0
+	mov TL0, #0x01
+	mov TH0, #0x4C
+
+	mov brojac, #0x15
+	mov status, #0x00
+		
+while:
+	jnb status.0, kraj
+	mov A, P2
+	rl A
+	mov P2, A
+	clr status.0
+	
+kraj: 	
+	jmp while
+
+end

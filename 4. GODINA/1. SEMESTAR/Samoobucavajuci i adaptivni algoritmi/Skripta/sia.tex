@@ -1,0 +1,797 @@
+\documentclass[12pt]{IEEEtran}
+\usepackage[scr]{rsfso}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{pgfplots}
+\usepackage{cmsrb}
+\usepackage[OT2, T1]{fontenc}
+\usepackage[serbian]{babel}
+\usepackage{tikz}
+\usepackage[justification=centering]{caption}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{csquotes}
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{multirow}
+
+
+\title{Samoobu\v{c}avaju\'{c}i i adaptivni algoritmi}
+\author{Ra\v{c}unarski upravlja\v{c}ki sistemi}
+
+\onecolumn
+\numberwithin{equation}{subsection}
+\numberwithin{figure}{subsection}
+\theoremstyle{definition}
+\newtheorem{example}{Primjer}
+\numberwithin{example}{section}
+\renewcommand{\arraystretch}{1.5}
+\renewcommand{\footnotesize}{\fontsize{11pt}{9pt}\selectfont}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+\section{\textbf{U\v{c}enje potkrepljivanjem - \textit{Reinforcement learning}}}
+
+\subsection{\textbf{Uvod u u\v{c}enje potkrepljivanjem}}
+
+Ideja da (ljudska) bi\'{c}a u\v{c}e tako \v{s}to intereaguju sa
+okolinom je prva ideja koju pomislimo kada govorimo o prirodi
+u\v{c}enja. Kroz \v{z}ivot, takve interakcije su nesumnjivo
+ogroman izvor na\v{s}eg znanja o okolini, kao i o nama.
+\v{S}ta god radili, kakve god akcije preduzimali,
+svjesni smo \v{c}injenica i reakcija okoline. \textbf{U\v{c}enje
+    iz interakcija} jeste fundamentalna ideja gotovo svih teorija
+inteligencije i u\v{c}enja.
+
+\textbf{U\v{c}enje potkrepljivanjem} (\textbf{\textit{Reinforcement learning}})
+jeste \textbf{tehnika u\v{c}enja} koja za cilj ima takvu \textbf{obuku agenta}
+(onog koji \enquote{\textbf{u\v{c}i}}) da, u budu\'{c}nosti,
+on preduzima \textbf{optimalne odluke} u zavisnosti od \textbf{stanja} u kojem se on nalazi
+i \enquote{\textbf{nagrada}} (povratne informacije) iz okoline koje dobija.
+Prosto re\v{c}eno, agent u\v{c}i na osnovu stanja i dobijene nagrade
+\v{s}ta je najbolje uraditi.
+Agentu u ovom slu\v{c}aju nije data mapa akcija koje on mora preduzeti kako bi ostvario
+najve\'{c}i uspjeh - naprotiv, na njemu je
+da prona\dj{}e one akcije koje maksimizuju nagradu. Na agentu je, tako\dj{}e, da prepozna
+ne samo akcije koje maksimizuju trenutnu nagradu, ve\'{c} da bude svjestan toga
+da trenutno preuzete akcije uti\v{c}u na sve budu\'{c}e nagrade.
+Pona\v{s}anje agenta je tako odre\dj{}eno \textbf{skupom akcija} $\mathcal{A}$, a kako
+ih agent preduzima, on prelazi iz jednog stanja u drugo. Stanja su opisana
+\textbf{skupom stanja} $\mathcal{S}$. Agentu je tako\dj{}e, pri prelasku izme\dj{}u
+datih stanja, dodjeljena nagrada iz \textbf{skupa nagrada} $\mathcal{R}$,
+koja upravo govori o kvalitetu preduzete akcije.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \draw (3,-1) rectangle (6, 1) node[pos = 0.5] {Agent};
+        \draw[->, very thick] (6, 0) -- (8, 0) -- (8, -3) -- (6, -3)
+        node[xshift=85px, yshift=40px] {Akcija $a_{t}$};
+        \draw (3, -4) rectangle (6, -2) node[pos = 0.5] {Okolina};
+        \draw[->, thick] (3, -2.5) -- (1, -2.5) -- (1, -0.5) -- (3, -0.5)
+        node[xshift=-25px, yshift=-30px] {Nagrada $r_{t}$};
+        \draw[->, very thick] (3, -3.5) -- (0, -3.5) -- (0, 0.5) -- (3, 0.5)
+        node[xshift=-115px, yshift=-57px] {Stanje $s_{t}$};
+
+        \node[xshift=70px, yshift=-80px] {$r_{t + 1}$};
+        \node[xshift=70px, yshift=-110px] {$s_{t + 1}$};
+
+        \draw[dashed, thin] (2, -2) -- (2, -4) {};
+
+    \end{tikzpicture}
+    \caption{Interakcija \textbf{agent} - \textbf{okolina} u Markovljevom procesu odlu\v{c}ivanja}
+\end{figure}
+
+Dvije najbitnije karakteristike \textit{reinforcement learning}-a su \textbf{metoda poku\v{s}aja i pogre\v{s}aka}
+preduzimanja akcija (neke akcije su bolje od drugih), kao i \textbf{budu\'{c}e nagrade} koje
+direktno zavise od preuzetih akcija.
+
+Za formalni zapis problema u\v{c}enja potkrepljivanjem (odnosno dinamike sistema koju posmatramo) koriste se \textbf{Markovljevi
+    procesi odlu\v{c}ivanja}, te se na njih primjenjuje \textbf{najbolja akcija}
+(odnosno biranje najboljih poteza - akcija) radi ostvarivanja zadatog cilja
+(maksimizacije nagrade).
+
+Jedan od izazova \textit{reinforcement learning}-a jeste to \v{s}to je potrebno postojanje
+\textbf{kompromisa} izme\dj{}u \textbf{eksploatacije} i \textbf{eksploracije}.
+Kako bi agent maksimizovao nagradu, on mora preduzimati
+akcije koje je poku\v{s}ao u pro\v{s}losti i koje su
+davale dobru nagradu, ali kako bi otkrio takve akcije,
+on mora poku\v{s}ati one koje nije birao prije, odnosno
+mora posjedovati eksplorativnu komponentu
+kako bi verifikovao koje akcije su bolje od drugih. Dakle, agent mora
+\textbf{eksploatisati} ono \v{s}to je ve\'{c} iskusio, ali
+mora i \textbf{istra\v{z}ivati} kako bi pravio bolje
+odluke u budu\'{c}nosti. Jedna karakteristika povla\v{c}i drugu
+- agent prosto mora da proba razne akcije i da bira one koje
+za njega odgovaraju.
+
+\textit{Reinforcement learning} je dio modernog trenda vje\v{s}ta\v{c}ke
+inteligencije i ma\v{s}inskog u\v{c}enja koji ima za cilj integraciju
+sa teorijom optimizacije, statisti\v{c}kim ra\v{c}unom i ostalim
+matemati\v{c}kim oblastima. Pored tehni\v{c}kih oblasti,
+u\v{c}enje potkrepljivanjem redovno intereaguje sa psihologijom
+i neuronaukama, za cilj imitiranja i razumijevanja \v{c}ovjekove sposobnosti
+obzervacije i u\v{c}enja iz datih.
+
+\subsection{\textbf{Sastavni elementi u\v{c}enja potkrepljivanjem}}
+
+Pored \textbf{agenta} i \textbf{okoline}
+u kojoj se on nalazi i sa kojom intereaguje, postoje \v{c}etiri
+su\v{s}tinska dijela \textit{reinforcement learning} sistema -
+\textbf{politika} (ili \textbf{na\v{c}in}) \textbf{odlu\v{c}ivanja},
+\textbf{nagrada}, \textbf{vrijednost stanja} i (opciono)
+\textbf{model okoline}.
+
+\textbf{Politika odlu\v{c}ivanja} (eng. \textit{policy}) je na\v{c}in pona\v{s}anja agenta
+u trenutku vremena, odnosno u odre\dj{}enom stanju. Matemati\v{c}ki
+re\v{c}eno, politika odlu\v{c}ivanja je mapiranje stanja u kojem se
+agent nalazi na akcije koje preduzima kada se na\dj{}e u datim
+stanjima
+
+\begin{equation}
+    \pi : \mathcal{S} \to \mathcal{A}
+\end{equation}
+
+opisano re\v{c}enicom \enquote{\textit{ako sam u stanju $s_1$,
+        preduzimam akciju $a_1$}} (u deterministi\v{c}kom slu\v{c}aju).
+
+\textbf{Nagrada} defini\v{s}e cilj u kontekstu problema kojeg rje\v{s}avamo.
+Pri prelasku izme\dj{}u stanja (odnosno, u svakom diskretnom vremenskom trenutku),
+agent iz okoline dobija signal nagrade, koji govori o tome kako je
+prethodno preduzeta akcija djelovala na okolinu, te samim tim i na
+njega. Time se mo\v{z}e povu\'{c}i analogija
+izme\dj{}u dobijanja \enquote{male} i \enquote{velike} nagrade sa
+osje\'{c}anjem \enquote{boli} i \enquote{zadovoljstva}, u biolo\v{s}kom smislu.
+Iz toga ishodi da je nagrada \textbf{mjera kvaliteta} politike odlu\v{c}ivanja,
+jer iz dobijene nagrade mo\v{z}emo izvu\'{c}i zaklju\v{c}ak o tome
+da li je politika koju agent sprovodi \textbf{dobra}, odnosno \textbf{optimalna}
+za dati problem.
+
+\textbf{Vrijednost stanja} jeste kumulativna suma
+nagrada koje agent mo\v{z}e o\v{c}ekivati da dobije, po\v{c}ev\v{s}i
+od tog stanja u kojem se trenutno nalazi. Dok nagrade odre\dj{}uju
+trenutnu dobit, vrijednosti stanja predstavljaju dugoro\v{c}ni
+plan dobiti kada se uzmu u obzir budu\'{c}a stanja
+u kojima se agent mo\v{z}e na\'{c}i. Matemati\v{c}ki iskazano,
+vrijednost stanja je suma nagrada trenutnog i svih budu\'{c}ih
+stanja (mo\v{z}e ih biti beskona\v{c}no za neterminiraju\'{c}e
+procese) \textbf{ponderisana te\v{z}inskim faktorom} $\gamma$
+
+\begin{equation}
+    v(s) = \begin{cases}
+        \sum_{k = 0}^{T}{\gamma^{k}r_k} \text{, za deterministi\v{c}ki sistem} \\
+        \mathbb{E}\left\{\sum_{k = 0}^{T}{\gamma^{k}R_k}\right\} \text{, za stohasti\v{c}ki sistem}
+    \end{cases}
+\end{equation}
+
+Razlog uvo\dj{}enja pondera $\gamma$ dvojake je prirode. Naime,
+prvi razlog je matemati\v{c}ki - olak\v{s}ava ra\v{c}unanje
+pomenute sume koja, kao \v{s}to je re\v{c}eno,
+mo\v{z}e sadr\v{z}ati beskona\v{c}no mnogo \v{c}lanova, no drugi i bitniji razlog
+jeste (\textbf{ljudska}) \textbf{priroda prioritetizovanja trenutnih
+nad budu\'{c}im nagradama}. Bi\'{c} su sklona davati
+prioritet trenutnom stanju i trenutnim nagradama, dok ih ne
+zanima \v{s}ta \'{c}e se de\v{s}avati u budu\'{c}nosti i kakve
+\'{c}e nagrade tada dobijati, te se u tu svrhu
+uvodi te\v{z}inski faktor $\gamma$ koji smanjuje zna\v{c}aj budu\'{c}ih
+nagrada (ograni\v{c}ava se u intervalu od $0$ do $1$).
+Formalna definicija svih gorenavedenih pojmova data je u nastavku teksta.
+
+Naravno, iz prethodnog re\v{c}enog nepravilno bi bilo izvu\'{c}i
+zaklju\v{c}ak da su agentu sveohuvatno bitnija
+trenutna stanja i da \'{c}e njih maksimalno prioritetisati.
+\v{C}itav niz dono\v{s}enja akcija zavisi od vrijednosti stanja i
+agent potra\v{z}uje one akcije koje ga dovode u stanja najve\'{c}ih
+vrijednosti jer to direktno pravi put akcija koje dovode do
+ukupne maksimalne nagrade.
+
+\newpage
+\section{\textbf{Markovljev proces odlu\v{c}ivanja}}
+
+\subsection{\textbf{Definicija Markovljevog procesa odlu\v{c}ivanja}}
+
+\textbf{Markovljev proces odlučivanja} (\textit{Markov decision process}, \textbf{MDP}) je
+formalizacija sekvencijalog procesa dono\v{s}enja odluka, matemati\v{c}ki
+idealizovana forma \textit{reinforcement learning} problema.
+
+Kao \v{s}to smo ve\'{c} vidjeli, onaj koji u\v{c}i i koji donosi odluke
+naziva se \textbf{agent}. Stvar s kojom intereaguje i koja nije njegov
+integrisani sastav jeste \textbf{okolina}. Sa pomenutom intereaguje
+u sekvenci vremenskih trenutaka, $t = 0, 1, 2, ...$, donose\'{c}i akcije
+koje uti\v{c}u na nju i dobijaju\'{c}i kao povratnu informaciju
+novu situaciju (\textbf{stanje}) u sistemu i \textbf{nagradu},
+kao reakciju na preduzetu akciju. Sekvenca kojom se ovo de\v{s}ava
+formira \textbf{trajektoriju} de\v{s}avanja
+
+\begin{gather}
+    s_{0}, a_{0}, r_{0}, s_{1}, a_{1}, r_{1}, s_{2}, a_{2}, r_{2}, ...\\
+    s \in \mathcal{S} \text{, } a \in \mathcal{A} \text {, } r \in \mathcal{R}
+\end{gather}
+
+Potrebno je razgrani\v{c}iti dvije vrste MDP-a:
+
+\begin{enumerate}
+    \item \textbf{Deterministi\v{c}ki Markovljev proces}
+
+          Deterministi\v{c}ki Markovljev proces jeste model procesa u kojem su
+          za svako stanje agenta ta\v{c}no odre\dj{}ene akcija koja se preduzima, kao i
+          slede\'{c}e stanje, odnosno
+
+          \begin{gather}
+              s^{+} = f(s, a)\\
+              r = h(s, a)
+          \end{gather}
+
+          gdje funkcije $f$ i $h$ odre\dj{}uju \textbf{deterministi\v{c}ki model}. 
+
+          Dakle, unaprijed je mogu\'{c}e odrediti trajektoriju sistema bazirano na
+          trenutnom stanju agenta.
+
+    \item \textbf{Stohasti\v{c}ki Markovljev proces}
+
+        Stohasti\v{c}ki Markovljev proces je uop\v{s}tenje deterministi\v{c}kog.
+        Naime, u zavisnosti od trenutnog stanja i akcije koju agent preduzme,
+        postoji vjerovatno\'{c}a da \'{c}e on zavr\v{s}iti u nekom od narednih
+        stanja i dobiti neku nagradu, odnosno
+
+        \begin{equation}
+            p(s^{+}, r | s, a) = \mathbb{P}\{S^{+} = s^{+}, R = r | S = s, A = a\}
+        \end{equation}
+
+        gdje se vjerovatno\'{c}a $p$ naziva \textbf{stohasti\v{c}kim modelom}, 
+        \textbf{modelom prelaza}, \textbf{vjerovatno\'{c}a prelaza},
+        \textbf{dinamika sistema}.
+
+        Dakle, nije mogu\'{c}e odrediti ta\v{c}nu trajektoriju sistema baziranu
+        na trenutnom stanju, ve\'{c} je ona u zavisnosti od raspodjele vjerovatno\'{c}a.
+
+\end{enumerate}
+
+\subsection{\textbf{Dobitak} (\textit{Gain}), \textbf{politika odlu\v{c}ivanja, vrijednost stanja, vrijednost akcije}}
+
+U procesu interakcije sa okolinom, agent kao povratni signal dobija nagradu.
+\textbf{Ukupna dobijena nagrada} (\textit{gain}) ra\v{c}una se kao suma sekvence svih
+dobijenih nagrada po\v{c}ev\v{s}i od trenutnog momenta i
+nastavljaju\'{c}i se u budu\'{c}nost, odnosno
+
+\begin{equation}
+    g = \begin{cases}
+        \sum_{k = 0}^{T}{\gamma^{k}r_{k}} \text{, za deterministi\v{c}ki sistem} \\
+        \mathbb{E}\left\{\sum_{k = 0}^{T}{\gamma^{k}R_{k}}\right\} \text{, za stohasti\v{c}ki sistem}
+    \end{cases}
+\end{equation}
+
+Agent intereaguje sa okolinom donose\'{c}i odluke. Pravilo
+pod kojim se donose odluke naziva se \textbf{politika odlu\v{c}ivanja}
+
+\begin{equation}
+    a = \begin{cases}
+        \pi(s) \text{, za deterministi\v{c}ke politike} \\
+        \pi(a | s) = \mathbb{P}\{A = a | S = s\} \text{, za stohasti\v{c}ke politike}
+    \end{cases}
+\end{equation}
+
+i ona o\v{c}igledno zavisi od stanja u kojem se agent nalazi.
+Tako\dj{}e, valjalo bi primjetiti da je mogu\'{c}e primjeniti ili deterministi\v{c}ku ili
+stohasti\v{c}ku politiku, nezavisno od toga da li je sam proces
+deterministi\v{c}ki ili stohasti\v{c}ki - \textbf{politika odlu\v{c}ivanja
+ne zavisi od karakteristika modela}.
+
+Ako fiksiramo po\v{c}etno stanje, mo\v{z}emo pri\v{c}ati o
+\textbf{o\v{c}ekivanoj nagradi} u zavisnosti od politike
+odlu\v{c}ivanja $\pi$
+
+\begin{equation}
+    g_{\pi}(s_{0}) = \mathbb{E}_{\pi}\left\{\sum_{k = 0}^{T}{\gamma^{k}R_{k}} | S_{0} = s_{0}\right\}
+\end{equation}
+
+Tada mo\v{z}emo definisati \textbf{vrijednost stanja}
+
+\begin{equation}
+    v_{\pi}(s) = g_{\pi}(s)
+\end{equation}
+
+koje odre\dj{}uje \textbf{o\v{c}ekivanu nagradu po\v{c}ev\v{s}i od
+    stanja $s$}.
+
+Tako\dj{}e, defini\v{s}e se i \textbf{vrijednost akcije}
+
+\begin{equation}
+    q_{\pi}(s, a) = g_{\pi}(s | s_{0} = s, a_{0} = a) = r_{0} + \gamma g_{\pi}(s^{+}) = r_{0} + \gamma q_{\pi}(s^{+}, a^{+})
+\end{equation}
+
+koja govori o \textbf{nagradi} (ozna\v{c}ena
+sa $r_{0}$) \textbf{dobijenoj kada se krene iz po\v{c}etnog
+stanja $s_{0} = s$ i preduzme akcija $a_{0} = a$}, te se \textbf{nakon toga slijedi politika $\pi$}.
+Dakle, po\v{c}etna akcija $a$ nezavisna je od politike $\pi$,
+no mo\v{z}e biti njen dio (bez gubitka op\v{s}tosti), te zato imamo puno pravo pisati 
+$g_{\pi}(s^{+}) = q_{\pi}(s^{+}, a^{+})$.
+
+\begin{example}
+    \textbf{Odre\dj{}ivanje vrijednosti stanja}
+
+    Posmatrajmo dati sistem odlu\v{c}ivanja
+
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}
+            \draw[blue!60, fill=blue!20] (-2, -0.5) circle (1);
+            \draw[red!60, fill=red!20] (2, -4) circle (1);
+            \draw[red!60, fill=red!20] (3, -1) circle (1);
+            \draw[red!60, fill=red!20] (2, 2) circle (1);
+
+            \node at (-3.5, -0.5) {$s^{0}$};
+            \node at (3.5, -4) {$s^{1}$};
+            \node at (4.5, -1) {$s^{2}$};
+            \node at (3.5, 2) {$s^{3}$};
+
+            \node at (2, -4) {$10$};
+            \node at (3, -1) {$20$};
+            \node at (2, 2) {$15$};
+
+            % \draw[->, very thick] (-1.134, 0) to[out=30] (1, 2);
+            \path[->, very thick, out=-3] (-1, -0.5) edge (1, 2);
+            \path[->, very thick, out=0.5] (-1, -0.5) edge (2, -1);
+            \path[->, very thick, out=2] (-1, -0.5) edge (1, -4);
+
+            \node at(-0.5, 1) {$a^{3}$};
+            \node at(0.5, 0) {$a^{2}$};
+            \node at(-0.5, -2) {$a^{1}$};
+
+            \node at(0, 2.5) {$r^{3} = 5$};
+            \node at(1, -1) {$r^{2} = -5$};
+            \node at(0, -4) {$r^{1} = 2$};
+
+        \end{tikzpicture}
+        \caption{Primjer 1.}
+    \end{figure}
+
+    \begin{table}[h]
+        \normalsize
+        \centering
+        \begin{tabular}{*4c}
+            \textbf{Akcija $a$} & \textbf{Stanje $s^{+}$} & \textbf{Vrijednost stanja $v(s^{+})$} & \textbf{Nagrada $r$} \\
+            \toprule
+            $a^{1}$             & $s^{1}$                 & $10$                                  & $2$                  \\
+            \hline
+            $a^{2}$             & $s^{2}$                 & $20$                                  & $-5$                 \\
+            \hline
+            $a^{3}$             & $s^{3}$                 & $15$                                  & $5$                  \\
+            \hline
+        \end{tabular}
+    \end{table}
+
+    Dakle, na raspolaganju su nam date tri akcije, $\mathcal{A} = \left\{a^{1}, a^{2}, a^{3}\right\}$. Nagrada koju mo\v{z}emo
+    o\v{c}ekivati da dobijemo po\v{c}ev\v{s}i u stanju $s^{0}$ jeste, po formuli
+
+    \begin{equation}
+        g(s) = \sum_{k = 0}^{T}{\gamma^{k}r_{k}} = r_{0} + \gamma r_{1} + \gamma^{2} r_{2} + \gamma^{3} r_{3} ... = r_{0} + \gamma (r_{1} + \gamma r_{2} + \gamma^{2} r_{3}...)
+    \end{equation}
+
+    Primjetimo da je red $r_1 + \gamma r_2 + ...$ zapravo \textbf{dobijena nagrada}\footnote{
+        Subskript ozna\v{c}ava vremenske trenutke, te je za stanje $s^{+}$ zapravo po\v{c}etni 
+        trenutak $t = 1$ i formula za dobijenu nagradu ostaje validna.}
+    za stanje $s^{+}$, te \'{c}e va\v{z}iti da je
+
+    \begin{equation}
+        g(s) = r_{0} + \gamma g(s^{+})
+    \end{equation}
+
+    Dobijeni rezultat predstavlja \textbf{rekurzivnu formulu za ra\v{c}unanje dobijene nagrade}, a kako je, za konkretnu
+    politiku odlu\v{c}ivanja $v_{\pi}(s) = g_{\pi}(s)$, slijedi da je
+
+    \begin{equation}
+        v_{\pi}(s) = r_{0} + \gamma v_{\pi}(s^{+})
+    \end{equation}
+
+    U zavisnosti od preduzete akcije mo\v{z}emo izra\v{c}unati
+    vrijednost stanja $s^{0}$ (za parametar $\gamma$ uzeta je
+    vrijednost $0.9$)
+
+    \begin{table}[h]
+        \normalsize
+        \centering
+        \begin{tabular}{*3c}
+            \textbf{Akcija $a$} & \textbf{Stanje $s^{+}$} & \textbf{Vrijednost stanja $v(s^{0})$} \\
+            \toprule
+            $a^{1}$             & $s^{1}$                 & $11$                                  \\
+            \hline
+            $a^{2}$             & $s^{2}$                 & $13$                                  \\
+            \hline
+            $a^{3}$             & $s^{3}$                 & $18.5$                                \\
+            \hline
+        \end{tabular}
+    \end{table}
+
+\end{example}
+
+Prethodni primjer dobar je pokazatelj preduzimanja \textbf{optimalne politike odlu\v{c}ivanja}, koja se defini\v{s}e 
+kao \textbf{politika koja \'{c}e donijeti najve\'{c}u nagradu} od svih mogu\'{c}ih politika $\pi \in \mathcal{P}$
+\begin{gather}
+    v^{*}_{\pi}(s) = \max_{\pi \in \mathcal{P}}\{v_{\pi}(s)\} = \max_{\pi \in \mathcal{P}}\{r_{0} + \gamma v^{*}_{\pi}(s^{+})\} = \max_{\pi \in \mathcal{P}}\{h(s, a) + \gamma v^{*}_{\pi}(f(s, a))\}\\
+    a = \pi(s)
+\end{gather}
+
+Konkretno za primjer, optimalna politika bi bila akcija $a^{3}$, koja bi
+vrijednost stanja $s^{0}$ postavila na $18.5$.
+
+Sli\v{c}an rezultat dobijamo ra\v{c}unaju\'{c}i vrijednosti akcija
+
+\begin{table}[h]
+    \normalsize
+    \centering
+    \begin{tabular}{*2c}
+        \textbf{Akcija $a$} & \textbf{Vrijednost akcije $q(s^{0}, a$)} \\
+        \toprule
+        $a^{1}$             & $11$                                     \\
+        \hline
+        $a^{2}$             & $13$                                     \\
+        \hline
+        $a^{3}$             & $18.5$                                   \\
+        \hline
+    \end{tabular}
+\end{table}
+
+te bismo \textbf{optimalnu politiku koja donosi najve\'{c}u vrijednost akcije} ra\v{c}unali kao
+
+\begin{gather}
+    q^{*}_{\pi}(s, a) = \max_{\pi \in \mathcal{P}}\{q_{\pi}(s, a)\} = \max_{\pi \in \mathcal{P}}\{r_{0} + q^{*}_{\pi}(s^{+}, a^{+})\} = \max_{\pi \in \mathcal{P}}\{h(s, a) + q^{*}_{\pi}(f(s, a), a^{+})\}\\
+    a^{+} = \pi(s^{+})
+\end{gather}
+
+\newpage
+\section{\textbf{Na\v{c}ini ra\v{c}unanja vrijednosti stanja i vrijednosti akcija. Optimalna politika odlu\v{c}ivanja}}
+
+\subsection{\textbf{Iterativno ra\v{c}unanje vrijednosti stanja i vrijednosti akcija}}
+
+\begin{example}
+    \textbf{Evaluacija vrijednosti stanja na osnovu konkretne politike}
+
+    Pogledajmo slede\'{c}i primjer\footnote{
+        Jarko crvenom bojom ozna\v{c}eno je \textbf{terminalno} \enquote{\textbf{stanje}}. Ono zapravo
+        nije su\v{s}tinski stanje, jer u njemu ne mo\v{z}emo donositi akcije -
+        ozna\v{c}ava kraj \enquote{igre}. Obi\v{c}no uzimamo njegovu vrijednost za $0$.
+    }
+
+    \begin{figure}[h]
+        \centering
+        \begin{tikzpicture}
+            \draw[red!60, fill=red!20] (-2, 2) circle (1);
+            \draw[red!60, fill=red!20] (3, 3) circle (1);
+            \draw[red!60, fill=red!20] (2, -2) circle (1);
+            \draw[red!60, fill=red!20] (6, 0) circle (1);
+            \draw[red!100, fill=red!60, ultra thick] (8, 3.5) circle (1);
+
+            \node at(-2, 2) {$s^{0}$};
+            \node at(3, 3) {$s^{3}$};
+            \node at(2, -2) {$s^{1}$};
+            \node at(6, 0) {$s^{2}$};
+
+            \path[blue, ->, very thick, out=2, dashed] (-1, 2) edge (2, 3);
+            \path[orange, ->, very thick, out=2] (-1, 2) edge (1, -2);
+            \path[orange, ->, very thick, in=-50] (2, -3) edge[bend left=120, looseness=3] (1, -2);
+            \draw[blue, ->, very thick, dashed] plot[smooth, tension=2] coordinates {(3, -2) (4, -1.3) (5, -1.5) (6, -1)};
+            \path[orange, ->, very thick] (6, -1) edge[bend left=90, bend angle=20] (3, -2);
+            \path[orange, ->, very thick, out=2] (4, 3) edge (5, 0);
+            \path[blue, ->, very thick, out=2, dashed] (4, 3) edge (7, 3.5);
+            \path[blue, ->, very thick, in=0.5, dashed] (7, 0) edge (8, 2.5);
+
+            \node at(0.5, 3.5) {$-1$};
+            \node at(-0.5, 0) {$-2$};
+            \node at(1.25, -4) {$-1$};
+            \node at(4.5, -3) {$-2$};
+            \node at(4.25, -0.75) {$-1$};
+            \node at(3.75, 1.5) {$-1$};
+            \node at(5.5, 4.25) {$-3$};
+            \node at(7.25, 1.25) {$-1$};
+        \end{tikzpicture}
+        \caption{Primjer 1.}
+    \end{figure}
+
+    Neka je politika $\pi$
+
+    \begin{equation}
+        \pi(s) = "\begingroup\color{blue}\mathbf{\rightarrow}\endgroup"
+    \end{equation}
+
+    odnosno \enquote{\textbf{biraj plavu} (\textbf{isprekidanu}) \textbf{akciju}} .
+
+    Krenuv\v{s}i unazad, odnosno od terminalnog stanja,
+    vrijednosti svakog od stanja su
+
+    \begin{gather}
+        v^{3} = -3 + \gamma v^{\text{term}}\\
+        v^{2} = -1 + \gamma v^{\text{term}}\\
+        v^{1} = -1 + \gamma v^{2}\\
+        v^{0} = -1 + \gamma v^{3}
+    \end{gather}
+
+    O\v{c}igledno je da ako izaberemo $v^{\text{term}} = 0$,
+    dobijamo vrijednosti za $v^{2}$ i $v^{3}$, uz pomo\'{c}
+    kojih mo\v{z}emo izra\v{c}unati vrijednosti preostalih stanja
+    $v^{0}$ i $v^{1}$. \textbf{Algoritam evaluacije vrijednosti stanja} je tako
+
+    \begin{enumerate}
+        \item \textbf{Izabrati vrijednost $v^{\text{term}}$}
+        \item \textbf{Prona\'{c}i i evaluirati sva stanja iz kojih je mogu\'{c}e do\'{c}i u terminalno}
+        \item \textbf{Prona\'{c}i i evaluirati sva stanja iz kojih je mogu\'{c}e do stanja ve\'{c} poznatih vrijednosti}
+        \item \textbf{Ponoviti korak 3.}
+    \end{enumerate}
+
+    
+    Kada imamo ogroman skup stanja i slo\v{z}eniju politiku odlu\v{c}ivanja,
+    potrebno je primjeniti numeri\v{c}ke iterativne metode
+    za odre\dj{}ivanje vrijednosti stanja. Ako matri\v{c}no zapi\v{s}emo
+    prethodne jedna\v{c}ine
+
+    \begin{equation}
+        \begin{bmatrix}
+            v^{0} \\
+            v^{1} \\
+            v^{2} \\
+            v^{3}
+        \end{bmatrix} =
+        \gamma
+        \begin{bmatrix}
+            0 & 0 & 0 & 1 \\
+            0 & 0 & 1 & 0 \\
+            0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0
+        \end{bmatrix}
+        \begin{bmatrix}
+            v^{0} \\
+            v^{1} \\
+            v^{2} \\
+            v^{3}
+        \end{bmatrix}
+        + \gamma
+        \begin{bmatrix}
+            0 \\
+            0 \\
+            1 \\
+            1
+        \end{bmatrix}
+        v^{\text{term}}
+        +
+        \begin{bmatrix}
+            -1 \\
+            -1 \\
+            -1 \\
+            -3
+        \end{bmatrix}
+    \end{equation}
+
+    Direktno rje\v{s}avanje po matrici $\mathbf{v}$ dobija se formulom
+
+    \begin{equation}
+        \mathbf{v} = (\mathbf{I} - \gamma \mathbf{A})^{-1}\mathbf{r}
+    \end{equation}
+
+    ili iterativnom metodom
+
+    \begin{equation}
+        \mathbf{v}^{k + 1} = \gamma \mathbf{Av}^{k} + \mathbf{r}
+    \end{equation}
+
+    gdje je $\mathbf{v}^{0}$ nasumi\v{c}no inicijalizovano.
+
+\end{example}
+
+
+\subsection{\textbf{Deterministi\v{c}ke i stohasti\v{c}ke jedna\v{c}ine vrijednosti stanja i akcija}}
+
+Podsjetimo se rekurzivnih formula za ra\v{c}unanje vrijednosti stanja
+i vrijednost akcija u deterministi\v{c}kom slu\v{c}aju
+
+\begin{gather}
+    v_{\pi}(s) = h(s, \pi(s)) + \gamma v_{\pi}(f(s, \pi(s)))\\
+    q_{\pi}(s, a) = h(s, a) + \gamma q_{\pi}(f(s, a), \pi(f(s, a)))
+\end{gather}
+
+U stohasti\v{c}kom slu\v{c}aju govorimo o \textbf{o\v{c}ekivanoj nagradi},
+odnosno
+
+\begin{equation}
+    g_{\pi}(s) = \mathbb{E}\left\{\sum_{k = 0}^{T}{\gamma^{k}R_{k}} | S_{0} = s\right\}
+\end{equation}
+
+Razlo\v{z}imo izraz na slede\'{c}i na\v{c}in
+
+\begin{equation}
+    \begin{gathered}
+        g_{\pi}(s) = \mathbb{E_{\pi}}\left\{\sum_{k = 0}^{T}{\gamma^{k}R_{k}} | S_{0} = s\right\} = \mathbb{E_{\pi}}\left\{R_{0} + \gamma \sum_{k = 1}^{T}{\gamma^{k - 1}R_{k}} | S_{0} = s\right\} = \\
+        \sum_{a \in \mathcal{A}}{\pi(a | s)\mathbb{E_{\pi}}\left\{R_{0} + \gamma \sum_{k = 1}^{T}{\gamma^{k - 1}R_{k}} | S_{0} = s, A_{0} = a\right\}} =\\
+        \sum_{a \in \mathcal{A}}{\pi(a | s) \sum_{\substack{s^{+} \in \mathcal{S}\\r \in \mathcal{R}}}{p(s^{+}, r | s, a) \mathbb{E_{\pi}}\left\{R_{0} + \gamma \sum_{k = 1}^{T}{\gamma^{k - 1}R_{k}} | S_{0} = s, A_{0} = a, S_{1} = s^{+}, R_{0} = r\right\}}} =\\
+        \sum_{a \in \mathcal{A}}{\pi(a | s) \sum_{\substack{s^{+} \in \mathcal{S}\\r \in \mathcal{R}}}{p(s^{+}, r | s, a) \left[r + \gamma \mathbb{E_{\pi}} \left\{ \sum_{k = 1}^{T}{\gamma^{k - 1}R_{k}} | S_{1} = s^{+} \right\} \right]}}
+    \end{gathered}
+\end{equation}
+
+Poslednja formula mo\v{z}e se zapisati kao
+
+\begin{equation}
+    v_{\pi}(s) = \sum_{a \in \mathcal{A}}{\pi(a | s) \sum_{\substack{s^{+} \in \mathcal{S}\\r \in \mathcal{R}}}{p(s^{+}, r | s, a) \left[r + \gamma v_{\pi}(s^{+}) \right]}}
+\end{equation}
+
+i predstavlja \textbf{jedna\v{c}inu vrijednosti stanja u stohasti\v{c}kom slu\v{c}aju}.
+
+\v{S}to se ti\v{c}e vrijednosti akcija
+
+\begin{equation}
+    q_{\pi}(s, a) = \mathbb{E_{\pi}}\left\{R_{0} + \gamma \sum_{k = 1}^{T}{\gamma^{k - 1}R_{k}} | S_{0} = s, A_{0} = a\right\}
+\end{equation}
+
+Ako raspi\v{s}emo dalje
+
+\begin{equation}
+    \begin{gathered}
+        q_{\pi}(s, a) = \mathbb{E_{\pi}}\left\{R_{0} + \gamma \sum_{k = 1}^{T}{\gamma^{k - 1}R_{k}} | S_{0} = s, A_{0} = a\right\} =\\
+        \sum_{\substack{s^{+} \in \mathcal{S}\\r \in \mathcal{R}}}{p(s^{+}, r | s, a) \mathbb{E_{\pi}}\left\{ R_{0} + \gamma \sum_{k = 1}^{T}{\gamma^{k - 1} R_{k}} | S_{0} = s, A_{0} = a, S_{1} = s^{+}, R_{0} = r \right\}} =\\
+        \sum_{\substack{s^{+} \in \mathcal{S}\\r \in \mathcal{R}}}{p(s^{+}, r | s, a) \left[ r + \gamma \mathbb{E_{\pi}}\left\{ \sum_{i = 1}^{T}{\gamma^{k - 1}R_{k}} | S_{1} = s^{+} \right\} \right]} =\\
+        \sum_{\substack{s^{+} \in \mathcal{S}\\r \in \mathcal{R}}}{p(s^{+}, r | s, a) \left[ r + \gamma \sum_{a^{+} \in \mathcal{A}}{\pi(a^{+} | s^{+}) \mathbb{E_{\pi}}\left\{ \sum_{k = 1}^{T}{\gamma^{k - 1}R_{k}} | S_{1} = s^{+}, A_{1} = a^{+} \right\}}\right]}
+    \end{gathered}
+\end{equation}
+
+Poslednja formula mo\v{z}e se zapisati kao
+
+\begin{equation}
+    q_{\pi}(s, a) = \sum_{\substack{s^{+} \in \mathcal{S}\\r \in \mathcal{R}}}{p(s^{+}, r | s, a) \left[ r + \gamma \sum_{a^{+} \in \mathcal{A}}{\pi(a^{+} | s^{+})q_{\pi}(s^{+}, a^{+})} \right] }
+\end{equation}
+
+i predstavlja \textbf{jedna\v{c}inu vrijednosti stanja u stohasti\v{c}kom slu\v{c}aju}.
+
+Prethodne jedna\v{c}ine nazivaju se \textbf{Belmanovim jedna\v{c}inama}.
+
+\newpage
+\begin{example}
+\textbf{Primjer odre\dj{}ivanja vrijednosti stanja i akcija na stohasti\v{c}kom MDP-u}
+
+Razmotrimo slede\'{c}i primjer 
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \draw[blue!60, fill=blue!20] (-2, -0.5) circle (1);
+        \draw[red!60, fill=red!20] (2, -4) circle (1);
+        \draw[red!60, fill=red!20] (3, -1) circle (1);
+        \draw[red!60, fill=red!20] (2, 2) circle (1);
+
+        \node at (-2, -0.5) {$s^{0}$};
+        \node at (2, -4) {$s^{3}$};
+        \node at (3, -1) {$s^{2}$};
+        \node at (2, 2) {$s^{1}$};
+
+        \path[blue, ->, very thick, out=-3, dashed] (-1, -0.5) edge (1, 2);
+        \path[blue, ->, very thick, in=-50, dashed] (-2, -1.5) edge[bend left=120, looseness=3] (-3, -0.5);
+        \path[red, ->, very thick, out=0.5] (-1, -0.5) edge (2, -1);
+        \path[red, ->, very thick, out=2] (-1, -0.5) edge (1, -4);
+
+        \node at(-2.5, -2.5) {$0.9$};
+        \node at(-0.5, 1) {$0.1$};
+        \node at(0.75, 0) {$0.75$};
+        \node at(-0.5, -2) {$0.25$};
+
+        \node[draw, dotted, very thick] at(-4.25, -1) {$-1$};
+        \node[draw, dotted, very thick] at(-0.25, 2.25) {$-2$};
+        \node[draw, dotted, very thick] at(1.25, -1.25) {$-2$};
+        \node[draw, dotted, very thick] at(0, -4) {$-3$};
+
+        \node at(-4, 0) {$v^{1} = -1$};
+        \node at(4, -4) {$v^{3} = -3$};
+        \node at(5, -1) {$v^{2} = -2$};
+        \node at(4, 2) {$v^{1} = -1$};
+
+    \end{tikzpicture}
+    \caption{Primjer 2.}
+\end{figure}
+
+Decimalne vrijednosti na slici iznad ozna\v{c}avaju vjerovatno\'{c}u
+zavr\v{s}etka u odre\dj{}enim stanjima ako se
+biraju konkretne akcije, dok su uokvirene vrijednosti 
+nagrade koje agent dobija igranjem odre\dj{}enih akcija. Tako\dj{}e, 
+poznate su nam vrijednosti stanja $s^{1}, s^{2}$ i $s^{3}$.
+
+Neka je politika odlu\v{c}ivanja \enquote{\textbf{Ako si u stanju 
+$s^{0}$, sa $30\%$ biraj akciju 
+\enquote{$\begingroup \color{blue} \mathbf{\rightarrow} \endgroup$}} (\textbf{plavu isprekidanu akciju}),
+\textbf{dok sa $70\%$ biraj akciju \enquote{$\begingroup \color{red} \mathbf{\rightarrow} \endgroup$}} 
+(\textbf{crvenu punu akciju})}. Matemati\v{c}ki zapisano 
+
+\begin{equation}
+    \pi(a | s) = \begin{cases}
+        0.3 \text{, } s = s^{0} \rightarrow a = \text{\textit{Isprekidana plava}}\\
+        0.7 \text{, } s = s^{0} \rightarrow a = \text{\textit{Puna crvena}}
+    \end{cases} 
+\end{equation}
+
+Ako zapi\v{s}emo tabli\v{c}no \v{s}ta vidimo na slici iznad
+
+\begin{table}[h]
+    \normalsize
+    \centering
+    \begin{tabular}{*4c}
+        \textbf{Stanje} & \textbf{Akcija} & \textbf{Prelaz u stanje} & $p(s^{+}, r | s, a)$\\      
+        \toprule 
+        \multirow{4}{*}{$s^{0}$} & \textit{Isprekidana plava} & $s^{0}$ & $p(s^{+} = s^{0}, r = -1 | s = s^{0}, a = \text{\textit{Ispr. plava}}) = 0.9$\\
+        \cline{2-4}
+        & \textit{Isprekidana plava} & $s^{1}$ & $p(s^{+} = s^{1}, r = -2 | s = s^{0}, a = \text{\textit{Ispr. plava}}) = 0.1$\\  
+        \cline{2-4}
+        & \textit{Puna crvena} & $s^{2}$ & $p(s^{+} = s^{2}, r = -2 | s = s^{0}, a = \text{\textit{Puna crv.}}) = 0.75$\\  
+        \cline{2-4}
+        & \textit{Puna crvena} & $s^{3}$ & $p(s^{+} = s^{3}, r = -3 | s = s^{0}, a = \text{\textit{Puna crv.}}) = 0.25$\\  
+        \cline{2-4}
+    \end{tabular}
+    
+\end{table}
+
+Dakle, imamo \textbf{stohasti\v{c}ku politiku odlu\v{c}ivanja}, kao 
+i \textbf{stohasti\v{c}ku okolinu}, te \'{c}emo primjeniti formulu 
+
+\begin{equation}
+    v_{\pi}(s) = \sum_{a \in \mathcal{A}}{\pi(a | s) \sum_{\substack{s^{+} \in \mathcal{S}\\r \in \mathcal{R}}}{p(s^{+}, r | s, a) \left[r + \gamma v_{\pi}(s^{+}) \right]}}
+\end{equation}
+
+Prvo rje\v{s}imo unutra\v{s}nju sumu. To radimo fiksiranjem po akcijama, odnosno posmatraju\'{c}i \v{s}ta se
+de\v{s}ava kada izaberemo partikularnu akciju $a$
+
+\begin{gather}
+    v^{0}_{\text{Ispr. pl.}} = 0.9(-1 + \gamma v^{0}_{\text{Ispr. pl.}}) + 0.1(-2 + \gamma v^{1})\\
+    v^{0}_{\text{Puna crv.}} = 0.75(-2 + \gamma v^{2}) + 0.25(-3 + \gamma v^{3})
+\end{gather}
+
+te sabiranjem dobijenih rezultata ponderisanih vjerovatno\'{c}ama $\pi$ 
+
+\begin{equation}
+    v^{0} = 0.3v^{0}_{\text{Ispr. pl.}} + 0.7v^{0}_{\text{Puna crv.}} 
+\end{equation}
+
+\end{example}
+
+\subsection{\textbf{Belmanove jedna\v{c}ine optimalne politike}}
+
+Zapisano opet, jedna\v{c}ine optimalnih politika u zavisnosti od vrijednosti
+stanja i vrijednosti akcija
+
+\begin{gather}
+    v^{*}_{\pi}(s) = \max_{\pi \in \mathcal{P}}\{h(s, a) + \gamma v^{*}_{\pi}(f(s, a))\} \text{, gdje } a = \pi(s)\\
+    q^{*}_{\pi}(s, a) = \max_{\pi \in \mathcal{P}}\{h(s, a) + \gamma q^{*}_{\pi}(f(s, a), a^{+})\} \text{, gdje } a^{+} = \pi(s^{+}) = \pi(f(s, a))
+\end{gather}
+
+Kako su politike konstruisane od akcija, mi su\v{s}tinski za svako stanje
+moramo prona\'{c}i onakvu akciju \v{c}ija primjena dovodi do
+najve\'{c}e nagrade, te se \textbf{pronala\v{z}enja optimalnih politika odlu\v{c}ivanja}
+svodi na \textbf{pronala\v{z}enje optimalnih akcija}.
+
+Dakle, to zna\v{c}i da se prethodno napisana formula za evaluaciju vrijednosti stanja mo\v{z}e  zapisati kao
+
+\begin{equation}
+    v^{*}(s) = \max_{a \in \mathcal{A}}\left\{ h(s, a) + \gamma v^{*}(f(s, a)) \right\}
+\end{equation}
+
+\v{S}to se ti\v{c}e optimalne vrijednosti akcija,
+optimalna politika se slijedi tek nakon prvog koraka
+(prva akcija nije zavisna od politike odlu\v{c}ivanja),
+te se jedna\v{c}ina optimuma vrijednosti akcija mo\v{z}e
+zapisati kao
+
+\begin{equation}
+    q^{*}(s, a) = h(s, a) + \gamma\max_{a^{+} \in \mathcal{A}}\left\{q^{*}(f(s, a), a^{+})\right\}
+\end{equation}
+
+Prethodne jedna\v{c}ine predstavljaju \textbf{Belmanove jedna\v{c}ine optimalnosti}.
+
+Stohasti\v{c}ke verzije jedna\v{c}ina optimalnosti su 
+
+\begin{gather}
+    v^{*}(s) = \max_{a \in \mathcal{A}}\left\{ \sum_{\substack{s^{+} \in \mathcal{S}\\r \in \mathcal{R}}}{p(s^{+}, r | s, a) \left[ r + \gamma v^{*}(s^{+}) \right]}\right\}\\
+    q^{*}(s, a) = \sum_{\substack{s^{+} \in \mathcal{S}\\r \in \mathcal{R}}}{p(s^{+}, r | s, a)\left[ r + \gamma \max_{a^{+} \in \mathcal{A}} \left\{ q^{*}(s^{+}, a^{+}) \right\} \right]}
+\end{gather}
+
+\end{document}

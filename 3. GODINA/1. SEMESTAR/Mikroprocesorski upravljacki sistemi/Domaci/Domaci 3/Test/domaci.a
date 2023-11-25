@@ -1,0 +1,261 @@
+org 0x00
+jmp main
+
+i data 30h
+j data 31h
+k data 32h
+state_P2 data 33h
+previous_state_P0 data 34h
+state_chg_det data 35h
+previous_state_chg_det data 36h
+what_chg data 37h
+counter data 38h
+counter_SAVE data 39h
+fib_n1 data 40h
+pom_fib data 41h
+start data 42h
+speed data 43h
+
+lookUpProg3:
+	db 81h
+	db 42h
+	db 24h 
+	db 18h
+	db 24h
+	db 42h
+	db 81h 
+
+;; DELAY FUNCKIJA ;; 
+;; ----------------- ;;
+speed1:
+	mov i, #003h
+	jmp for1
+speed2:
+	mov i, #006h
+for1:
+	mov j, #0FFh
+for2:
+	mov k, #0FFh
+for3:
+	djnz k, for3
+	djnz j, for2
+	djnz i, for1
+	ret
+;; ----------------- ;;
+
+main:
+	mov P0, #0FFh
+	mov previous_state_P0, #0FFh
+	mov previous_state_chg_det, #0FFh
+	mov P2, #000h
+	mov state_P2, #000h
+	mov counter, #006h
+	mov counter_SAVE, #006h
+	mov fib_n1, #001h
+	mov speed, #000h
+	mov DPTR, #lookUpProg3
+
+while:
+	mov A, P0
+	xrl A, previous_state_P0
+	;; XOR kolo detektuje na kojem bitu je promjena	;;
+	mov state_chg_det, A
+	mov previous_state_P0, P0
+	;; Cuva se prethodno stanje P0 porta ;;
+	anl A, P0
+	mov what_chg, A
+	;; AND kolo - kada je promjena = 0 (1->0), kada je promjena != 0 (0->1) ;;
+
+;; Da li je promjena (1->0) ili (0->1) ;;
+
+checkStateChangeDet:
+	mov A, state_chg_det
+	clr C
+	subb A, #000h
+	jz permissionForWork
+
+what_change:
+	mov A, what_chg
+	clr C
+	subb A, #000h
+	jnz exec
+	;; Ako se ne desava promjena ili je promjena (0->1), iterira se kroz staro stanje ;;
+	;; Ako se desila promjena (1->0), provjerava se koji je tip promjene ;;
+
+checkIfChangeStart:
+	mov A, state_chg_det
+	cjne A, #001h, checkIfChangeStop
+	jmp setStart
+	;; Ako je promjena na 0. bitu, to znaci da je pokrenut start ;;
+
+checkIfChangeStop:
+	cjne A, #003h, permissionForWork
+	mov state_P2, #000h
+	jmp setStop
+	;; Ako je promjena na 1. bitu, to znaci da je pokrenut stop ;; 
+
+permissionForWork:
+	mov R0, start
+	cjne R0, #1, exec 
+	;; Permisija za rad ;;
+	
+checkIfChangeFirst:
+	cjne A, #004h, checkIfChangeSecond
+	jmp prepProg
+	;; Da li je ukljucen prvi program? ;; 
+	
+checkIfChangeSecond:
+	cjne A, #008h, checkIfChangeThird
+	jmp prepProg
+	;; Da li je ukljucen drugi program? ;; 
+
+checkIfChangeThird:
+	cjne A, #010h, checkIfChangeFourth
+	jmp prepProg
+	;; Da li je ukljucen treci program? ;;
+
+checkIfChangeFourth:
+	cjne A, #020h, checkIfChangeSpeed1
+	jmp prepProg
+	;; Da li je ukljucen cetvrti program? ;;
+
+checkIfChangeSpeed1:
+	cjne A, #040h, checkIfChangeSpeed2
+	;; Da li je ukljucena prva brzina? ;;
+
+speed1call:
+	mov speed, #000h
+	jmp checkIfFirstStart
+
+checkIfChangeSpeed2:
+	cjne A, #080h, checkIfFirstStart
+	;; Da li je ukljucena druga brzina? ;;
+
+speed2call:
+	mov speed, #001h
+
+checkIfFirstStart:
+	mov A, previous_state_chg_det
+	cjne A, #0FFh, prevFirstState
+
+prepProg:
+	mov state_P2, #000h
+	mov A, state_chg_det
+	mov previous_state_chg_det, A
+
+prepFirstProg:
+	clr C
+	subb A, #004h
+	jz firstProg
+	mov A, state_chg_det
+
+prepSecondProg:
+	clr C
+	subb A, #008h
+	jz secondProg
+	mov A, state_chg_det
+
+prepThirdProg:
+	clr C
+	subb A, #010h
+	jz thirdProg
+	mov A, state_chg_det
+
+prepFourthProg:
+	clr C
+	subb A, #020h
+	jz fourthProg
+	
+exec:
+	mov P2, state_P2
+	mov A, speed
+	jz speed1Needed
+	lcall speed2
+	jmp while
+	
+setStart:
+	mov start, #001h
+	jmp permissionForWork
+
+setStop:
+	mov start, #000h
+	jmp	permissionForWork
+
+firstProg:
+	mov A, state_P2
+	cpl A
+	mov state_P2, A
+	jmp exec
+
+secondProgExec:
+	mov A, state_P2
+	rl A
+	mov state_P2, A 
+	jmp exec
+
+secondProg:						  
+	mov R0, state_P2
+	cjne R0, #000h, secondProgExec
+	mov state_P2, #001h 
+	jmp exec
+
+thirdProgCounterReset:
+	mov A, counter_SAVE
+	mov counter, A
+	jmp exec	
+
+thirdProg:
+	mov A, counter
+	movc A, @A+DPTR
+	mov state_P2, A
+	dec counter
+	mov A, counter
+	jz thirdProgCounterReset
+	jmp exec
+
+fourthProgReset:
+	mov fib_n1, #001h
+	mov state_P2, #001h
+	jmp exec	
+
+fourthProg:
+	mov A, state_P2
+	mov pom_fib, A
+	clr C
+	subb A, #0E9h
+	jz fourthProgReset
+	mov A, fib_n1
+	add A, state_P2
+	mov state_P2, A
+	mov A, pom_fib
+	mov fib_n1, A
+	jmp exec
+
+prevFirstState:
+	mov A, previous_state_chg_det
+	clr C
+	subb A, #004h
+	jz firstProg
+	mov A, previous_state_chg_det
+	clr C
+	subb A, #001h
+	jz firstProg
+	
+prevSecondState:
+	mov A, previous_state_chg_det
+	cjne A, #008h, prevThirdState
+	jmp secondProg 
+
+prevThirdState:
+	cjne A, #010h, prevFourthState
+	jmp thirdProg
+
+prevFourthState:
+	cjne A, #020h, exec
+	jmp fourthProg
+	
+speed1Needed:
+	lcall speed1
+	jmp while	
+				
+end

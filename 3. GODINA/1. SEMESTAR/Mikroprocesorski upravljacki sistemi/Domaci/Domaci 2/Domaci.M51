@@ -1,0 +1,215 @@
+BL51 BANKED LINKER/LOCATER V6.15                                                        11/21/2022  14:45:41  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.15, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE domaci.obj TO Domaci RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  domaci.obj (DOMACI)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CILDPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CSTPTR)
+
+
+LINK MAP OF MODULE:  Domaci (DOMACI)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000FH     UNIT         _DATA_GROUP_
+            IDATA   0017H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     00EEH     UNIT         ?PR?_STATE?DOMACI
+            CODE    00F1H     0093H     UNIT         ?PR?MAIN?DOMACI
+            CODE    0184H     004DH     UNIT         ?C?LIB_CODE
+            CODE    01D1H     003CH     UNIT         ?PR?_DELAY?DOMACI
+            CODE    020DH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   Domaci (DOMACI)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?DOMACI
+
+?PR?MAIN?DOMACI                0008H    0008H
+  +--> ?PR?_STATE?DOMACI
+  +--> ?PR?_DELAY?DOMACI
+
+?PR?_STATE?DOMACI              0010H    0007H
+
+
+
+SYMBOL TABLE OF MODULE:  Domaci (DOMACI)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+BL51 BANKED LINKER/LOCATER V6.15                                                      11/21/2022  14:45:41  PAGE 2
+
+
+  -------         MODULE        DOMACI
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  C:01D1H         PUBLIC        _delay
+  C:0003H         PUBLIC        _state
+  C:00F1H         PUBLIC        main
+  -------         PROC          _DELAY
+  D:0007H         SYMBOL        speed
+  -------         DO            
+  D:0002H         SYMBOL        i
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:01D1H         LINE#         15
+  C:01D1H         LINE#         18
+  C:01D4H         LINE#         19
+  C:01D6H         LINE#         20
+  C:01D9H         LINE#         22
+  C:01E4H         LINE#         23
+  C:01F0H         LINE#         24
+  C:01F0H         LINE#         26
+  C:01F0H         LINE#         27
+  C:01F3H         LINE#         28
+  C:01F6H         LINE#         30
+  C:0201H         LINE#         31
+  C:020CH         LINE#         32
+  C:020CH         LINE#         33
+  -------         ENDPROC       _DELAY
+  -------         PROC          _STATE
+  D:0007H         SYMBOL        state_chg_det
+  D:0011H         SYMBOL        state_P2
+  D:0014H         SYMBOL        help
+  C:0003H         LINE#         35
+  C:0009H         LINE#         36
+  C:0022H         LINE#         38
+  C:0022H         LINE#         39
+  C:002CH         LINE#         40
+  C:002FH         LINE#         42
+  C:002FH         LINE#         43
+  C:003BH         LINE#         44
+  C:003CH         LINE#         45
+  C:003FH         LINE#         46
+  C:003FH         LINE#         47
+  C:0042H         LINE#         48
+  C:0042H         LINE#         49
+  C:0045H         LINE#         51
+  C:0045H         LINE#         52
+  C:0051H         LINE#         53
+  C:0053H         LINE#         54
+  C:0055H         LINE#         55
+  C:005EH         LINE#         56
+  C:006BH         LINE#         57
+  C:006BH         LINE#         59
+  C:007CH         LINE#         60
+  C:0088H         LINE#         61
+  C:008AH         LINE#         62
+  C:008AH         LINE#         63
+BL51 BANKED LINKER/LOCATER V6.15                                                      11/21/2022  14:45:41  PAGE 3
+
+
+  C:0099H         LINE#         64
+  C:0099H         LINE#         65
+  C:009BH         LINE#         67
+  C:009BH         LINE#         68
+  C:00ACH         LINE#         70
+  C:00B1H         LINE#         71
+  C:00B7H         LINE#         72
+  C:00B9H         LINE#         73
+  C:00B9H         LINE#         74
+  C:00B9H         LINE#         75
+  C:00CBH         LINE#         76
+  C:00D5H         LINE#         77
+  C:00D5H         LINE#         78
+  C:00D5H         LINE#         79
+  C:00D5H         LINE#         80
+  C:00E1H         LINE#         81
+  C:00E5H         LINE#         82
+  C:00E5H         LINE#         83
+  C:00F0H         LINE#         84
+  C:00F0H         LINE#         85
+  C:00F0H         LINE#         86
+  -------         ENDPROC       _STATE
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        previous_state_P0
+  D:0009H         SYMBOL        state_P2
+  D:000AH         SYMBOL        state_chg_det
+  D:0007H         SYMBOL        what_chg
+  D:000BH         SYMBOL        help
+  D:000CH         SYMBOL        previous_state_chg_det
+  D:000DH         SYMBOL        speed
+  D:000EH         SYMBOL        start
+  D:000FH         SYMBOL        stop
+  -------         ENDDO         
+  C:00F1H         LINE#         88
+  C:00F1H         LINE#         90
+  C:00F4H         LINE#         91
+  C:00F7H         LINE#         92
+  C:00F9H         LINE#         94
+  C:00FBH         LINE#         95
+  C:00FDH         LINE#         96
+  C:00FFH         LINE#         97
+  C:0101H         LINE#         98
+  C:0103H         LINE#         100
+  C:0105H         LINE#         101
+  C:0108H         LINE#         103
+  C:0108H         LINE#         105
+  C:010EH         LINE#         107
+  C:0111H         LINE#         109
+  C:0114H         LINE#         112
+  C:011CH         LINE#         113
+  C:011EH         LINE#         114
+  C:011EH         LINE#         117
+  C:012CH         LINE#         119
+  C:012FH         LINE#         123
+  C:0140H         LINE#         126
+  C:0140H         LINE#         128
+BL51 BANKED LINKER/LOCATER V6.15                                                      11/21/2022  14:45:41  PAGE 4
+
+
+  C:0142H         LINE#         129
+  C:0144H         LINE#         130
+  C:0156H         LINE#         131
+  C:0159H         LINE#         132
+  C:015BH         LINE#         135
+  C:015BH         LINE#         136
+  C:0163H         LINE#         137
+  C:0166H         LINE#         138
+  C:0166H         LINE#         139
+  C:017AH         LINE#         140
+  C:017AH         LINE#         141
+  C:017AH         LINE#         142
+  C:017DH         LINE#         143
+  C:0182H         LINE#         144
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        DOMACI
+
+  -------         MODULE        ?C?CLDPTR
+  C:0184H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CILDPTR
+  C:019DH         PUBLIC        ?C?CILDPTR
+  -------         ENDMOD        ?C?CILDPTR
+
+  -------         MODULE        ?C?CSTPTR
+  C:01BFH         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+Program Size: data=24.0 xdata=0 code=537
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

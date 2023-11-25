@@ -1,0 +1,35 @@
+function y = fcn(u)
+
+persistent y1 y2 u1 u2 A B C D E F;
+
+
+T=0.01;
+
+A=10000*T*T
+B = 20000*T*T
+C = A
+
+D = 4+400*T+10000*T*T
+E = 20000*T*T - 8
+F = 4+10000*T*T-400*T
+
+if isempty(y1)
+    y1 = 0;
+end
+if isempty(y2)
+    y2 = 0;
+end
+if isempty(u1)
+    u1 = 0;
+end
+if isempty(u2)
+    u2 = 0;
+end
+
+
+y = (-E*y1 - F*y2 + A*u + B*u1 +C*u2)/D;
+
+y2 = y1;
+y1 = y;
+u2 = u1;
+u1 = u;

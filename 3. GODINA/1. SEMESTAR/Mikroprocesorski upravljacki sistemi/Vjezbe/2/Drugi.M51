@@ -1,0 +1,112 @@
+BL51 BANKED LINKER/LOCATER V6.15                                                        11/05/2022  10:47:57  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.15, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE drugi.obj TO Drugi RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  drugi.obj (DRUGI)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  Drugi (DRUGI)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         _DATA_GROUP_
+            IDATA   000AH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     004FH     UNIT         ?PR?MAIN?DRUGI
+            CODE    0052H     002BH     UNIT         ?PR?DELAY?DRUGI
+            CODE    007DH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   Drugi (DRUGI)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?DRUGI
+
+?PR?MAIN?DRUGI                 0008H    0002H
+  +--> ?PR?DELAY?DRUGI
+
+
+
+SYMBOL TABLE OF MODULE:  Drugi (DRUGI)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        DRUGI
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:00A0H         PUBLIC        P2
+  C:0052H         PUBLIC        delay
+  C:0003H         PUBLIC        main
+  -------         PROC          DELAY
+  -------         DO            
+BL51 BANKED LINKER/LOCATER V6.15                                                      11/05/2022  10:47:57  PAGE 2
+
+
+  D:0004H         SYMBOL        i
+  D:0002H         SYMBOL        j
+  D:0006H         SYMBOL        k
+  -------         ENDDO         
+  C:0052H         LINE#         3
+  C:0052H         LINE#         5
+  C:0055H         LINE#         6
+  C:0058H         LINE#         7
+  C:005BH         LINE#         9
+  C:0066H         LINE#         10
+  C:0071H         LINE#         11
+  C:007CH         LINE#         12
+  -------         ENDPROC       DELAY
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        stanje_P2
+  D:0009H         SYMBOL        lijevi
+  D:0001H         SYMBOL        desni
+  -------         ENDDO         
+  C:0003H         LINE#         14
+  C:0003H         LINE#         16
+  C:0006H         LINE#         17
+  C:0009H         LINE#         18
+  C:000BH         LINE#         20
+  C:000EH         LINE#         21
+  C:0010H         LINE#         23
+  C:0010H         LINE#         25
+  C:0022H         LINE#         26
+  C:002AH         LINE#         27
+  C:0030H         LINE#         28
+  C:0032H         LINE#         29
+  C:0032H         LINE#         30
+  C:0038H         LINE#         31
+  C:003CH         LINE#         32
+  C:003CH         LINE#         34
+  C:0040H         LINE#         35
+  C:0043H         LINE#         36
+  C:0043H         LINE#         38
+  C:0046H         LINE#         39
+  C:0048H         LINE#         40
+  C:0048H         LINE#         42
+  C:004DH         LINE#         44
+  C:0050H         LINE#         45
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        DRUGI
+
+Program Size: data=11.0 xdata=0 code=137
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

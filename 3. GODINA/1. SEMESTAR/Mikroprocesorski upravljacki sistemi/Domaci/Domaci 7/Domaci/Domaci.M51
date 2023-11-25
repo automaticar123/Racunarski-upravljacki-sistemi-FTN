@@ -1,0 +1,279 @@
+BL51 BANKED LINKER/LOCATER V6.15                                                        12/20/2022  18:31:57  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.15, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE domaci.obj TO Domaci RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  domaci.obj (DOMACI)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  Domaci (DOMACI)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     002AH     UNIT         ?DT?DOMACI
+            IDATA   0032H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0018H                  *** GAP ***
+            CODE    001BH     0003H     ABSOLUTE     
+                    001EH     0005H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+            CODE    0026H     0131H     UNIT         ?PR?PARSECOMMAND?DOMACI
+            CODE    0157H     008CH     UNIT         ?C_C51STARTUP
+            CODE    01E3H     0050H     UNIT         ?PR?_DIODE_ACTIVATE?DOMACI
+            CODE    0233H     0050H     UNIT         ?PR?ASY_INTERRUPT?DOMACI
+            CODE    0283H     003CH     UNIT         ?C_INITSEG
+            CODE    02BFH     002EH     UNIT         ?PR?TIMER1_INTERRUPT?DOMACI
+            CODE    02EDH     0022H     UNIT         ?PR?INIT?DOMACI
+            CODE    030FH     0020H     UNIT         ?PR?MAIN?DOMACI
+
+
+
+OVERLAY MAP OF MODULE:   Domaci (DOMACI)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?ASY_INTERRUPT?DOMACI
+  +--> ?PR?PARSECOMMAND?DOMACI
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?DOMACI
+  +--> ?C_INITSEG
+
+?PR?MAIN?DOMACI
+  +--> ?PR?INIT?DOMACI
+BL51 BANKED LINKER/LOCATER V6.15                                                      12/20/2022  18:31:57  PAGE 2
+
+
+  +--> ?PR?_DIODE_ACTIVATE?DOMACI
+
+
+
+SYMBOL TABLE OF MODULE:  Domaci (DOMACI)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        DOMACI
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A0H         PUBLIC        P2
+  D:0008H         PUBLIC        counter
+  B:00A8H.7       PUBLIC        EA
+  D:0009H         PUBLIC        state_P2
+  D:000AH         PUBLIC        previous_state
+  D:000BH         PUBLIC        program_3
+  D:0012H         PUBLIC        program_4
+  D:001EH         PUBLIC        speed
+  B:00A8H.4       PUBLIC        ES
+  B:0098H.0       PUBLIC        RI
+  B:0098H.1       PUBLIC        TI
+  D:001FH         PUBLIC        counter_for_program_3
+  D:0020H         PUBLIC        counter_for_program_4
+  C:0233H         PUBLIC        asy_interrupt
+  D:0021H         PUBLIC        state
+  C:030FH         PUBLIC        main
+  D:0022H         PUBLIC        status
+  C:02BFH         PUBLIC        timer1_interrupt
+  D:0023H         PUBLIC        error_flag
+  D:0024H         PUBLIC        start
+  D:0099H         PUBLIC        SBUF
+  D:0087H         PUBLIC        PCON
+  D:0025H         PUBLIC        counter_set
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  C:02EDH         PUBLIC        init
+  D:009BH         PUBLIC        BDRCON
+  C:01E3H         PUBLIC        _diode_activate
+  D:0026H         PUBLIC        test
+  B:00A8H.3       PUBLIC        ET1
+  D:008DH         PUBLIC        TH1
+  D:008BH         PUBLIC        TL1
+  B:0088H.6       PUBLIC        TR1
+  D:009AH         PUBLIC        BRL
+  C:0026H         PUBLIC        parseCommand
+  D:0027H         PUBLIC        buffer_pointer
+  D:0028H         PUBLIC        buffer
+  -------         PROC          INIT
+  C:02EDH         LINE#         24
+  C:02EDH         LINE#         26
+  C:02EFH         LINE#         28
+  C:02F2H         LINE#         29
+  C:02F5H         LINE#         30
+  C:02F8H         LINE#         31
+  C:02FBH         LINE#         32
+  C:02FDH         LINE#         34
+BL51 BANKED LINKER/LOCATER V6.15                                                      12/20/2022  18:31:57  PAGE 3
+
+
+  C:0300H         LINE#         35
+  C:0302H         LINE#         36
+  C:0304H         LINE#         37
+  C:0307H         LINE#         38
+  C:030AH         LINE#         40
+  C:030CH         LINE#         42
+  C:030EH         LINE#         43
+  -------         ENDPROC       INIT
+  -------         PROC          _DIODE_ACTIVATE
+  D:0007H         SYMBOL        state
+  C:01E3H         LINE#         45
+  C:01E3H         LINE#         47
+  C:01F5H         LINE#         49
+  C:01F5H         LINE#         50
+  C:01F8H         LINE#         51
+  C:01F9H         LINE#         53
+  C:01F9H         LINE#         54
+  C:0200H         LINE#         56
+  C:0203H         LINE#         57
+  C:0204H         LINE#         58
+  C:0204H         LINE#         59
+  C:020AH         LINE#         60
+  C:020BH         LINE#         62
+  C:020BH         LINE#         63
+  C:0210H         LINE#         64
+  C:0213H         LINE#         65
+  C:0213H         LINE#         66
+  C:0219H         LINE#         67
+  C:021BH         LINE#         69
+  C:021BH         LINE#         70
+  C:0220H         LINE#         71
+  C:0223H         LINE#         72
+  C:0223H         LINE#         73
+  C:022EH         LINE#         74
+  C:022FH         LINE#         76
+  C:022FH         LINE#         77
+  C:0232H         LINE#         78
+  C:0232H         LINE#         79
+  C:0232H         LINE#         80
+  -------         ENDPROC       _DIODE_ACTIVATE
+  -------         PROC          PARSECOMMAND
+  C:0026H         LINE#         82
+  C:0026H         LINE#         84
+  C:0052H         LINE#         90
+  C:0052H         LINE#         92
+  C:0055H         LINE#         93
+  C:0058H         LINE#         94
+  C:005BH         LINE#         95
+  C:005CH         LINE#         97
+  C:0083H         LINE#         102
+  C:0083H         LINE#         104
+  C:0086H         LINE#         105
+  C:0088H         LINE#         106
+  C:008BH         LINE#         107
+  C:008DH         LINE#         108
+  C:008FH         LINE#         109
+  C:008FH         LINE#         110
+BL51 BANKED LINKER/LOCATER V6.15                                                      12/20/2022  18:31:57  PAGE 4
+
+
+  C:008FH         LINE#         111
+  C:008FH         LINE#         112
+  C:008FH         LINE#         113
+  C:0092H         LINE#         115
+  C:00D2H         LINE#         121
+  C:00D2H         LINE#         123
+  C:00D8H         LINE#         124
+  C:00D9H         LINE#         126
+  C:0110H         LINE#         131
+  C:0110H         LINE#         133
+  C:0112H         LINE#         134
+  C:0117H         LINE#         135
+  C:011AH         LINE#         136
+  C:011DH         LINE#         137
+  C:011EH         LINE#         138
+  C:011EH         LINE#         139
+  C:0121H         LINE#         140
+  C:0124H         LINE#         141
+  C:0124H         LINE#         142
+  C:0125H         LINE#         143
+  C:0139H         LINE#         146
+  C:0139H         LINE#         148
+  C:013FH         LINE#         149
+  C:0140H         LINE#         150
+  C:0140H         LINE#         151
+  C:0143H         LINE#         152
+  C:0146H         LINE#         153
+  C:0149H         LINE#         154
+  C:014BH         LINE#         155
+  C:014EH         LINE#         156
+  C:0151H         LINE#         157
+  C:0154H         LINE#         158
+  C:0156H         LINE#         159
+  C:0156H         LINE#         160
+  -------         ENDPROC       PARSECOMMAND
+  -------         PROC          TIMER1_INTERRUPT
+  C:02BFH         LINE#         162
+  C:02C3H         LINE#         164
+  C:02C6H         LINE#         165
+  C:02C9H         LINE#         167
+  C:02D0H         LINE#         168
+  C:02D3H         LINE#         169
+  C:02D6H         LINE#         171
+  C:02DCH         LINE#         172
+  C:02DFH         LINE#         173
+  C:02E2H         LINE#         174
+  C:02E5H         LINE#         175
+  C:02E8H         LINE#         176
+  C:02E8H         LINE#         177
+  C:02E8H         LINE#         178
+  -------         ENDPROC       TIMER1_INTERRUPT
+  -------         PROC          ASY_INTERRUPT
+  C:0233H         LINE#         180
+  C:0242H         LINE#         181
+  C:0244H         LINE#         183
+  C:0247H         LINE#         184
+  C:0249H         LINE#         185
+BL51 BANKED LINKER/LOCATER V6.15                                                      12/20/2022  18:31:57  PAGE 5
+
+
+  C:0249H         LINE#         187
+  C:024CH         LINE#         189
+  C:024FH         LINE#         190
+  C:0251H         LINE#         192
+  C:0256H         LINE#         194
+  C:0259H         LINE#         195
+  C:0259H         LINE#         197
+  C:0263H         LINE#         198
+  C:026CH         LINE#         200
+  C:0271H         LINE#         202
+  C:0274H         LINE#         203
+  C:0274H         LINE#         204
+  C:0274H         LINE#         205
+  C:0276H         LINE#         206
+  -------         ENDPROC       ASY_INTERRUPT
+  -------         PROC          MAIN
+  C:030FH         LINE#         208
+  C:030FH         LINE#         210
+  C:0312H         LINE#         212
+  C:0312H         LINE#         214
+  C:0316H         LINE#         215
+  C:0319H         LINE#         216
+  C:031DH         LINE#         217
+  C:0322H         LINE#         218
+  C:0322H         LINE#         219
+  C:0322H         LINE#         220
+  C:0327H         LINE#         221
+  C:032AH         LINE#         222
+  C:032AH         LINE#         223
+  C:032DH         LINE#         224
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        DOMACI
+
+Program Size: data=51.0 xdata=0 code=786
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

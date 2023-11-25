@@ -1,0 +1,25 @@
+\babel@toc {serbian}{}\relax 
+\contentsline {section}{\numberline {I}\textbf {Kratko ponavljanje sistema automatskog upravljanja}}{2}{section.1}%
+\contentsline {subsection}{\numberline {\mbox {I-A}}\textbf {Opis sistema i Laplasova transformacija}}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {\mbox {I-B}}\textbf {Modeliranje sistema}}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {\mbox {I-C}}\textbf {Linearizacija sistema}}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {\mbox {I-D}}\textbf {Odzivi sistema prvog i drugog reda na razli\v {c}ite pobude}}{4}{subsection.1.4}%
+\contentsline {subsection}{\numberline {\mbox {I-E}}\textbf {Karakteristike sistema automatskog upravljanja}}{7}{subsection.1.5}%
+\contentsline {subsection}{\numberline {\mbox {I-F}}\textbf {Gre\v {s}ka u ustaljenom stanju}}{7}{subsection.1.6}%
+\contentsline {subsection}{\numberline {\mbox {I-G}}\textbf {Stabilnost sistema}}{9}{subsection.1.7}%
+\contentsline {section}{\numberline {II}\textbf {Dvopolo\v {z}ajni regulator i osnovni oblik kontinualnog PID regulatora}}{10}{section.2}%
+\contentsline {subsection}{\numberline {\mbox {II-A}}\textbf {Dvopolo\v {z}ajni regulator}}{10}{subsection.2.1}%
+\contentsline {section}{\numberline {III}\textbf {Modifikovani PID regulator. Modifikacija D dejstva}}{12}{section.3}%
+\contentsline {section}{\numberline {IV}\textbf {Modifikovani PID regulator. Nagomilavanje integralnog dejstva, modifikacije P dejstva}}{13}{section.4}%
+\contentsline {section}{\numberline {V}\textbf {Struktura digitalnih sistema automatskog upravljanja. A/D konverzija i D/A konverzija. Principska \v {s}ema digitalnog upravlja\v {c}kog sistema}}{14}{section.5}%
+\contentsline {subsection}{\numberline {\mbox {V-A}}\textbf {Klasifikacija signala}}{14}{subsection.5.1}%
+\contentsline {subsection}{\numberline {\mbox {V-B}}\textbf {Kolo digitalnog sistema automatskog upravljanja}}{15}{subsection.5.2}%
+\contentsline {section}{\numberline {VI}\textbf {Matemati\v {c}ki model odabiranja i zadr\v {s}ke}}{17}{section.6}%
+\contentsline {section}{\numberline {VII}\textbf {Osobine idealno odbirkovanog signala}}{19}{section.7}%
+\contentsline {section}{\numberline {VIII}\textbf {Pojam $\mathcal {Z}$-transformacije. Inverzna $\mathcal {Z}$-transformacija. $\mathcal {Z}$-transformacija elementnarnih signala}}{22}{section.8}%
+\contentsline {subsection}{\numberline {\mbox {VIII-A}}\textbf {$\mathcal {Z}$-transformacija karakteristi\v {c}nih signala}}{22}{subsection.8.1}%
+\contentsline {section}{\numberline {IX}\textbf {Osnovne osobine $\mathcal {Z}$-transformacije}}{24}{section.9}%
+\contentsline {section}{\numberline {X}\textbf {Preslikavanje primarnog pojasa iz $s$-ravni u $z$-ravan}}{27}{section.10}%
+\contentsline {section}{\numberline {XI}\textbf {Preslikavanje prave vremena smirenja, preslikavanje konture konstantnih frekvencija}}{29}{section.11}%
+\contentsline {section}{\numberline {XII}\textbf {Preslikavanje polo\v {z}aja polova i vremenskog odziva}}{30}{section.12}%
+\contentsline {section}{\numberline {XIII}\textbf {Stabilnost diskretnih sistema}}{31}{section.13}%

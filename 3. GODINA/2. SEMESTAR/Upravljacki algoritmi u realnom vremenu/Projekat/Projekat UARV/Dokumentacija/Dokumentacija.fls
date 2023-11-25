@@ -1,0 +1,334 @@
+PWD c:\Users\radov\Desktop\Projekti\Projekat UARV
+INPUT C:\Users\radov\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
+INPUT c:\Users\radov\Desktop\Projekti\Projekat UARV\Dokumentacija.tex
+OUTPUT Dokumentacija.log
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\size12.clo
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr12.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\keyval.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\keyval.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\keyval.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\keyval.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\iftex\ifvtex.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\iftex\ifvtex.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\iftex\ifvtex.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\iftex\ifvtex.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\iftex\iftex.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\iftex\iftex.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\iftex\iftex.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\iftex\iftex.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\geometry\geometry.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\graphicx.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\graphicx.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\graphicx.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\graphicx.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\graphics.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\graphics.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\graphics.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\graphics.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\trig.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\trig.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\trig.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\trig.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-cfg\graphics.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-cfg\graphics.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-cfg\graphics.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-cfg\graphics.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-def\pdftex.def
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-def\pdftex.def
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-def\pdftex.def
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-def\pdftex.def
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\siunitx\siunitx.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\siunitx\siunitx.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\siunitx\siunitx.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\siunitx\siunitx.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\translations\translations.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\translations\translations.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\translations\translations.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\translations\translations.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\etoolbox\etoolbox.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\etoolbox\etoolbox.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\etoolbox\etoolbox.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\etoolbox\etoolbox.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\ltxcmds\ltxcmds.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\ltxcmds\ltxcmds.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\ltxcmds\ltxcmds.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\generic\ltxcmds\ltxcmds.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amstext.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amstext.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amstext.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amstext.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amsgen.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amsgen.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amsgen.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amsgen.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\tools\array.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\tools\array.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\tools\array.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\tools\array.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdftex.def
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdftex.def
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdftex.def
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdftex.def
+INPUT .\Dokumentacija.aux
+INPUT Dokumentacija.aux
+INPUT Dokumentacija.aux
+OUTPUT Dokumentacija.aux
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\epstopdf-pkg\epstopdf-base.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\epstopdf-pkg\epstopdf-base.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\epstopdf-pkg\epstopdf-base.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\epstopdf-pkg\epstopdf-base.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\00miktex\epstopdf-sys.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\00miktex\epstopdf-sys.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\00miktex\epstopdf-sys.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\00miktex\epstopdf-sys.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\color.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\color.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\color.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\color.sty
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-cfg\color.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-cfg\color.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-cfg\color.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics-cfg\color.cfg
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\mathcolor.ltx
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\mathcolor.ltx
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\mathcolor.ltx
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\graphics\mathcolor.ltx
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\translations\dicts\translations-basic-dictionary-english.trsl
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\translations\dicts\translations-basic-dictionary-english.trsl
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\translations\dicts\translations-basic-dictionary-english.trsl
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\translations\dicts\translations-basic-dictionary-english.trsl
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr17.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbxti10.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr12.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi12.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy10.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmti12.tfm
+OUTPUT Dokumentacija.pdf
+INPUT C:\Users\radov\AppData\Local\MiKTeX\fonts\map\pdftex\pdftex.map
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr17.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
+INPUT .\Dokumentacija.toc
+INPUT Dokumentacija.toc
+INPUT Dokumentacija.toc
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr8.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr6.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi12.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi8.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi6.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy10.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy8.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsy6.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbxti10.tfm
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmti12.tfm
+OUTPUT Dokumentacija.toc
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm
+INPUT .\Slike\SYSTEM APPEARANCE.PNG
+INPUT .\Slike\SYSTEM APPEARANCE.PNG
+INPUT Slike\SYSTEM APPEARANCE.PNG
+INPUT .\Slike\SYSTEM APPEARANCE.PNG
+INPUT .\Slike\SYSTEM APPEARANCE.PNG
+INPUT .\Slike\SYSTEM APPEARANCE.PNG
+INPUT .\Slike\SYSTEM APPEARANCE.PNG
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbxti10.tfm
+INPUT .\Slike\SCADA.vi FRONT PANEL.png
+INPUT .\Slike\SCADA.vi FRONT PANEL.png
+INPUT Slike\SCADA.vi FRONT PANEL.png
+INPUT .\Slike\SCADA.vi FRONT PANEL.png
+INPUT .\Slike\SCADA.vi FRONT PANEL.png
+INPUT .\Slike\SCADA.vi FRONT PANEL.png
+INPUT .\Slike\SCADA.vi FRONT PANEL.png
+INPUT .\Slike\SCADA.vi HAND-AUTO CASE.png
+INPUT .\Slike\SCADA.vi HAND-AUTO CASE.png
+INPUT Slike\SCADA.vi HAND-AUTO CASE.png
+INPUT .\Slike\SCADA.vi HAND-AUTO CASE.png
+INPUT .\Slike\SCADA.vi HAND-AUTO CASE.png
+INPUT .\Slike\SCADA.vi HAND-AUTO CASE.png
+INPUT .\Slike\SCADA.vi HAND-AUTO CASE.png
+INPUT .\Slike\MIDDLE.vi CODE.png
+INPUT .\Slike\MIDDLE.vi CODE.png
+INPUT Slike\MIDDLE.vi CODE.png
+INPUT .\Slike\MIDDLE.vi CODE.png
+INPUT .\Slike\MIDDLE.vi CODE.png
+INPUT .\Slike\MIDDLE.vi CODE.png
+INPUT .\Slike\MIDDLE.vi CODE.png
+INPUT .\Slike\SCADA.vi SYSTEM ON CASE.png
+INPUT .\Slike\SCADA.vi SYSTEM ON CASE.png
+INPUT Slike\SCADA.vi SYSTEM ON CASE.png
+INPUT .\Slike\SCADA.vi SYSTEM ON CASE.png
+INPUT .\Slike\SCADA.vi SYSTEM ON CASE.png
+INPUT .\Slike\SCADA.vi SYSTEM ON CASE.png
+INPUT .\Slike\SCADA.vi SYSTEM ON CASE.png
+INPUT .\Slike\SCADA.vi EMERGENCY CASE.png
+INPUT .\Slike\SCADA.vi EMERGENCY CASE.png
+INPUT Slike\SCADA.vi EMERGENCY CASE.png
+INPUT .\Slike\SCADA.vi EMERGENCY CASE.png
+INPUT .\Slike\SCADA.vi EMERGENCY CASE.png
+INPUT .\Slike\SCADA.vi EMERGENCY CASE.png
+INPUT .\Slike\SCADA.vi EMERGENCY CASE.png
+INPUT .\Slike\SCADA.vi ACK FAULT CASE.png
+INPUT .\Slike\SCADA.vi ACK FAULT CASE.png
+INPUT Slike\SCADA.vi ACK FAULT CASE.png
+INPUT .\Slike\SCADA.vi ACK FAULT CASE.png
+INPUT .\Slike\SCADA.vi ACK FAULT CASE.png
+INPUT .\Slike\SCADA.vi ACK FAULT CASE.png
+INPUT .\Slike\SCADA.vi ACK FAULT CASE.png
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbxti10.tfm
+INPUT .\Slike\cRIO.vi CODE.png
+INPUT .\Slike\cRIO.vi CODE.png
+INPUT Slike\cRIO.vi CODE.png
+INPUT .\Slike\cRIO.vi CODE.png
+INPUT .\Slike\cRIO.vi CODE.png
+INPUT .\Slike\cRIO.vi CODE.png
+INPUT .\Slike\cRIO.vi CODE.png
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\omscmr.fd
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\omscmr.fd
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\omscmr.fd
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\tex\latex\base\omscmr.fd
+INPUT .\Slike\HAND_AUTO.vi AUTO TO HAND.png
+INPUT .\Slike\HAND_AUTO.vi AUTO TO HAND.png
+INPUT Slike\HAND_AUTO.vi AUTO TO HAND.png
+INPUT .\Slike\HAND_AUTO.vi AUTO TO HAND.png
+INPUT .\Slike\HAND_AUTO.vi AUTO TO HAND.png
+INPUT .\Slike\HAND_AUTO.vi AUTO TO HAND.png
+INPUT .\Slike\HAND_AUTO.vi AUTO TO HAND.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS ON.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS ON.png
+INPUT Slike\HAND_AUTO.vi PUMPS ON.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS ON.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS ON.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS ON.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS ON.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS OFF.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS OFF.png
+INPUT Slike\HAND_AUTO.vi PUMPS OFF.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS OFF.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS OFF.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS OFF.png
+INPUT .\Slike\HAND_AUTO.vi PUMPS OFF.png
+INPUT .\Slike\HAND DRY PUMPS.PNG
+INPUT .\Slike\HAND DRY PUMPS.PNG
+INPUT Slike\HAND DRY PUMPS.PNG
+INPUT .\Slike\HAND DRY PUMPS.PNG
+INPUT .\Slike\HAND DRY PUMPS.PNG
+INPUT .\Slike\HAND DRY PUMPS.PNG
+INPUT .\Slike\HAND DRY PUMPS.PNG
+INPUT .\Slike\HAND_AUTO.vi WAIT.png
+INPUT .\Slike\HAND_AUTO.vi WAIT.png
+INPUT Slike\HAND_AUTO.vi WAIT.png
+INPUT .\Slike\HAND_AUTO.vi WAIT.png
+INPUT .\Slike\HAND_AUTO.vi WAIT.png
+INPUT .\Slike\HAND_AUTO.vi WAIT.png
+INPUT .\Slike\HAND_AUTO.vi WAIT.png
+INPUT .\Slike\HAND_AUTO.vi HAND TO AUTO.png
+INPUT .\Slike\HAND_AUTO.vi HAND TO AUTO.png
+INPUT Slike\HAND_AUTO.vi HAND TO AUTO.png
+INPUT .\Slike\HAND_AUTO.vi HAND TO AUTO.png
+INPUT .\Slike\HAND_AUTO.vi HAND TO AUTO.png
+INPUT .\Slike\HAND_AUTO.vi HAND TO AUTO.png
+INPUT .\Slike\HAND_AUTO.vi HAND TO AUTO.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 1.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 1.png
+INPUT Slike\HAND_AUTO.vi AUTO SYSTEM OFF 1.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 1.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 1.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 1.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 1.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 2.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 2.png
+INPUT Slike\HAND_AUTO.vi AUTO SYSTEM OFF 2.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 2.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 2.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 2.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM OFF 2.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM ON.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM ON.png
+INPUT Slike\HAND_AUTO.vi AUTO SYSTEM ON.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM ON.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM ON.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM ON.png
+INPUT .\Slike\HAND_AUTO.vi AUTO SYSTEM ON.png
+INPUT .\Slike\HAND_AUTO.vi AUTO WAIT NOSENSORB2.png
+INPUT .\Slike\HAND_AUTO.vi AUTO WAIT NOSENSORB2.png
+INPUT Slike\HAND_AUTO.vi AUTO WAIT NOSENSORB2.png
+INPUT .\Slike\HAND_AUTO.vi AUTO WAIT NOSENSORB2.png
+INPUT .\Slike\HAND_AUTO.vi AUTO WAIT NOSENSORB2.png
+INPUT .\Slike\HAND_AUTO.vi AUTO WAIT NOSENSORB2.png
+INPUT .\Slike\HAND_AUTO.vi AUTO WAIT NOSENSORB2.png
+INPUT .\Slike\HAND_AUTO.vi TIME.png
+INPUT .\Slike\HAND_AUTO.vi TIME.png
+INPUT Slike\HAND_AUTO.vi TIME.png
+INPUT .\Slike\HAND_AUTO.vi TIME.png
+INPUT .\Slike\HAND_AUTO.vi TIME.png
+INPUT .\Slike\HAND_AUTO.vi TIME.png
+INPUT .\Slike\HAND_AUTO.vi TIME.png
+INPUT .\Slike\HAND_AUTO.vi AUTO PUMP SWITCH.png
+INPUT .\Slike\HAND_AUTO.vi AUTO PUMP SWITCH.png
+INPUT Slike\HAND_AUTO.vi AUTO PUMP SWITCH.png
+INPUT .\Slike\HAND_AUTO.vi AUTO PUMP SWITCH.png
+INPUT .\Slike\HAND_AUTO.vi AUTO PUMP SWITCH.png
+INPUT .\Slike\HAND_AUTO.vi AUTO PUMP SWITCH.png
+INPUT .\Slike\HAND_AUTO.vi AUTO PUMP SWITCH.png
+INPUT .\Slike\HAND_AUTO.vi SENSORB3B5.png
+INPUT .\Slike\HAND_AUTO.vi SENSORB3B5.png
+INPUT Slike\HAND_AUTO.vi SENSORB3B5.png
+INPUT .\Slike\HAND_AUTO.vi SENSORB3B5.png
+INPUT .\Slike\HAND_AUTO.vi SENSORB3B5.png
+INPUT .\Slike\HAND_AUTO.vi SENSORB3B5.png
+INPUT .\Slike\HAND_AUTO.vi SENSORB3B5.png
+INPUT .\Slike\HAND_AUTO.vi EMERGENCY.png
+INPUT .\Slike\HAND_AUTO.vi EMERGENCY.png
+INPUT Slike\HAND_AUTO.vi EMERGENCY.png
+INPUT .\Slike\HAND_AUTO.vi EMERGENCY.png
+INPUT .\Slike\HAND_AUTO.vi EMERGENCY.png
+INPUT .\Slike\HAND_AUTO.vi EMERGENCY.png
+INPUT .\Slike\HAND_AUTO.vi EMERGENCY.png
+INPUT .\Slike\HAND_AUTO.vi TIME FALSE.png
+INPUT .\Slike\HAND_AUTO.vi TIME FALSE.png
+INPUT Slike\HAND_AUTO.vi TIME FALSE.png
+INPUT .\Slike\HAND_AUTO.vi TIME FALSE.png
+INPUT .\Slike\HAND_AUTO.vi TIME FALSE.png
+INPUT .\Slike\HAND_AUTO.vi TIME FALSE.png
+INPUT .\Slike\HAND_AUTO.vi TIME FALSE.png
+INPUT Dokumentacija.aux
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbxti10.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbxti10.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi12.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi12.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr12.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr12.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr8.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr8.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmti12.pfb
+INPUT C:\Users\radov\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmti12.pfb

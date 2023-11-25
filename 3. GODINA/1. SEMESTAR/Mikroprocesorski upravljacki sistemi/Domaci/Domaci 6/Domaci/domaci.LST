@@ -1,0 +1,242 @@
+C51 COMPILER V8.16   DOMACI                                                                12/13/2022 18:31:34 PAGE 1   
+
+
+C51 COMPILER V8.16, COMPILATION OF MODULE DOMACI
+OBJECT MODULE PLACED IN domaci.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE domaci.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <at89c51rc2.h>
+   2          
+   3          unsigned char counter = 0x00;
+   4          unsigned char status = 0x00;
+   5          unsigned char counter_set = 0xC8;
+   6          unsigned int var_1 = 0x01;
+   7          unsigned int var_2 = 0x02;
+   8          
+   9          int program_3[7] = {0x81, 0x42, 0x24, 0x18, 0x24, 0x42};
+  10          int program_4[12] = {0x01, 0x02, 0x03, 0x05, 0x08, 0x0D, 0x15, 0x22, 0x37, 0x59, 0x90, 0xE9};
+  11          unsigned char counter_for_program;
+  12          
+  13          unsigned char current_hardware_state_P0_0 = 0x01;
+  14          unsigned char current_hardware_state_P0_1 = 0x01;
+  15          unsigned char current_hardware_state_P0_2 = 0x01;
+  16          
+  17          unsigned char previous_hardware_state_P0_0 = 0x01;
+  18          unsigned char previous_hardware_state_P0_1 = 0x01;
+  19          unsigned char previous_hardware_state_P0_2 = 0x01;
+  20          
+  21          unsigned char current_software_state_P0_0 = 0x01;
+  22          unsigned char current_software_state_P0_1 = 0x01;
+  23          unsigned char current_software_state_P0_2 = 0x01;
+  24          
+  25          unsigned char counter_P0_0 = 0x00;
+  26          unsigned char counter_P0_1 = 0x00;
+  27          unsigned char counter_P0_2 = 0x00;
+  28          
+  29          void checkCurrentState(unsigned char* current_hardware, unsigned char* previous_hardware, unsigned char* c
+             -urrent_software, unsigned char* counter) {
+  30   1              
+  31   1              if(*current_hardware == *previous_hardware) {
+  32   2                      if(++(*counter) == 0x05) {
+  33   3                              *counter = 0x00;
+  34   3                              *current_software = *current_hardware;
+  35   3                      }
+  36   2              }
+  37   1              else {
+  38   2                      *counter = 0x00;
+  39   2              }
+  40   1      
+  41   1              return; 
+  42   1      }
+  43          
+  44          void timer_1_interrupt(void) interrupt 3{
+  45   1      
+  46   1              TL1 = 0x00;
+  47   1              TH1 = 0xEE;
+  48   1      
+  49   1              if(++counter == counter_set){
+  50   2                      status = 0x01;
+  51   2                      counter = 0x00;
+  52   2              }
+  53   1              current_hardware_state_P0_0 = P0_0;
+  54   1              current_hardware_state_P0_1 = P0_1;
+C51 COMPILER V8.16   DOMACI                                                                12/13/2022 18:31:34 PAGE 2   
+
+  55   1              current_hardware_state_P0_2 = P0_2;
+  56   1      
+  57   1              checkCurrentState(&current_hardware_state_P0_0, &previous_hardware_state_P0_0, &current_software_state_P0
+             -_0, &counter_P0_0);
+  58   1              checkCurrentState(&current_hardware_state_P0_1, &previous_hardware_state_P0_1, &current_software_state_P0
+             -_1, &counter_P0_1);
+  59   1              checkCurrentState(&current_hardware_state_P0_2, &previous_hardware_state_P0_2, &current_software_state_P0
+             -_2, &counter_P0_2);
+  60   1              
+  61   1              previous_hardware_state_P0_0 = current_hardware_state_P0_0;
+  62   1              previous_hardware_state_P0_1 = current_hardware_state_P0_1;
+  63   1              previous_hardware_state_P0_2 = current_hardware_state_P0_2;                             
+  64   1      }
+  65          
+  66          void diode_activate(unsigned char state, unsigned char* state_P2) {
+  67   1                      
+  68   1              switch(state) {
+  69   2      
+  70   2                      case 0x00:
+  71   2                              *state_P2 = ~(*state_P2);
+  72   2                              break;
+  73   2      
+  74   2                      case 0x01:
+  75   2                              if(*state_P2 == 0x00 || *state_P2 == 0x80) {
+  76   3                                      *state_P2 = 0x01;
+  77   3                                      break;
+  78   3                              }
+  79   2                              *state_P2 <<= 1;
+  80   2                              break;
+  81   2                              
+  82   2                      case 0x02:
+  83   2                              if(counter_for_program == 0x06) {
+  84   3                                      counter_for_program = 0x00;
+  85   3                              }
+  86   2                              *state_P2 = program_3[counter_for_program++];
+  87   2                              break;
+  88   2                              
+  89   2                      case 0x03:
+  90   2                              if(counter_for_program == 0x0C) {
+  91   3                                      counter_for_program = 0x00;     
+  92   3                              }
+  93   2                              *state_P2 = program_4[counter_for_program++];
+  94   2                              break;
+  95   2      
+  96   2                      case 0x04:
+  97   2                              if(var_1 > 0x80) {
+  98   3                                      var_1 = 0x01;
+  99   3                              }
+ 100   2                              if(var_2 > 0x80) {
+ 101   3                                      var_2 = 0x01;
+ 102   3                              }
+ 103   2                              *state_P2 = var_1 + var_2;
+ 104   2                              var_1 <<= 1;
+ 105   2                              var_2 <<= 1;
+ 106   2                              break;
+ 107   2                      
+ 108   2                      default:
+ 109   2                              *state_P2 = 0x0000;
+ 110   2                              break;                          
+ 111   2              }               
+ 112   1      }
+ 113          
+C51 COMPILER V8.16   DOMACI                                                                12/13/2022 18:31:34 PAGE 3   
+
+ 114          void main(void) {
+ 115   1      
+ 116   1              unsigned char state_P2 = 0x00;
+ 117   1              unsigned char start = 0x00;
+ 118   1      
+ 119   1              unsigned char current_state_P0_0 = 0x01;
+ 120   1              unsigned char current_state_P0_1 = 0x01;
+ 121   1              unsigned char current_state_P0_2 = 0x01;
+ 122   1      
+ 123   1              unsigned char previous_state_P0_0 = 0x01;
+ 124   1              unsigned char previous_state_P0_1 = 0x01;
+ 125   1              unsigned char previous_state_P0_2 = 0x01;
+ 126   1      
+ 127   1              unsigned char P0_0_programs = 0x00;
+ 128   1              unsigned char P0_1_programs = 0x00;
+ 129   1              unsigned char P0_2_programs = 0x00;
+ 130   1      
+ 131   1              unsigned char change_in_program = 0x00;
+ 132   1      
+ 133   1              EA = 0;
+ 134   1              TMOD = 0x10; 
+ 135   1              TR1 = 1;
+ 136   1              ET1 = 1;
+ 137   1              TL1 = 0x00;
+ 138   1              TH1 = 0xEE;
+ 139   1              EA = 1;
+ 140   1      
+ 141   1              P2 = 0x00;
+ 142   1                              
+ 143   1              while(1) {
+ 144   2              
+ 145   2                      if(status) {
+ 146   3                              EA = 0;
+ 147   3                              status = 0x00;
+ 148   3      
+ 149   3                              current_state_P0_0 = current_software_state_P0_0;
+ 150   3                              current_state_P0_1 = current_software_state_P0_1;
+ 151   3                              current_state_P0_2 = current_software_state_P0_2;       
+ 152   3      
+ 153   3                              if(current_state_P0_0 > previous_state_P0_0) {
+ 154   4                                      if(!P0_0_programs) {
+ 155   5                                              start = 0x01;
+ 156   5                                              state_P2 = 0xFF;
+ 157   5                                              P0_0_programs++;
+ 158   5                                      }
+ 159   4                                      else {
+ 160   5                                              start = 0x00;
+ 161   5                                              P0_0_programs = 0x00;
+ 162   5                                              P0_1_programs = 0x00;
+ 163   5                                              P0_2_programs = 0x00;
+ 164   5                                              change_in_program = 0x00;
+ 165   5                                              counter_set = 0xC8;
+ 166   5                                              counter_for_program = 0x00;
+ 167   5                                      }
+ 168   4                              }
+ 169   3      
+ 170   3                              if(start) {
+ 171   4                                      // Promjena brzine programa
+ 172   4                                       if(current_state_P0_1 > previous_state_P0_1) {
+ 173   5                                              if(!P0_1_programs) {
+ 174   6                                                      counter_set = 0x64;
+ 175   6                                                      P0_1_programs++;
+C51 COMPILER V8.16   DOMACI                                                                12/13/2022 18:31:34 PAGE 4   
+
+ 176   6                                              }
+ 177   5                                              else {
+ 178   6                                                      counter_set = 0xC8;
+ 179   6                                                      P0_1_programs = 0x00;   
+ 180   6                                              }
+ 181   5                                      }
+ 182   4      
+ 183   4                                      // Promjena programa
+ 184   4                                      if(current_state_P0_2 > previous_state_P0_2) {
+ 185   5                                              change_in_program++;
+ 186   5                                              state_P2 = 0x00;
+ 187   5                                              counter_for_program = 0x00;
+ 188   5                                              if(P0_2_programs == 0x05) {
+ 189   6                                                      P0_2_programs = 0x00;   
+ 190   6                                              }
+ 191   5                                              diode_activate(P0_2_programs++, &state_P2);
+ 192   5                                      }
+ 193   4                                      else if(change_in_program) {
+ 194   5                                              diode_activate(P0_2_programs-1, &state_P2);
+ 195   5                                      }
+ 196   4                              }
+ 197   3                              else {
+ 198   4                                      state_P2 = 0x00;
+ 199   4                              }
+ 200   3                                      
+ 201   3                              P2 = state_P2;
+ 202   3      
+ 203   3                              previous_state_P0_0 = current_state_P0_0;
+ 204   3                              previous_state_P0_1 = current_state_P0_1;
+ 205   3                              previous_state_P0_2 = current_state_P0_2;
+ 206   3                              EA = 1;
+ 207   3                      }
+ 208   2              } 
+ 209   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    652    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     58      24
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

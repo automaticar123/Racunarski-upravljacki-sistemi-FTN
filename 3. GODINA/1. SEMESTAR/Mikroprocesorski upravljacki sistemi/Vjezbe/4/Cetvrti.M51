@@ -1,0 +1,73 @@
+BL51 BANKED LINKER/LOCATER V6.15                                                        11/27/2022  16:09:40  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.15, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE cetvrti.obj TO Cetvrti RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  cetvrti.obj (CETVRTI)
+
+
+LINK MAP OF MODULE:  Cetvrti (CETVRTI)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     003AH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  Cetvrti (CETVRTI)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        CETVRTI
+  D:0030H         SYMBOL        BROJAC
+  C:0015H         SYMBOL        DALJE
+  B:00A8H.7       SYMBOL        EA
+  B:00A8H.1       SYMBOL        ET0
+  C:000DH         SYMBOL        INTERRUPT_T0
+  C:0038H         SYMBOL        KRAJ
+  C:0016H         SYMBOL        MAIN
+  D:00A0H         SYMBOL        P2
+  D:0020H         SYMBOL        STATUS
+  D:008CH         SYMBOL        TH0
+  D:008AH         SYMBOL        TL0
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  C:002EH         SYMBOL        WHILE
+  C:0000H         LINE#         2
+  C:000BH         LINE#         5
+  C:000DH         LINE#         12
+  C:0010H         LINE#         13
+  C:0012H         LINE#         14
+  C:0015H         LINE#         17
+  C:0016H         LINE#         21
+  C:0019H         LINE#         22
+  C:001CH         LINE#         23
+  C:001EH         LINE#         24
+  C:0020H         LINE#         25
+  C:0022H         LINE#         26
+  C:0025H         LINE#         27
+  C:0028H         LINE#         29
+  C:002BH         LINE#         30
+  C:002EH         LINE#         33
+BL51 BANKED LINKER/LOCATER V6.15                                                      11/27/2022  16:09:40  PAGE 2
+
+
+  C:0031H         LINE#         34
+  C:0033H         LINE#         35
+  C:0034H         LINE#         36
+  C:0036H         LINE#         37
+  C:0038H         LINE#         40
+  -------         ENDMOD        CETVRTI
+
+Program Size: data=8.0 xdata=0 code=58
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

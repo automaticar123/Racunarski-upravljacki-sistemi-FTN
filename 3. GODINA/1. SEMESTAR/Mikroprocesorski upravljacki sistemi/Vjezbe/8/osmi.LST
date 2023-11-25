@@ -1,0 +1,231 @@
+C51 COMPILER V8.16   OSMI                                                                  12/20/2022 20:30:22 PAGE 1   
+
+
+C51 COMPILER V8.16, COMPILATION OF MODULE OSMI
+OBJECT MODULE PLACED IN osmi.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE osmi.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <at89c51rc2.h>
+   2          #include <intrins.h>
+   3          
+   4          #define LCD_EN  P3_2
+   5          #define LCD_RS  P3_3
+   6          
+   7          #define LCD_DB7 P1_0
+   8          #define LCD_DB6 P1_1
+   9          #define LCD_DB5 P1_2
+  10          #define LCD_DB4 P1_3
+  11          
+  12          #define LDC_BL  P1_4
+  13          
+  14          void waitSec(void) {
+  15   1              
+  16   1              int i;
+  17   1              TH0 = 0x4B;
+  18   1              TL0 = 0xFD;
+  19   1              TMOD = (TMOD & 0xF0) | 0x01;
+  20   1              TR0 = 1;
+  21   1      
+  22   1              for(i = 0; i < 20; i++) {
+  23   2                      while(!TF0) {}
+  24   2                      TF0 = 0;
+  25   2                      TH0 = 0x4B;
+  26   2                      TL0 = 0xFD;
+  27   2              }
+  28   1      
+  29   1              TF0 = 0;
+  30   1              TR0 = 0;
+  31   1      }
+  32          
+  33          void wait50us(void) {
+  34   1              
+  35   1              TH0 = 0xFF;
+  36   1              TL0 = 0xD2;
+  37   1              TR0 = 1;
+  38   1      
+  39   1              while(!TF0) {}
+  40   1      
+  41   1              TF0 = 0;
+  42   1              TR0 = 0;
+  43   1      }
+  44          
+  45          void wait2ms(void) {
+  46   1      
+  47   1              TH0 = 0xF8;
+  48   1              TL0 = 0xCD;
+  49   1              TR0 = 1;
+  50   1              
+  51   1              while(!TF0) {}
+  52   1              
+  53   1              TF0 = 0;
+  54   1              TR0 = 0;        
+  55   1      }
+C51 COMPILER V8.16   OSMI                                                                  12/20/2022 20:30:22 PAGE 2   
+
+  56          
+  57          void initializeDisplay(void) {
+  58   1              
+  59   1              waitSec();
+  60   1      
+  61   1              LCD_EN = 1;
+  62   1              LCD_RS = 0;
+  63   1              LCD_DB7 = 0;
+  64   1              LCD_DB6 = 0;
+  65   1              LCD_DB5 = 1;
+  66   1              LCD_DB4 = 0;
+  67   1              LCD_EN = 0;
+  68   1      
+  69   1              wait50us();
+  70   1      
+  71   1              LCD_EN = 1;
+  72   1              LCD_RS = 0;
+  73   1              LCD_DB7 = 0;
+  74   1              LCD_DB6 = 0;
+  75   1              LCD_DB5 = 1;
+  76   1              LCD_DB4 = 0;
+  77   1              LCD_EN = 0;
+  78   1      
+  79   1              _nop_();
+  80   1      
+  81   1              LCD_EN = 1;
+  82   1              LCD_RS = 0;
+  83   1              LCD_DB7 = 1;
+  84   1              LCD_DB6 = 0;
+  85   1              LCD_DB5 = 0;
+  86   1              LCD_DB4 = 0;
+  87   1              LCD_EN = 0;
+  88   1      
+  89   1              wait50us();
+  90   1      
+  91   1              LCD_EN = 1;
+  92   1              LCD_RS = 0;
+  93   1              LCD_DB7 = 0;
+  94   1              LCD_DB6 = 0;
+  95   1              LCD_DB5 = 0;
+  96   1              LCD_DB4 = 0;
+  97   1              LCD_EN = 0;
+  98   1      
+  99   1              _nop_();
+ 100   1      
+ 101   1              LCD_EN = 1;
+ 102   1              LCD_RS = 0;
+ 103   1              LCD_DB7 = 1;
+ 104   1              LCD_DB6 = 1;
+ 105   1              LCD_DB5 = 1;
+ 106   1              LCD_DB4 = 1;
+ 107   1              LCD_EN = 0;
+ 108   1      
+ 109   1              wait50us();
+ 110   1      
+ 111   1              LCD_EN = 1;
+ 112   1              LCD_RS = 0;
+ 113   1              LCD_DB7 = 0;
+ 114   1              LCD_DB6 = 0;
+ 115   1              LCD_DB5 = 0;
+ 116   1              LCD_DB4 = 0;
+ 117   1              LCD_EN = 0;
+C51 COMPILER V8.16   OSMI                                                                  12/20/2022 20:30:22 PAGE 3   
+
+ 118   1      
+ 119   1              _nop_();
+ 120   1      
+ 121   1              LCD_EN = 1;
+ 122   1              LCD_RS = 0;
+ 123   1              LCD_DB7 = 0;
+ 124   1              LCD_DB6 = 0;
+ 125   1              LCD_DB5 = 0;
+ 126   1              LCD_DB4 = 1;
+ 127   1              LCD_EN = 0;
+ 128   1      
+ 129   1              wait2ms();
+ 130   1              wait2ms();
+ 131   1      
+ 132   1              LCD_EN = 1;
+ 133   1              LCD_RS = 0;
+ 134   1              LCD_DB7 = 0;
+ 135   1              LCD_DB6 = 0;
+ 136   1              LCD_DB5 = 0;
+ 137   1              LCD_DB4 = 0;
+ 138   1              LCD_EN = 0;
+ 139   1      
+ 140   1              _nop_();
+ 141   1      
+ 142   1              LCD_EN = 1;
+ 143   1              LCD_RS = 0;
+ 144   1              LCD_DB7 = 0;
+ 145   1              LCD_DB6 = 1;
+ 146   1              LCD_DB5 = 1;
+ 147   1              LCD_DB4 = 0;
+ 148   1              LCD_EN = 0;
+ 149   1      
+ 150   1              wait50us();
+ 151   1              
+ 152   1              wait2ms();
+ 153   1      
+ 154   1              LDC_BL = 1;
+ 155   1      }
+ 156          
+ 157          bit getBit(unsigned char character, unsigned char shift) {
+ 158   1                      
+ 159   1              return (character & (1 << shift)) >> shift;
+ 160   1      }
+ 161          
+ 162          void writeChar(unsigned char character) {
+ 163   1              
+ 164   1              LCD_EN = 1;
+ 165   1              LCD_RS = 1;
+ 166   1              LCD_DB7 = getBit(character, 7);
+ 167   1              LCD_DB6 = getBit(character, 6);
+ 168   1              LCD_DB5 = getBit(character, 5);
+ 169   1              LCD_DB4 = getBit(character, 4);
+ 170   1              LCD_EN = 0;     
+ 171   1      
+ 172   1              _nop_();
+ 173   1      
+ 174   1              LCD_EN = 1;
+ 175   1              LCD_RS = 1;
+ 176   1              LCD_DB7 = getBit(character, 3);
+ 177   1              LCD_DB6 = getBit(character, 2);
+ 178   1              LCD_DB5 = getBit(character, 1);
+ 179   1              LCD_DB4 = getBit(character, 0);
+C51 COMPILER V8.16   OSMI                                                                  12/20/2022 20:30:22 PAGE 4   
+
+ 180   1              LCD_EN = 0;
+ 181   1                                                                         
+ 182   1              wait50us();
+ 183   1      }
+ 184          
+ 185          void writeLine(unsigned char* str) {
+ 186   1      
+ 187   1              char i = 0;
+ 188   1      
+ 189   1              while(*(str+i) != '\0') {
+ 190   2                      writeChar(*(str + i));
+ 191   2                      i++;            
+ 192   2              }
+ 193   1      }
+ 194          
+ 195          void main(void) {
+ 196   1      
+ 197   1              initializeDisplay();
+ 198   1              
+ 199   1              writeLine("Nenad\0");
+ 200   1      
+ 201   1              while(1) {}
+ 202   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    377    ----
+   CONSTANT SIZE    =      7    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       4
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

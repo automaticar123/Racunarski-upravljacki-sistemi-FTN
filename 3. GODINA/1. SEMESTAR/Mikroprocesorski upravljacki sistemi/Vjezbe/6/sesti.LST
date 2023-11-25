@@ -1,0 +1,96 @@
+C51 COMPILER V8.16   SESTI                                                                 12/06/2022 19:56:01 PAGE 1   
+
+
+C51 COMPILER V8.16, COMPILATION OF MODULE SESTI
+OBJECT MODULE PLACED IN sesti.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE sesti.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <at89c51rc2.h>
+   2          
+   3          unsigned char counter = 0;
+   4          unsigned char proslaSekunda = 0;
+   5          unsigned char trenutnoP0_0HardverskoStanje = 1;
+   6          unsigned char prethodnoP0_0HardverskoStanje = 1;
+   7          unsigned char brojacZaTaster = 0;
+   8          unsigned char trenutnoP0_0SoftverskoStanje = 1;  
+   9          
+  10          void t0_interrupt(void) interrupt 1 {
+  11   1              
+  12   1              TL0 = 0x01;
+  13   1              TH0 = 0xEE;
+  14   1      
+  15   1              if(++counter == 200) {
+  16   2                      proslaSekunda = 1;
+  17   2                      counter = 0;    
+  18   2              }
+  19   1      
+  20   1              trenutnoP0_0HardverskoStanje = P0_0;
+  21   1      
+  22   1              if(trenutnoP0_0HardverskoStanje == prethodnoP0_0HardverskoStanje) {
+  23   2      
+  24   2                      if(++brojacZaTaster == 5) {
+  25   3                              trenutnoP0_0SoftverskoStanje = trenutnoP0_0HardverskoStanje;
+  26   3                              brojacZaTaster = 0;
+  27   3                      }
+  28   2              }
+  29   1              else {
+  30   2                      brojacZaTaster = 0;
+  31   2              }
+  32   1      
+  33   1              prethodnoP0_0HardverskoStanje = trenutnoP0_0HardverskoStanje;   
+  34   1      }
+  35                  
+  36          void main(void) {
+  37   1      
+  38   1              unsigned char trenutnoP0_0 = 1;
+  39   1              unsigned char prethodnoP0_0 = 1; 
+  40   1              unsigned char start = 0;
+  41   1              P2 = 0x00;
+  42   1              
+  43   1              //EA = 0;
+  44   1              TL0 = 0x01;
+  45   1              TH0 = 0xEE;
+  46   1              TMOD = 0x01;
+  47   1              ET0 = 1;        
+  48   1              TR0 = 1;
+  49   1              EA = 1;
+  50   1      
+  51   1              while(1) {
+  52   2                      
+  53   2                      trenutnoP0_0 = trenutnoP0_0SoftverskoStanje;
+  54   2      
+  55   2                      if(prethodnoP0_0 > trenutnoP0_0) {
+C51 COMPILER V8.16   SESTI                                                                 12/06/2022 19:56:01 PAGE 2   
+
+  56   3                              start = ~start;
+  57   3                      }
+  58   2      
+  59   2                      if(start) {
+  60   3                              if(proslaSekunda) {
+  61   4                                      P2 = ~P2;
+  62   4                                      proslaSekunda = 0;
+  63   4                              }
+  64   3                      }
+  65   2                      else {
+  66   3                              P2 = 0;
+  67   3                      }
+  68   2      
+  69   2                      prethodnoP0_0 = trenutnoP0_0;
+  70   2              }
+  71   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    108    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,103 @@
+\documentclass[11pt]{article}
+\usepackage[siunitx]{circuitikz}
+\usepackage{amsmath}
+
+\title{Domaći 4 - Hardverski interfejsi}
+\author{Nenad Radović, RA18/2020}
+\date{02.06.2023.}
+
+\begin{document}
+    \maketitle
+    \section{Problem i prijedlog rješenja}
+
+        \begin{figure}[ht]
+            \centering
+            \begin{circuitikz}
+                \draw (3, 0) node[op amp] (amp) {};
+
+                \draw (amp.+) to[short, -] ++(-2, 0) coordinate (c1)
+                (c1) to[short, -] ++(0, -1) node[label=east:$A$] {} coordinate (c2)
+                (c2) to[R, *-, l_=$R_i$] ++(-2, 0) coordinate (c3)
+                (c3) to[short, -o] ++(-1, 0) node[label=$V_1$] {}
+                (c2) to[short, -] ++(0, -1) coordinate (c4)
+                (c4) to[R, -, l_=$R_i$] ++(-2, 0) coordinate (c5)
+                (c5) to[short, -o] ++(-1, 0) node[label=$V_2$] {};
+                
+                \draw (amp.-) to[short, -*] ++(-1, 0) node[label=south:$B$] {} coordinate (c6)
+                (c6) to[short, -] ++(-2, 0) coordinate (c7)
+                (c7) to[R, -, l_=$R_1$] ++(-1, 0) coordinate (c8)
+                (c8) to[short, -] ++(-1, 0) coordinate (c9)
+                (c9) node[ground] {};
+
+                \draw (c6) to[short, -] ++(0, 1.5) coordinate (c10)
+                (c10) to[short, -] ++(1, 0) coordinate (c11)
+                (c11) to[R, -, l=$R_2$] ++(1, 0) coordinate (c12)
+                (c12) to[short, -] ++(2.37, 0) coordinate (c13);
+
+                \draw (amp.out) to[short, -] ++(1, 0) coordinate (c15)
+                (c15) to[short, -] (c13);
+
+                \draw (c15) to[short, -o] ++(1, 0) node[label=$V_{out}$] {}; 
+
+            \end{circuitikz}
+
+        \end{figure}
+
+        Strategija rješavanja zadatka ići će uz korišćenje teoreme superpozicije. Naime, kako se traži izlaz $V_{out}$
+        u zavisnosti od napona $V_1$ i $V_2$, njih ćemo pojedinačno isključiti, sračunati njihove "uticaje" na izlazni napon 
+        te ih na kraju sabrati. 
+
+        \subsection{Slučaj kada je $V_2$ isključen}
+            
+            Kada je napon $V_2$ isključen, donji otpornik $R_i$ faktički biva spojen jednim krajem na masu. Nas zanima napon
+            u tački $A$ (čiji potencijal jeste isti kao potencijal neinvertujućeg ulaza operacionog pojačavača), a kako vidimo
+            da spajanjem jednog kraja donjeg otpornika dobijamo razdjelnik napona (konkretno napona $V_1$ -
+            naravno, beskonačna ulazna impedansa operacionog pojačavača omogućava dobijanje razdjelnika napona), 
+            potencijal u tački $A$ je
+
+            \begin{equation}
+                V_A = V^+ = \frac{R_i}{R_i + R_i}V_1 = \frac{V_1}{2}
+            \end{equation}
+
+            Zbog osobine operacionog pojačavača da je napon neinvertujućeg ulaza jednak naponu na invertujućem ulazu, važiće
+            da je 
+
+            \begin{equation}
+                V^- = \frac{R_i}{R_i + R_i}V_1 = \frac{V_1}{2}
+            \end{equation}
+
+            Sada posmatrajmo gornji dio kola. Kako je ulazna impedansa operacionog pojačavača beskonačno velika,
+            ne postoji račvanje struje u tački $B$. Slijedi da je 
+
+            \begin{gather}
+                    \frac{0 - V^-}{R_1} = \frac{V^- - V^{'}_{out}}{R_2} \\
+                    \frac{-\frac{V_1}{2}}{R_1} = \frac{\frac{V_1}{2} - V^{'}_{out}}{R_2} \\
+                    -\frac{V_1}{2}R_2 = (\frac{V_1}{2} - V^{'}_{out})R_1 \\
+                    \frac{V_1}{2}\left(R_1 + R_2\right) = V^{'}_{out}R_1 
+            \end{gather}
+
+            te je izlazni napon u prvom slučaju
+
+            \begin{equation}
+                V^{'}_{out} = \frac{R_1 + R_2}{R_1} \frac{V_1}{2}
+            \end{equation}
+
+            \subsection{Slučaj kada je $V_1$ isključen}
+
+                Slučaj je trivijalan, jer se radi kao prethodni. Pri djelovanju samo napona $V_2$, izlazni napon jednak je
+
+                \begin{equation}
+                    V^{''}_{out} = \frac{R_1 + R_2}{R_1} \frac{V_2}{2}
+                \end{equation}
+
+            \subsection{Ukupan uticaj oba izvora napona}
+            
+                Preostalo nam je sabrati pojedinačne uticaje naponskih izvora. Slijedi da je
+
+                \begin{equation}
+                    V_{out} = V^{'}_{out} + V^{''}_{out} = \frac{R_1+R_2}{2R_1} \left(V_1 + V_2\right)
+                \end{equation}
+
+
+
+\end{document}

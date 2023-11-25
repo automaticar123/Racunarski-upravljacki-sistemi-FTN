@@ -1,0 +1,102 @@
+BL51 BANKED LINKER/LOCATER V6.15                                                        12/03/2022  09:11:15  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.15, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE peti.obj TO Peti RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  peti.obj (PETI)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  Peti (PETI)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?PETI
+            IDATA   000AH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0007H     UNIT         ?C_INITSEG
+                    000AH     0001H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    009AH     0020H     UNIT         ?PR?MAIN?PETI
+            CODE    00BAH     001CH     UNIT         ?PR?TIMER_INTERRUPT_0?PETI
+
+
+
+OVERLAY MAP OF MODULE:   Peti (PETI)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?PETI
+  +--> ?C_INITSEG
+
+
+
+SYMBOL TABLE OF MODULE:  Peti (PETI)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PETI
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A0H         PUBLIC        P2
+  D:0008H         PUBLIC        counter
+  B:00A8H.7       PUBLIC        EA
+  C:00BAH         PUBLIC        timer_interrupt_0
+BL51 BANKED LINKER/LOCATER V6.15                                                      12/03/2022  09:11:15  PAGE 2
+
+
+  C:009AH         PUBLIC        main
+  D:0009H         PUBLIC        status
+  D:0089H         PUBLIC        TMOD
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  -------         PROC          TIMER_INTERRUPT_0
+  C:00BAH         LINE#         6
+  C:00BEH         LINE#         7
+  C:00C1H         LINE#         8
+  C:00C4H         LINE#         10
+  C:00CBH         LINE#         11
+  C:00CEH         LINE#         12
+  C:00D1H         LINE#         14
+  C:00D1H         LINE#         15
+  -------         ENDPROC       TIMER_INTERRUPT_0
+  -------         PROC          MAIN
+  C:009AH         LINE#         17
+  C:009AH         LINE#         19
+  C:009CH         LINE#         20
+  C:009FH         LINE#         21
+  C:00A2H         LINE#         22
+  C:00A5H         LINE#         23
+  C:00A7H         LINE#         24
+  C:00A9H         LINE#         25
+  C:00ABH         LINE#         27
+  C:00AEH         LINE#         29
+  C:00AEH         LINE#         31
+  C:00B2H         LINE#         32
+  C:00B5H         LINE#         33
+  C:00B8H         LINE#         34
+  C:00B8H         LINE#         35
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        PETI
+
+Program Size: data=11.0 xdata=0 code=213
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
