@@ -1,0 +1,148 @@
+DISCLAIMER : AKO VAM OVA SKRIPTA DELUJE HAOTICNO, JA SAM POKUSALA DA JE SREDIM, STO JE BOLJE, ALI NA KRAJU KRAJEVA, TO JE DARKO, NEMOJTE MI ZAMERITI. HVALA UNAPRED.
+
+Inteligentni kapacitivni senzor pritiska :
+
+Inteligentni <- obicno ima neki mikroprocesor koji vodi racuna o njegovom radu.
+Kako radi kapacitvni senzor pritiska :
+
+Imamo senzorsku celiju, sa obe strane se nalaze elasticne membrane.
+U unutrasnjosti senzora se nalazi nesto sto predstavlja dva kondenzatora.
+Kondenzatori imaju jednu pomocnu plocu.
+Izmedju svakog od kondenzatora se nalazi ulje.
+Ti kondenzatori su spojeni na oscilator, i taj oscilator osciluje nekom frekvencijom.
+Senzor meri razliku pritisaka (ima dva otvora, i meri razliku pritisaka na tim otvorima), i ta razlika se prenosi na ulje, i proizvodi se sila koja ce da pomera pomicnu plocu kondenzatora(ona se tegli(njegove reci)).
+I usled toga se menja kapacitivnost.
+Koliko ce se pomicna ploca, pomeriti zavisi od sile.
+Proporcionalno toj sili, promenuce se i kapacitivnost.
+Frekvencija oscilatora ce se promeniti u zavisnosti od promene kapacitivnosti.
+Na osnovu poznate induktivnosti moze da se odredi kapacitivnost.
+Na osnovu toga mozemo da dobijemo informaciju o pomeraju, a na osnovu toga informaciju o razlici sila tj razlici pritisaka.
+Ovo je senzor diferencijalnog pritiska.
+Najvise senzora koji se koriste, su senzori diferencijalnog pritiska, zato sto mere razliku pritisaka u odnosu na atmosferski pritisak.
+Ti diferencijalni pritisci, mogu da budu mereni, kao razlika pritisaka u nekoj okolini(lokalni diferencijalni pritisak, vec smo o tome pricali, ali on ima potrebu da ponovo smara sa tim, nista cudno).
+Ta razlika pritisaka moze biti dosta mala.
+
+MERENJE PROTOKA :
+Senzori protoka :
+
+Definicija protoka :
+Kolicina sikastog materijala, tecnosti ili gasa, koja protekne kroz posmatrani poprecni presek za jedinicu vremena :
+
+Zapreminski protok[m^3 / s] : Qv = dV / dt
+Maseni protok[kg / s] : Qm = dm / dt
+Odnos masenog i zapreminskog protoka : Qm = ro * Qv = ro * dV / dt
+Najcesce(ali ne mora da znaci, lol, Darko, fokusiraj se) se meri zapreminski protok.
+
+Za merenje protoka koriste se protokomeri.
+Najcesce se koriste protokomeri sa prigusnicom :
+
+U tok fluida postavlja se prepreka u obliku suzenja cevi.
+Imamo cevovod, i u njemu se postavi prepreka u vidu suzenja cevi, tj smanji se poprecni presek cevovoda u nekoj tacki.
+Kada se to uradi, iza prepreke dolazi do promene pritiska.
+SHVATIO JE SAD, DA JE OTVORIO POGRESNU PREZENTACIJU, APLAUZ.
+Protok koji se dobija je proporcionalan kvadratnom korenu razlike pritisaka ispred i iza prepreke :
+Q = k * koren(delta_p / ro)
+Napisacu izvodjenje na papiru, za one koji zele da znaju vise ;-)
+Pokazuje onaj snimak, pa sada objasnjava:
+
+Rekli smo da dolazi do promene pritiska, i zato stavljamo senzor diferencijalnog pritiska(koji moze da meri male razlike pritisaka).
+Suzenja koje sa postavlja, ima oblik prstena, i takvo suzenje se zove merna blenda.
+Onda i sa jedne i sa druge strane merne blende, vodimo na senzor diferencijalnog pritiska, gde se u zavisnosti od razlike pritisaka, membrana pomera, na jednu ili na drugu stranu.
+Pritisak iza blende je manji od pritiska ispred blende.
+Kada fluid prolazi kroz mernu blendu, suzi se protok u cevi, tj suzi se precnik kroz koji prolazi taj fluid.
+Jednacina koja se koristi je za idealan slucaj, stoga se u jednacinu ubacuju korektivni faktori, koji su konstantni za tu mernu blendu i vrstu strujanja.
+Kada fluid prolazi dolazi do turbulencija, i dolazi do gubitaka energije, kada posle suzenja, se vratimo na standardni cevovod, pritisak nije kao pre suzenja :
+Sto je veca brzina, veci su gubici.
+Ti gubici su tipa koleno, zakrivljenje cevi, i za svaki takav element dodajemo : gubici * v^2/2
+Valjda, msm on stvarno bas ne zna sta prica. 
+Zato je bolje koristiti mlaznicu(smanjuje gubitke).
+tipa :
+venturijeva mlaznica, ili venturijeva cev.
+
+Kada se montiraju senzori diferencijalnog pritiska, treba voditi racuna da se ne montiraju kod kolena, jer ce doci to turbulencija, i pritisak koji merimo ce biti UPITAN.
+Moraju da se koriste diferencijalni senzori pritiska, i ne moze da se meri razlika u odnosu na atmosferski, jer su razlike pritisaka koji se mere male.
+Merimo diferencijalni pritisak, a izlaz nam je struja u mA, i karakteristika je kvadratna.
+
+Ukoliko nam je gustina konstantna, dovoljno je da merimo samo diferencijalni pritisak.
+Ukoliko gustina nije konstantna, onda cemo staviti senzor gustine, i na osnovu njega mozemo da imamo odgovarajuce ro.
+Takodje ukoliko znamo vrstu fluida, dovoljan nam je i senzor temperature, jer gustina zavisi od temperature.
+Ako imamo gas, merimo temperaturu i pritisak i koristimo jednacinu idealnog gasa.
+
+Turbinski protokomer :
+
+Imamo rotor sa svojim lopaticama i fluid kako prolazi, okrece rotor tj turbinu.
+Broj obrtaja turbine u jedinici vremena direktno je proporcionalan brzini fluida :
+n = k * v
+k - konstanta vrednost u sirem opsegu
+v = n/k
+Ako imamo brzinu fluida, mozemo da odredimo protok kroz poprecni preske S  :
+Qv = v * S = n/k * S
+Imamo rotor, mi moramo da znamo kako se taj rotor vrti, i da na osnovu toga odredimo brzinu odnosno kasnije protok.
+Nacin na koji se to radi :
+Rotor se pravi od feromagnetnog materijala , i imamo neki induktivni senzor(tahometar), koji pravi neko magnetno polje i kada taj feromagnetni materijal dodje u magnetno polje, doce do pojacanja signala koji se mere, i kada dodje lopatica do toga onda cemo dobiti pik, a kada se lopatica skloni imacemo minimum.
+Signal lici na pravougaoni implus.
+Mi mozemo da brojimo impulse u jedinici vremena.
+Ako rotor ima N lopatica i imamo n obrtaja u jedinici vremena -> N*n broj impulsa u jedinici vremena(frekvencija) 
+-> Qv = n*N / k *S 
+Ta frekvencija se pretvatra u naponski signal koji je proporcionalan protoku, ili u strujni signal, sve zavisi sta se nalazi na izlazu senzora.
+Imamo prilagodjavac toka i nosac lezaja rotora da bi tokom bio ravnomerniji. 
+Rotor takodje ima osovinu, da ne bi ledbeo..................................
+
+I ovaj senzor i prehodni se stavljaju u poseban cevovod i ogradi se ventilima(nacrtacu da ne objasnjavam), da ako crknu, ne bi moralo sve da staje.
+
+Staticka karakteristika :
+u nekom opsegu karakteritika je prakticno linearna.
+problem : trenje u lezajevima
+
+Vrtlozni vorteks protokomeri :
+
+Princip rada se zasniva na odvajanju vrtloga iza prepreke postavljene u tok fluida.
+Postavi se prepreke i iza nje se javljaju vrtlozi.
+Frekvencija odvajanja vrtloga tj koliko vrtloga imamo u jedinici vremena je proprcionalna brzini toka.
+Nailaskom na prepreku(poprecni presek cevovoda se smanjuje) brzina fluida raste, a pritisak opada.
+Na polovini poprecnog preseka prepreke desava se obrnuti proces <- brzina opada a pritisak opada.
+Na taj nacin na prednjoj strani formira se visi, a na zadnjoj strani nizi pritisak.
+Pod delovanjem ove razlike pritisaka odvaja se pogranicni sloj fluida sa prepreke u obliku vrtloga.
+Vrtlozi se odvajaju naizmenicno na gornjoj i donjoj strani.
+Zavisnost frekvencije vrtloga od brzine toka i precnika cevovda naziva se Struhalovim brojem :
+Sh = f*D / v
+Brzina toka fluida se onda moze odrediti kao :
+v = f * D / Sh
+
+Sh <- generalno nije const, ali je za jednu prepreku i odredjenom(dosta velikom) opsegu const(priblizno)
+
+Kada znamo koliko vrtloga u jedinici vremena imamo onda mozemo da odredimo brzinu.
+Kako odredjujemo taj broj vrtloga u jedinici vremena :
+Usled vrtloga dolazi do promene brzine i pritiska na tim mestima u cevovodu.
+Mi onda blizu tih mesta merimo pritisak ili brzinu, odnosno na osnovu frekvencije promena pritisaka ili brzine da odredimo frekvenciju pojacanje vrtloga.
+
+
+Sa slajda :
+na mestu odvajanja vrtloga dolazi do fluktuacije brzine i pritiska.
+Frekvencija oscilovanja brzine i pritiska jednaka je frekvenciji odvajanja vrtloga.
+Kao detektor vrtloga moze se upotrebiti senzor brzine ili senzor pritiska.
+Prakticne poteskoce nastaju zbog malih amplituda fluktuacije (resenje : suzenje cevovoda)
+Detekcija se najcesce ostvarujee pomocu :
+ultrazvucnog predajnika i prijemnika, postavljenih poprecno na tok iza prepreke, tako da nailazak vrtloga modulira ultrazvucni talas
+Termistora postavljenog iza prepreke tako da pri nailasku vrtloga termistor hladi, a u njegovom odsustvu zagrejava
+pijezoelementa, koji prati fluktuacije pritiska.
+
+Indukcioni(magnetski) protokomeri :
+
+To su elektromagnetni senzori koji rade na principu Faradejevog zakona indukcije.
+Relativnim kretanjem provodnika i magnetnog polja pod pravim uglom na provodnik indukuje se napon.
+Na ovom principu rade istosmerni i naizmenicni generatori napona.
+Za merenje protoka princip je primenljiv samo za provodne tecnosti.
+Takva tecnost ekvivalenta je provodniku duzine jednake unutrasnjem precniku cevi D.
+Tj imamo elektromag. koji pravi const mag. polje, usled toga, se fluid krece, brzina kretanja fluida je kao da se krece provodnik.
+Provodnik se krece srednjom brzinom toka v, u mag. polj B, zbog cega se na krajevima provodnika tj na elektrodama indukuje napon :
+e = BDv = 4B * Qv/ pi*D
+Imamo elektromag, napravi se tako da mag polje ide do unutrasnjeg precnika cevovoda, i imamo kontakt sa unutrasnjosti cevovoda, kako bismo imali kontakt sa tim nazovi provodnikom(provodni fluidom), i onda usled kretanja provodnika u tom mag. polju dolazi do toga da se indukuje napon, i taj napon moze da meri.
+Mogu da se jave smetnje zbog hemijskih, elektrohemijskih reakcija, neki dodatni napon itd, ali te smetnje su uvek iste, i to resavamo naizmenicnim naponom, kada merimo promenljiv napon na izlazu imacemo ofset tog napona za neku const vrednost(smetnju) i to mozemo da filtriramo.
+Cevovod ne sme da bude provodan u delu u kom se vrsi merenje.
+
+Ultrazvucni senzori protoka:
+Imamo ultrazvuk koji emituje predajnik i prima ga prijemnik.
+Kada ultrazuk prodje kroz fluid, fluid utice na neki nacin na taj ultrazvuk, i taj nacin na koji utice mi cemo detektovati i na osnovu njega se odredi brzina fluida.
+Formule slajd 18.
+
